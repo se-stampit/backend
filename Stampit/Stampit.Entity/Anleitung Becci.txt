@@ -1,0 +1,19 @@
+﻿- Für alle Entitäten im Datenmodell eine eigene public Klasse
+
+- Jede Klasse von Entity ableiten:
+	public class <Entityname> : Entity
+	{
+		//Hier kommen die Properties rein
+	}
+
+- Property für jedes Attribut:
+	public <Datentyp> <Propertyname> { get; set; }
+	Bsp Klasse Company (in C# alle Datentypen, auch string, in Kleinbuchstaben, Propertyname mit Großbuchstaben anfangen wie im Modell):
+		public string CompanyName { get; set; }
+
+- Jede n..1 - Beziehung (n steht bei der Entität die gerade erstellt wird, 1 bei der assoziierten) auflösen zu:
+	public virtual <ReferenzierteEntität> <ReferenzierteEntität> { get; set; }
+	public string <ReferenzierteEntität>ID { get; set; }
+
+- Jede 1..n - Beziehung (1 steht bei der Entität die gerade erstellt wird, n bei der assoziierten) auflösen zu:
+	public virtual ICollection<ReferenzierteEntitäten> <PluralVonReferenzierterEntitäten> { get; set; }
