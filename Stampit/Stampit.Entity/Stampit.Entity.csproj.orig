@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< 8559e430b49235375c1d62560febc324f8147a6d
+<<<<<<< b3455ff0ef9c912f4e28b6d04fb3fb34d79beeff
     <Compile Include="Blob.cs" />
     <Compile Include="Businessuser.cs" />
     <Compile Include="Company.cs" />
@@ -59,8 +59,7 @@
     <Compile Include="Loginprovider.cs" />
     <Compile Include="Product.cs" />
 =======
-    <Compile Include="Entity.cs" />
->>>>>>> created missing projects and wrote basic description
+>>>>>>> Initialized service project, updated dependencies, removed unnecessary nuget packeges
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Stamp.cs" />
@@ -72,13 +71,6 @@
       <Project>{b2b2549d-d6fd-4188-879f-1891fa38cfed}</Project>
       <Name>Stampit.CommonType</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Anleitung Becci.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
