@@ -1,5 +1,5 @@
 The Stampit backend is split up upon 8 different assemblies, each serving a specific purpose:
-	1. Stampit
+	1. Stampit.Service
 		The executing assembly for the HTTP service
 	2. Stampit.CommonType
 		A central assembly holding all utility classes required by multiple other assemblies
