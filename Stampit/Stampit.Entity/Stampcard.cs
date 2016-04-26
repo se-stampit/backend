@@ -5,9 +5,9 @@ namespace Stampit.Entity
 {
     public class Stampcard : Entity
     {
-        public boolean IsRedeemed{ get; set; }
+        public bool IsRedeemed{ get; set; }
        
-        public virtual ICollection Stamp Stamps { get; set; }
+        public virtual ICollection<Stamp> Stamps { get; set; }
         public virtual Product Product { get; set; }
 	    public string ProductId { get; set; }
         public virtual Enduser Enduser { get; set; }

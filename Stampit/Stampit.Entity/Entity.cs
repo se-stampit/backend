@@ -18,7 +18,7 @@ namespace Stampit.Entity
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string ID { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// DateTime when the entity has been persisted for the first time
         /// </summary>
