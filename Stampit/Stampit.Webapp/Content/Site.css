@@ -1,6 +1,16 @@
-﻿body {
+﻿html,body {
+    height: 100%;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+    margin: 0;
+    min-width: 400px;
+}
+
+h1 {
+    margin-top: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +31,146 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.col-width {
+    max-width: 280px;
+}
+
+.flexcontainer {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    align-items: center;
+    -ms-align-content: center;
+    -webkit-align-content: center;
+    align-content: center;
+    justify-content: space-around;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.flexcol {
+}
+
+.flexcol,
+.calcbtn {
+    flex-grow: 1;
+    margin: 12px;
+    padding: 12px;
+    text-align: center;
+}
+
+.products {
+}
+
+.panel {
+    margin-bottom: 0;
+}
+
+.bubble {
+    display: flex;
+    border-radius: 40%;
+    background: #0094ff;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    -ms-align-content: center;
+    -webkit-align-content: center;
+    align-content: center;
+    box-shadow: #000000 1px 1px inset;
+}
+
+.btn-product {
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #ac2925;
+    align-items: stretch;
+    width: 80%;
+    min-width: 250px;
+    margin: 8px 0 8px 0 ;
+}
+
+.product-detail-container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+}
+
+.product-detail-name {
+    display: flex;
+    height: 32px;
+    align-items: center;
+}
+
+.btn-product:hover {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+.btn-product:active:focus > .product-detail-container > .bubble {
+    box-shadow: none; 
+}
+
+.btn-product:active:focus {
+
+}
+
+.btn-use-stamp {
+    line-height: 3;
+    font-size: 20px;
+    width: 250px;
+    float: right;
+}
+
+.btn-cash-stamp {
+    line-height: 4;
+    width: 250px;
+    margin-top: 12px;
+    font-size: 20px;
+}
+
+.calculator {
+}
+.calcbtn {
+}
+
+.btn-xlg,
+.btn-group-xlg > .btn {
+    padding: 20px 32px;
+    font-size: 36px;
+    line-height: 1.3333333;
+    border-radius: 12px;
+}
+
+.btn-success {
+    background-color: #449d44;
+    border-color: #398439;
+    box-shadow: 3px 3px 0 0 #297439;
+    outline: none !important;
+}
+
+.btn-success:hover {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.btn-success:active:focus {
+    background-color: gray;
+    border-color: gray;
+    box-shadow: none;
+    margin: 3px -3px -3px 3px;
 }
