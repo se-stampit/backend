@@ -1,0 +1,18 @@
+The Stampit backend is split up upon 8 different assemblies, each serving a specific purpose:
+	1. Stampit.Service
+		The executing assembly for the HTTP service
+	2. Stampit.CommonType
+		A central assembly holding all utility classes required by multiple other assemblies
+		Has no references to any other project
+	3. Stampit.DataAccess
+		Main access point for the entity framework to do the O/R mapping
+	4. Stampit.Entity
+		Business entities defined as objects to work with in the whole solution
+	5. Stampit.Logic
+		The real implementations of all internal business services and data access repository
+	6. Stampit.Logic.Fakes
+		The fake implementations of the services and repositories to handle missing data layer and make testing easier
+	7. Stampit.Logic.Interface
+		The interfaces for all business processes
+	8. Stampit.Webapp
+		The website for the managers and kiosk mode
