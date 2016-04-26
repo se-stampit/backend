@@ -82,6 +82,12 @@
       <Name>Stampit.CommonType</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
+      <Project>{b2b2549d-d6fd-4188-879f-1891fa38cfed}</Project>
+      <Name>Stampit.CommonType</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
