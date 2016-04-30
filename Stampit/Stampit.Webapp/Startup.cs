@@ -15,6 +15,7 @@ namespace Stampit.Webapp
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ConfigureAuth(app);
+            new Stampit.Service.Startup().Configuration(app);
         }
     }
 }

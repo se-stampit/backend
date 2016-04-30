@@ -1,4 +1,6 @@
-﻿using Stampit.Webapp.Models;
+﻿using Stampit.CommonType;
+using Stampit.Logic.Interface;
+using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +14,13 @@ namespace Stampit.Webapp.Controllers
     public class KioskModeController : Controller
     {
         private const string SESSION_STATE = "SessionState";
+
+        private IQrCodeGenerator QrCodeGenerator { get; }
+
+        public KioskModeController(IQrCodeGenerator qrCodeGenerator)
+        {
+            this.QrCodeGenerator = qrCodeGenerator;
+        }
 
         public ActionResult Index()
         {
@@ -52,6 +61,18 @@ namespace Stampit.Webapp.Controllers
             sessionState.SelectedViewModel = sessionState.Model.Where(vm => vm.Name == selectedProduct).FirstOrDefault();
             Session[SESSION_STATE] = sessionState;
             return View("Index", sessionState.Model);
+        }
+
+        public async Task<ActionResult> ShowStampGenerationQrCode()
+        {
+            var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl("testtoken"));
+            return View(Convert.ToBase64String(img) as object);
+        }
+
+        public ActionResult Clear()
+        {
+            Session[SESSION_STATE] = null;
+            return RedirectToAction("Index");
         }
     }
 

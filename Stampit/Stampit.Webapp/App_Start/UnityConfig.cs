@@ -3,7 +3,6 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Stampit.Logic.Interface;
 using Stampit.Logic;
-using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Stampit.Webapp.App_Start
 {
@@ -19,6 +18,8 @@ namespace Stampit.Webapp.App_Start
             RegisterTypes(container);
             return container;
         });
+
+        public static object QrCodeGenerator { get; private set; }
 
         /// <summary>
         /// Gets the configured Unity container.
@@ -38,6 +39,7 @@ namespace Stampit.Webapp.App_Start
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
 
+            // TODO: Register your types here
             container.RegisterType<IQrCodeGenerator, GoogleQrCodeGenerator>();
         }
     }

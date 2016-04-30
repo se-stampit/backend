@@ -6,8 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
-[assembly: OwinStartup(typeof(Stampit.Service.Startup))]
-
 namespace Stampit.Service
 {
     public partial class Startup
@@ -16,7 +14,7 @@ namespace Stampit.Service
         {
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
-            UnityConfig.Register(config);
+            //UnityConfig.Register(config);
             config.EnsureInitialized();
 
             app.UseWebApi(config);

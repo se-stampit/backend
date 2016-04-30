@@ -40,7 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoogleQrCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
+      <Project>{b2b2549d-d6fd-4188-879f-1891fa38cfed}</Project>
+      <Name>Stampit.CommonType</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.DataAccess\Stampit.DataAccess.csproj">
+      <Project>{ac49263b-2805-43bc-a77e-4f12f6dd00d1}</Project>
+      <Name>Stampit.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Entity\Stampit.Entity.csproj">
+      <Project>{90f34655-45b5-49b9-a3c3-1fc290f94721}</Project>
+      <Name>Stampit.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Logic.Interface\Stampit.Logic.Interface.csproj">
+      <Project>{eff55f68-728d-4285-bd4e-8302075c7de3}</Project>
+      <Name>Stampit.Logic.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
