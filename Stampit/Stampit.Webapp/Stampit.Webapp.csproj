@@ -205,6 +205,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\RedemtionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -280,6 +281,7 @@
     <Content Include="Views\KioskMode\Index.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\KioskMode\ShowStampGenerationQrCode.cshtml" />
+    <Content Include="Views\KioskMode\RedeemStampCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

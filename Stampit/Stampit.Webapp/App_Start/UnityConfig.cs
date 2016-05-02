@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Stampit.Logic.Interface;
 using Stampit.Logic;
+using Stampit.Logic.Fakes;
 
 namespace Stampit.Webapp.App_Start
 {
@@ -18,9 +19,7 @@ namespace Stampit.Webapp.App_Start
             RegisterTypes(container);
             return container;
         });
-
-        public static object QrCodeGenerator { get; private set; }
-
+        
         /// <summary>
         /// Gets the configured Unity container.
         /// </summary>
@@ -41,6 +40,7 @@ namespace Stampit.Webapp.App_Start
 
             // TODO: Register your types here
             container.RegisterType<IQrCodeGenerator, GoogleQrCodeGenerator>();
+            container.RegisterType<IStampCodeService, FakeStampCodeService>();
         }
     }
 }

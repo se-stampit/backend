@@ -102,6 +102,11 @@ textarea {
     margin: 8px 0 8px 0 ;
 }
 
+.btn-selected {
+    background-color: #8F2925;
+    border-color: #8F2925;
+}
+
 .product-detail-container {
     justify-content: center;
     align-items: center;

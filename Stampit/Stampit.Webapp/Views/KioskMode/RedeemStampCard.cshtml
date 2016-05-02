@@ -1,0 +1,50 @@
+﻿@using Stampit.Webapp.Models;
+
+@model RedemtionViewModel
+
+<div class="flexcontainer">
+    <div class="col-md-3">
+        <div class="products">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Produkte</h3>
+                </div>
+                <div class="panel-body">
+                    @if (Model != null && Model.Products != null)
+                    {
+                        foreach (var productEntry in Model.Products)
+                        {
+                            <div class="row">
+                                <button type="button" class="btn btn-lg btn-primary @GetProductButtonClass(productEntry) btn-product" onclick="location.href='@Url.Action("SelectProductViewModelRedemtion", "KioskMode", new { selectedProduct = productEntry.Product.Productname })'">
+                                    <div class="row product-detail-container">
+                                        <span class="text-left col-xs-9 product-detail-name">@productEntry.Product.Productname</span>
+                                    </div>
+                                </button>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="row" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 text-center">
+        <h2>Bitte scannen Sie den QRCode mit der Stampit App um die Stempelkarte einzulösen</h2>
+        <h3>Der Code gilt für das Produkt <b>@Model.Products.Where(p => p.IsSelected).FirstOrDefault().Product.Productname</b></h3>
+        <br />
+        <img src="@($"data:image/png;base64,{Model.Base64Img}")" />
+        <br /><br />
+        <button type="button" class="btn btn-lg btn-primary btn-default btn-cash-stamp" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'">Zurück</button>
+    </div>
+</div>
+
+@functions {
+
+    string GetProductButtonClass(ProductViewModel productEntry)
+    {
+        return (productEntry?.IsSelected ?? false) ? "btn-selected" : "btn-danger";
+    }
+}
