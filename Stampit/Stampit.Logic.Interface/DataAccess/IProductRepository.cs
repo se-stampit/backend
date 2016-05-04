@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stampit.Logic.Interface.DataAccess
+namespace Stampit.Logic.Interface
 {
     /// <summary>
     /// The repository of all products

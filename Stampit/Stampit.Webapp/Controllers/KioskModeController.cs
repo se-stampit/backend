@@ -1,4 +1,5 @@
-﻿using Stampit.Webapp.Models;
+﻿using Stampit.Logic.Interface;
+using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +13,12 @@ namespace Stampit.Webapp.Controllers
     public class KioskModeController : Controller
     {
         private const string SESSION_STATE = "SessionState";
+        private IProductRepository ProductRepository { get; }
+
+        public KioskModeController(IProductRepository productRepository)
+        {
+            this.ProductRepository = productRepository;
+        }
 
         public ActionResult Index()
         {
