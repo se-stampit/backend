@@ -41,6 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StampCodeService.cs" />
+    <Compile Include="StampCodeStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stampit.Logic.Interface\Stampit.Logic.Interface.csproj">
+      <Project>{EFF55F68-728D-4285-BD4E-8302075C7DE3}</Project>
+      <Name>Stampit.Logic.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
