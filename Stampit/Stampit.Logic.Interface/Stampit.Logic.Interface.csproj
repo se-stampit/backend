@@ -44,6 +44,7 @@
     <Compile Include="DataAccess\IRepository.cs" />
     <Compile Include="DataAccess\IStampcardRepository.cs" />
     <Compile Include="IStampCodeService.cs" />
+    <Compile Include="IStampCodeStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

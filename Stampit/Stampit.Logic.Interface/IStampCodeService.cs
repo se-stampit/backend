@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stampit.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Stampit.Logic.Interface
         /// Uses the given code and looks up if the code is useable, if so the code is redeemed for granting stamps or redeeming stampcards
         /// </summary>
         /// <param name="code">The stampcode or redemtioncode to be used</param>
-        Task ScanCodeAsync(string code);
+        /// <param name="user">The user who scanned the code</param>
+        Task ScanCodeAsync(string code, Enduser user);
     }
 }

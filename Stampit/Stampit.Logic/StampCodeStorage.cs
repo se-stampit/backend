@@ -1,4 +1,5 @@
 ﻿using Stampit.Entity;
+using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Stampit.Logic
     /// <summary>
     /// Singleton for holding all currently active stampcodes
     /// </summary>
-    public class StampCodeStorage
+    public class StampCodeStorage : IStampCodeStorage
     {
         #region Singleton
         private static StampCodeStorage _instance;
@@ -59,12 +60,40 @@ namespace Stampit.Logic
                     lock(this)
                     {
                         if (this.activeRedemtionCodes == null)
-                            this.activeRedemtionCodes = new Dictionary<string, IDictionary<Product, int>>();
+                            this.activeRedemtionCodes = new Dictionary<string, Product>();
                         return this.activeRedemtionCodes;
                     }
                 }
                 return this.activeRedemtionCodes;
             }
+        }
+
+        public IDictionary<Product,int> UseStampCode(string code)
+        {
+            IDictionary<Product, int> value;
+            if(ActiveStampCodes.TryGetValue(code, out value))
+            {
+                ActiveStampCodes.Remove(code);
+                return value;
+            }
+            throw new IllegalCodeException(code);
+        }
+
+        public Product UseRedemtionCode(string code)
+        {
+            Product value;
+            if (ActiveRedemtionCodes.TryGetValue(code, out value))
+            {
+                ActiveRedemtionCodes.Remove(code);
+                return value;
+            }
+            throw new IllegalCodeException(code);
+        }
+
+        public bool ExistsCode(string code)
+        {
+            return ActiveStampCodes.ContainsKey(code) 
+                || ActiveRedemtionCodes.ContainsKey(code);
         }
     }
 }
