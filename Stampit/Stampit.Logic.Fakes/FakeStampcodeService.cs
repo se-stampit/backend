@@ -8,7 +8,7 @@ using Stampit.Entity;
 
 namespace Stampit.Logic.Fakes
 {
-    public class FakeStampCodeService : IStampCodeService
+    public class FakeStampCodeService : IStampCodeProvider
     {
         public string GenerateRedeemCode(Product product)
         {

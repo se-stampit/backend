@@ -17,9 +17,9 @@ namespace Stampit.Webapp.Controllers
         private const string SESSION_STATE = "SessionState";
 
         private IQrCodeGenerator QrCodeGenerator { get; }
-        private IStampCodeService StampCodeService { get; }
+        private IStampCodeProvider StampCodeService { get; }
 
-        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeService stampCodeService)
+        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeService)
         {
             this.QrCodeGenerator = qrCodeGenerator;
             this.StampCodeService = stampCodeService;

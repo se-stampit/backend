@@ -10,7 +10,7 @@ namespace Stampit.Logic.Interface
     /// <summary>
     /// Interface for dealing with stampcodes
     /// </summary>
-    public interface IStampCodeService
+    public interface IStampCodeProvider
     {
         /// <summary>
         /// Generates a new stampcode for the given products in later exchange

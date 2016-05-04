@@ -40,7 +40,7 @@ namespace Stampit.Webapp.App_Start
 
             // TODO: Register your types here
             container.RegisterType<IQrCodeGenerator, GoogleQrCodeGenerator>();
-            container.RegisterType<IStampCodeService, FakeStampCodeService>();
+            container.RegisterType<IStampCodeProvider, FakeStampCodeService>();
         }
     }
 }
