@@ -9,20 +9,86 @@ namespace Stampit.Webapp.Controllers
 {
     public class CompanyDataController : Controller
     {
+        public static IEnumerable<Company> CompaniesList = new List<Company>
+        {
+            new Company()
+                {
+                    Id=Guid.NewGuid().ToString(),
+                    CompanyName="CoffeeRoom",
+                    ContactName="CoffeeMaster",
+                    Description="Nice coffee house"
+                },
+            new Company()
+                {
+                    Id=Guid.NewGuid().ToString(),
+                    CompanyName="KebapHouse",
+                    ContactName="KebapMan",
+                    Description="Nice kebap house"
+                }
+        }.AsReadOnly();
+
+        public static IEnumerable<Product> ProductsList = new List<Product>
+        {
+            new Product()
+            {
+                Company=CompaniesList.FirstOrDefault(),
+                Id=Guid.NewGuid().ToString(),
+                Productname="Coffee",
+                Price=2.5,
+                Active=true,
+                BonusDescription="Get one free coffee",
+                RequiredStampCount=10,
+                MaxDuration=365
+            },
+            new Product()
+            {
+                Company=CompaniesList.FirstOrDefault(),
+                Id =Guid.NewGuid().ToString(),
+                Productname="Tea",
+                Price=2,
+                Active=true,
+                BonusDescription="Get one free tea",
+                RequiredStampCount=5,
+                MaxDuration=365
+            },
+            new Product()
+            {
+                Company=CompaniesList.LastOrDefault(),
+                Id =Guid.NewGuid().ToString(),
+                Productname="Kebap",
+                Price=5,
+                Active=true,
+                BonusDescription="Get one free kebap",
+                RequiredStampCount=10,
+                MaxDuration=365
+            },
+                        new Product()
+            {
+                Company=CompaniesList.LastOrDefault(),
+                Id =Guid.NewGuid().ToString(),
+                Productname="Pizza",
+                Price=7,
+                Active=true,
+                BonusDescription="Get one free pizza",
+                RequiredStampCount=10,
+                MaxDuration=365
+            }
+        }.AsReadOnly();
+
         // GET: CompanyData
         public ActionResult Index()
         {
-            return View(new List<Company>
-            {
-                new Company { CompanyName = "HANS" },
-                new Company { CompanyName = "PETER" }
-            });
+            return View();
         }
 
-        // GET: CompanyData/Details/5
-        public ActionResult Details(int id)
+        // GET: CompanyData
+        public ActionResult Products()
         {
-            return View();
+            return PartialView(ProductsList);
+        }
+        public ActionResult CompanyData()
+        {
+            return PartialView(CompaniesList.First());
         }
 
         // GET: CompanyData/Create
@@ -48,14 +114,14 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CompanyData/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(String id)
         {
-            return View();
+            return View(ProductsList.FirstOrDefault());
         }
 
         // POST: CompanyData/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(String id, FormCollection collection)
         {
             try
             {
@@ -70,14 +136,14 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CompanyData/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(String id)
         {
             return View();
         }
 
         // POST: CompanyData/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(String id, FormCollection collection)
         {
             try
             {

@@ -286,6 +286,9 @@
     <Content Include="Views\KioskMode\RedeemStampCard.cshtml" />
     <Content Include="Views\CompanyData\Index.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
+    <Content Include="Views\CompanyData\Products.cshtml" />
+    <Content Include="Views\CompanyData\CompanyData.cshtml" />
+    <Content Include="Views\CompanyData\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

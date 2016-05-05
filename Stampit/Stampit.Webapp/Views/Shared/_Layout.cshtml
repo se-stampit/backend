@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - StampIt</title>
+    <title>StampIt.at</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -25,18 +25,18 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stammdaten<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Firmendaten", "Index", "CompanyData")</li>
-							<li>@Html.ActionLink("Filialen", "About", "CompanyData")</li>
-							<li>@Html.ActionLink("Produkte", "Contact", "CompanyData")</li>
-							<li>@Html.ActionLink("Mitarbeiter", "About", "CompanyData")</li>
+							<li>@Html.ActionLink("Firmendaten", "Index", "CompanyData", null, null, "Firmendaten", null, null)</li>
+							<li>@Html.ActionLink("Filialen", "Index", "CompanyData", null, null, "Filialen", null, null)</li>
+							<li>@Html.ActionLink("Produkte", "Index", "CompanyData", null, null, "Produkte", null, null)</li>
+							<li>@Html.ActionLink("Mitarbeiter", "Index", "CompanyData", null, null, "Mitarbeiter", null, null)</li>
 						</ul>
 					</li>
 					<li class="dropdown">						
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistik<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Stempelkarten", "Index", "Home")</li>
-							<li>@Html.ActionLink("Umsatz", "About", "Home")</li>
-							<li>@Html.ActionLink("Kunden", "Contact", "Home")</li>
+							<li>@Html.ActionLink("Stempelkarten", "Index", "Statistic", null, null, "Stempelkarten", null, null)</li>
+							<li>@Html.ActionLink("Umsatz", "Index", "Statistic", null, null, "Umsatz", null, null)</li>
+							<li>@Html.ActionLink("Kunden", "Index", "Statistic", null, null, "Kunden", null, null)</li>
 						</ul>
 					</li>
                     <li>@Html.ActionLink("Kiosk Modus", "Index", "KioskMode")</li>
