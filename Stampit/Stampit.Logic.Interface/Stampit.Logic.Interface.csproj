@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IBlobRepository.cs" />
+    <Compile Include="DataAccess\ICompanyRepository.cs" />
     <Compile Include="DataAccess\IProductRepository.cs" />
     <Compile Include="DataAccess\IRepository.cs" />
     <Compile Include="DataAccess\IStampcardRepository.cs" />
+    <Compile Include="DataAccess\IEnduserRepository.cs" />
     <Compile Include="IStampCodeService.cs" />
     <Compile Include="IStampCodeStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

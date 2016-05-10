@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stampit.Logic
+namespace Stampit.CommonType
 {
     public class IllegalCodeException : Exception
     {

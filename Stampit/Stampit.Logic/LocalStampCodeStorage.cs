@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,19 @@ namespace Stampit.Logic
     /// <summary>
     /// Singleton for holding all currently active stampcodes
     /// </summary>
-    public class StampCodeStorage : IStampCodeStorage
+    public class LocalStampCodeStorage : IStampCodeStorage
     {
         #region Singleton
-        private static StampCodeStorage _instance;
-        private StampCodeStorage() { }
-        public static StampCodeStorage GetStampCodeStorage()
+        private static LocalStampCodeStorage _instance;
+        private LocalStampCodeStorage() { }
+        public static LocalStampCodeStorage GetStampCodeStorage()
         {
             if (_instance == null)
             {
-                lock (typeof(StampCodeStorage))
+                lock (typeof(LocalStampCodeStorage))
                 {
                     if (_instance == null)
-                        _instance = new StampCodeStorage();
+                        _instance = new LocalStampCodeStorage();
                     return _instance;
                 }
             }
@@ -71,10 +72,13 @@ namespace Stampit.Logic
         public IDictionary<Product,int> UseStampCode(string code)
         {
             IDictionary<Product, int> value;
-            if(ActiveStampCodes.TryGetValue(code, out value))
+            lock(ActiveStampCodes)
             {
-                ActiveStampCodes.Remove(code);
-                return value;
+                if (ActiveStampCodes.TryGetValue(code, out value))
+                {
+                    ActiveStampCodes.Remove(code);
+                    return value;
+                }
             }
             throw new IllegalCodeException(code);
         }
@@ -82,10 +86,13 @@ namespace Stampit.Logic
         public Product UseRedemtionCode(string code)
         {
             Product value;
-            if (ActiveRedemtionCodes.TryGetValue(code, out value))
+            lock(activeRedemtionCodes)
             {
-                ActiveRedemtionCodes.Remove(code);
-                return value;
+                if (ActiveRedemtionCodes.TryGetValue(code, out value))
+                {
+                    ActiveRedemtionCodes.Remove(code);
+                    return value;
+                }
             }
             throw new IllegalCodeException(code);
         }

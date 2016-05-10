@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FakeCompanyRepository.cs" />
-    <Compile Include="FakeProductRepository.cs" />
+    <Compile Include="DataAccess\FakeBaseRepository.cs" />
+    <Compile Include="DataAccess\FakeBlobRepository.cs" />
+    <Compile Include="DataAccess\FakeEnduserRepository.cs" />
+    <Compile Include="DataAccess\FakeStampcardRepository.cs" />
+    <Compile Include="DataAccess\FakeCompanyRepository.cs" />
+    <Compile Include="DataAccess\FakeProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +62,11 @@
       <Project>{eff55f68-728d-4285-bd4e-8302075c7de3}</Project>
       <Name>Stampit.Logic.Interface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CoffeeRoom.png" />
+    <EmbeddedResource Include="Resources\KebapHouse.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
