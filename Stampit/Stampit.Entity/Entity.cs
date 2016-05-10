@@ -27,5 +27,35 @@ namespace Stampit.Entity
         /// Nullable DateTime when the entity has been updated the last time, if it is null no updated occured and the createdAt date is valid for last update
         /// </summary>
         public virtual DateTime? UpdatedAt { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Entity other = obj as Entity;
+            if (other == null) return false;
+
+            if (string.IsNullOrEmpty(other.Id) && string.IsNullOrEmpty(this.Id))
+                return base.Equals(obj);
+            return other.Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name}: {Id}";
+        }
+
+        public static bool operator == (Entity entity, Entity other)
+        {
+            return entity?.Equals(other) ?? false;
+        }
+
+        public static bool operator != (Entity entity, Entity other)
+        {
+            return !(entity == other);
+        }
     }
 }

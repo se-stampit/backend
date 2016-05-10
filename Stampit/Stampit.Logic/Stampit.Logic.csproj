@@ -41,6 +41,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StampCodeService.cs" />
+    <Compile Include="LocalStampCodeStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
+      <Project>{b2b2549d-d6fd-4188-879f-1891fa38cfed}</Project>
+      <Name>Stampit.CommonType</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Entity\Stampit.Entity.csproj">
+      <Project>{90F34655-45B5-49B9-A3C3-1FC290F94721}</Project>
+      <Name>Stampit.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Logic.Interface\Stampit.Logic.Interface.csproj">
+      <Project>{EFF55F68-728D-4285-BD4E-8302075C7DE3}</Project>
+      <Name>Stampit.Logic.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
