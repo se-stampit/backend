@@ -127,12 +127,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
+      <Project>{b2b2549d-d6fd-4188-879f-1891fa38cfed}</Project>
+      <Name>Stampit.CommonType</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Entity\Stampit.Entity.csproj">
+      <Project>{90f34655-45b5-49b9-a3c3-1fc290f94721}</Project>
+      <Name>Stampit.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Logic.Fakes\Stampit.Logic.Fakes.csproj">
+      <Project>{5158531c-fc53-4fe0-b2a8-fe1882bbdd94}</Project>
+      <Name>Stampit.Logic.Fakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Logic.Interface\Stampit.Logic.Interface.csproj">
+      <Project>{eff55f68-728d-4285-bd4e-8302075c7de3}</Project>
+      <Name>Stampit.Logic.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stampit.Logic\Stampit.Logic.csproj">
+      <Project>{067e0be1-4277-4300-89e2-766e110623ce}</Project>
+      <Name>Stampit.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ScanController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
