@@ -20,7 +20,7 @@ namespace Stampit.Service
             config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
             config.Formatters.JsonFormatter.SerializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
             {
-                Formatting = Formatting.Indented,
+                Formatting = Formatting.None,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF"
             };
