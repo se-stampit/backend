@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Stampit.Entity
 {
@@ -22,6 +24,7 @@ namespace Stampit.Entity
         /// <summary>
         /// DateTime when the entity has been persisted for the first time
         /// </summary>
+        [Newtonsoft.Json.JsonConverter(typeof(IsoDateTimeWithoutPlusConverter))]
         public virtual DateTime CreatedAt { get; set; }
         /// <summary>
         /// Nullable DateTime when the entity has been updated the last time, if it is null no updated occured and the createdAt date is valid for last update
@@ -56,6 +59,16 @@ namespace Stampit.Entity
         public static bool operator != (Entity entity, Entity other)
         {
             return !(entity == other);
+        }
+    }
+
+    public class IsoDateTimeWithoutPlusConverter : IsoDateTimeConverter
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            serializer.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF";
+            base.DateTimeFormat = serializer.DateFormatString;
+            base.WriteJson(writer, value, serializer);
         }
     }
 }

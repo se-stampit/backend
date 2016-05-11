@@ -155,6 +155,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Middleware\AuthenticationMiddleware.cs" />
+    <Compile Include="Middleware\AutorizationMiddleware.cs" />
+    <Compile Include="Middleware\MiddlewareExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

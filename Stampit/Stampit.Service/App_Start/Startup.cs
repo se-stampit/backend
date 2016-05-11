@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using Stampit.Service.Middleware;
+using Newtonsoft.Json;
 
 namespace Stampit.Service
 {
@@ -16,7 +18,17 @@ namespace Stampit.Service
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
             config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+            config.Formatters.JsonFormatter.SerializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF"
+            };
+            config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Stampit.Entity.IsoDateTimeWithoutPlusConverter());
             config.EnsureInitialized();
+
+            //app.UseAuthentication();
+            //app.UseAuthorization();
             app.UseWebApi(config);
         }
     }
