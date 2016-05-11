@@ -70,5 +70,15 @@ namespace Stampit.Logic
                 await StampcardRepository.CreateOrUpdateAsync(stampcard);
             }
         }
+
+        public void AddStampcode(string stampcode, IDictionary<Product,int> products)
+        {
+            StampCodeStorage.AddStampcode(stampcode, products);
+        }
+
+        public void AddReedemtionStampcode(string stampcode, Product product)
+        {
+            StampCodeStorage.AddRedemtioncode(stampcode, product);
+        }
     }
 }

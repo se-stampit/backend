@@ -35,12 +35,22 @@ namespace Stampit.Webapp.App_Start
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
-
-            // TODO: Register your types here
             container.RegisterType<IQrCodeGenerator, GoogleQrCodeGenerator>();
-            container.RegisterType<IStampCodeProvider, FakeStampCodeService>();
+            container.RegisterType<IStampCodeProvider, FakeStampcodeProvider>();
+            container.RegisterType<IStampCodeService, StampCodeService>();
+            container.RegisterInstance<IStampCodeStorage>(LocalStampCodeStorage.GetStampCodeStorage());
+
+            var blobRepository = new FakeBlobRepository();
+            var enduserRepository = new FakeEnduserRepository();
+            var companyRepository = new FakeCompanyRepository(blobRepository);
+            var productRepository = new FakeProductRepository(companyRepository);
+            var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
+
+            container.RegisterInstance<IBlobRepository>(blobRepository);
+            container.RegisterInstance<IEnduserRepository>(enduserRepository);
+            container.RegisterInstance<ICompanyRepository>(companyRepository);
+            container.RegisterInstance<IProductRepository>(productRepository);
+            container.RegisterInstance<IStampcardRepository>(stampcardRepository);
         }
     }
 }

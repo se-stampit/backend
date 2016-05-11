@@ -21,6 +21,13 @@ namespace Stampit.Logic.Interface
         /// <returns>Foreach product the amout of stamps which should be added</returns>
         Product UseRedemtionCode(string code);
         /// <summary>
+        /// Adds a scannable scancode with the respective gain of the stamp to the storage
+        /// </summary>
+        /// <param name="code">The code for which the stamp can be granted</param>
+        /// <param name="products">The products to be granted as stamp for exchanging the code</param>
+        void AddStampcode(string code, IDictionary<Product, int> products);
+        void AddRedemtioncode(string code, Product product);
+        /// <summary>
         /// Returns wheather the code exists as redemtioncode or stampcode
         /// </summary>
         /// <param name="code">The code to check wheather it exists or not</param>

@@ -69,6 +69,18 @@ namespace Stampit.Logic
             }
         }
 
+        public void AddStampcode(string stampcode, IDictionary<Product, int> products)
+        {
+            if(!this.ActiveStampCodes.ContainsKey(stampcode))
+                this.ActiveStampCodes.Add(stampcode, products);
+        }
+
+        public void AddRedemtioncode(string code, Product product)
+        {
+            if (!this.ActiveRedemtionCodes.ContainsKey(code))
+                this.ActiveRedemtionCodes.Add(code, product);   
+        }
+
         public IDictionary<Product,int> UseStampCode(string code)
         {
             IDictionary<Product, int> value;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin;
+using Microsoft.Practices.Unity;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,12 @@ namespace Stampit.Service
 {
     public partial class Startup
     {
-        public void Configuration(IAppBuilder app)
+        public void Configuration(IAppBuilder app, IUnityContainer container)
         {
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
-            //UnityConfig.Register(config);
+            config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
             config.EnsureInitialized();
-
             app.UseWebApi(config);
         }
     }

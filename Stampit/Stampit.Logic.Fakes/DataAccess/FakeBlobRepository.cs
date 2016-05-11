@@ -40,14 +40,14 @@ namespace Stampit.Logic.Fakes
             {
                 Id = Guid.NewGuid().ToString().Replace("-",""),
                 CreatedAt = DateTime.Now,
-                Filename = "Stampit.Logic.Fakes.CoffeeRoom.png",
+                Filename = "Stampit.Logic.Fakes.Resources.CoffeeRoom.png",
                 ContentType = "image/png"
             },
             new Blob
             {
                 Id = Guid.NewGuid().ToString().Replace("-",""),
                 CreatedAt = DateTime.Now,
-                Filename = "Stampit.Logic.Fakes.KebapHouse.png",
+                Filename = "Stampit.Logic.Fakes.Resources.KebapHouse.png",
                 ContentType = "image/png"
             }
         };

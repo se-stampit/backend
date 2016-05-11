@@ -31,7 +31,7 @@ namespace Stampit.Entity
         public override bool Equals(object obj)
         {
             Entity other = obj as Entity;
-            if (other == null) return false;
+            if (obj == null || other == null) return false;
 
             if (string.IsNullOrEmpty(other.Id) && string.IsNullOrEmpty(this.Id))
                 return base.Equals(obj);

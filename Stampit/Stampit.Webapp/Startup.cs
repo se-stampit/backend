@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using Stampit.Webapp.App_Start;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -15,7 +16,7 @@ namespace Stampit.Webapp
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ConfigureAuth(app);
-            new Stampit.Service.Startup().Configuration(app);
+            new Stampit.Service.Startup().Configuration(app, UnityConfig.GetConfiguredContainer());
         }
     }
 }

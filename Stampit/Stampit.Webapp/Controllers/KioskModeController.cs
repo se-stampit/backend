@@ -1,4 +1,7 @@
-﻿using Stampit.Webapp.Models;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
+using Stampit.Logic.Interface;
+using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,28 +17,30 @@ namespace Stampit.Webapp.Controllers
         private const string SESSION_STATE = "SessionState";
         private IProductRepository ProductRepository { get; }
         private IQrCodeGenerator QrCodeGenerator { get; }
-        private IStampCodeProvider StampCodeService { get; }
+        private IStampCodeProvider StampCodeProvider { get; }
+        private IStampCodeService StampCodeService { get; }
 
-        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeService, IProductRepository productRepository)
+        private Company currentCompany;
+
+        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeProvider, IStampCodeService stampCodeService, IProductRepository productRepository)
         {
             this.ProductRepository = productRepository;
             this.QrCodeGenerator = qrCodeGenerator;
             this.StampCodeService = stampCodeService;
+            this.StampCodeProvider = stampCodeProvider;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             var sessionState = Session[SESSION_STATE] as SessionState;
             if (sessionState == null)
             {
-                sessionState = new SessionState
+                this.currentCompany = (await ProductRepository.GetAllAsync(0)).First().Company;
+                sessionState = new SessionState { Model = new List<ProductViewModel>() };
+                foreach (var product in await ProductRepository.FindProductsFromCompany(this.currentCompany, 0))
                 {
-                    Model = new List<ProductViewModel>
-                    {
-                        new ProductViewModel { Product = new Entity.Product { Productname = "Pizza" }, Count = 0, IsSelected = true },
-                        new ProductViewModel { Product = new Entity.Product { Productname = "Kebab" }, Count = 0, IsSelected = false }
-                    }
-                };
+                    sessionState.Model.Add(new ProductViewModel { Product = product, Count = 0, IsSelected = !sessionState.Model.Any() });
+                }
                 sessionState.SelectedViewModel = sessionState.Model.FirstOrDefault();
                 Session[SESSION_STATE] = sessionState;
             }
@@ -104,8 +109,10 @@ namespace Stampit.Webapp.Controllers
             var sessionState = Session[SESSION_STATE] as SessionState;
             if (sessionState == null || sessionState.Model == null) return RedirectToAction("Index");
             
-            var stampcode = StampCodeService.GenerateStampCode((Dictionary<Product,int>)sessionState);
+            var stampcode = StampCodeProvider.GenerateStampCode((Dictionary<Product,int>)sessionState);
             var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl(stampcode));
+            this.StampCodeService.AddStampcode(stampcode, (Dictionary<Product, int>)sessionState);
+
             return View(Convert.ToBase64String(img) as object);
         }
 
@@ -114,9 +121,11 @@ namespace Stampit.Webapp.Controllers
             var sessionState = Session[SESSION_STATE] as SessionState;
             if (sessionState == null || sessionState.Model == null) return RedirectToAction("Index");
 
-            var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl(StampCodeService.GenerateRedeemCode(sessionState.SelectedViewModel.Product)));
+            var stampcode = StampCodeProvider.GenerateRedeemCode(sessionState.SelectedViewModel.Product);
+            var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl(stampcode));
             var imgStr = Convert.ToBase64String(img);
             var products = sessionState.Model;
+            this.StampCodeService.AddReedemtionStampcode(stampcode, sessionState.SelectedViewModel.Product);
 
             return View(new RedemtionViewModel()
             {
@@ -134,13 +143,13 @@ namespace Stampit.Webapp.Controllers
 
     public class SessionState
     {
-        public IEnumerable<ProductViewModel> Model { get; set; }
+        public IList<ProductViewModel> Model { get; set; }
         public ProductViewModel SelectedViewModel { get; set; }
 
         public static explicit operator Dictionary<Product,int>(SessionState session)
         {
             if (session == null) throw new ArgumentNullException(nameof(session));
-            return session.Model.ToDictionary(vm => vm.Product, vm => vm.Count);
+            return session.Model?.ToDictionary(vm => vm.Product, vm => vm.Count);
         }
     }
 }

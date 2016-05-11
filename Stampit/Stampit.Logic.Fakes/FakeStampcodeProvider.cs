@@ -8,21 +8,23 @@ using Stampit.Entity;
 
 namespace Stampit.Logic.Fakes
 {
-    public class FakeStampCodeService : IStampCodeProvider
+    public class FakeStampcodeProvider : IStampCodeProvider
     {
         public string GenerateRedeemCode(Product product)
         {
-            return "Redemtion for " + product?.Productname ?? "no product";
+            return Guid.NewGuid().ToString().Substring(0, 4);
+            //return "Redemtion for " + product?.Productname ?? "no product";
         }
 
         public string GenerateStampCode(IDictionary<Product, int> products)
         {
-            return "Generate stamps " + 
+            return Guid.NewGuid().ToString().Substring(0, 4);
+            /*return "Generate stamps " + 
                 products?
                     .Aggregate("", (codestr, productEntry)
                         => codestr + $"{productEntry.Key?.Productname ?? "N.DEF"}:{productEntry.Value}"
                     )
-                ?? "no products";
+                ?? "no products";*/
         }
     }
 }
