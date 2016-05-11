@@ -83,7 +83,7 @@ namespace Stampit.Logic.Fakes
                          && !string.IsNullOrEmpty(user?.Id)
                          && entity.ProductId == product?.Id
                          && !string.IsNullOrEmpty(product?.Id)
-                      orderby entity.Stamps.Count descending
+                      orderby entity.Stamps.Count
                       select entity)
                     as IEnumerable<Stampcard>
                 );
