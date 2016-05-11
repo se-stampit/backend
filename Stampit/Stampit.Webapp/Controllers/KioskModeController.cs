@@ -113,7 +113,11 @@ namespace Stampit.Webapp.Controllers
             var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl(stampcode));
             this.StampCodeService.AddStampcode(stampcode, (Dictionary<Product, int>)sessionState);
 
-            return View(Convert.ToBase64String(img) as object);
+            return View(new ScanViewModel
+            {
+                Base64Img = Convert.ToBase64String(img),
+                Stampcode = stampcode
+            });
         }
 
         public async Task<ActionResult> RedeemStampCard()
@@ -123,13 +127,13 @@ namespace Stampit.Webapp.Controllers
 
             var stampcode = StampCodeProvider.GenerateRedeemCode(sessionState.SelectedViewModel.Product);
             var img = await ImageUtil.GetImageFromUrl(QrCodeGenerator.GetQrCodeUrl(stampcode));
-            var imgStr = Convert.ToBase64String(img);
             var products = sessionState.Model;
             this.StampCodeService.AddReedemtionStampcode(stampcode, sessionState.SelectedViewModel.Product);
 
-            return View(new RedemtionViewModel()
+            return View(new ScanViewModel
             {
-                Base64Img = imgStr,
+                Base64Img = Convert.ToBase64String(img),
+                Stampcode = stampcode,
                 Products = products
             });
         }

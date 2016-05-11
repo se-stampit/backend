@@ -42,13 +42,29 @@ namespace Stampit.Logic
                         {
                             var latestStampcard = stampcards.FirstOrDefault();
                             if (latestStampcard.Stamps.Count == product.RequiredStampCount)
-                                latestStampcard = new Stampcard { Enduser = scanner, IsRedeemed = false, Product = product };
+                                latestStampcard = new Stampcard
+                                {
+                                    Enduser = scanner,
+                                    EnduserId = scanner.Id,
+                                    IsRedeemed = false,
+                                    Product = product,
+                                    ProductId = product.Id,
+                                    Stamps = new List<Stamp>()
+                                };
                             latestStampcard.Stamps.Add(new Stamp { Stampcard = latestStampcard });
                             await StampcardRepository.CreateOrUpdateAsync(latestStampcard);
                         }
                         else
                         {
-                            var newStampcard = new Stampcard { Enduser = scanner, IsRedeemed = false, Product = product, Stamps = new List<Stamp>() };
+                            var newStampcard = new Stampcard
+                            {
+                                Enduser = scanner,
+                                EnduserId = scanner.Id,
+                                IsRedeemed = false,
+                                Product = product,
+                                ProductId = product.Id,
+                                Stamps = new List<Stamp>()
+                            };
                             newStampcard.Stamps.Add(new Stamp { Stampcard = newStampcard });
                             await StampcardRepository.CreateOrUpdateAsync(newStampcard);
                         }

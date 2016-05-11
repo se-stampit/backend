@@ -1,6 +1,5 @@
-﻿@using Stampit.Webapp.Models;
-
-@model RedemtionViewModel
+﻿@using Stampit.Webapp.Models
+@model ScanViewModel
 
 <div class="flexcontainer">
     <div class="col-md-3">
@@ -33,7 +32,7 @@
     </div>
     <div class="col-md-9 text-center">
         <h2>Bitte scannen Sie den QRCode mit der Stampit App um die Stempelkarte einzulösen</h2>
-        <h3>Der Code gilt für das Produkt <b>@Model.Products.Where(p => p.IsSelected).FirstOrDefault().Product.Productname</b></h3>
+        <h3>Der Code (@Model.Stampcode) gilt für das Produkt <b>@Model.Products.Where(p => p.IsSelected).FirstOrDefault().Product.Productname</b></h3>
         <br />
         <img src="@($"data:image/png;base64,{Model.Base64Img}")" />
         <br /><br />

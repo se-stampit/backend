@@ -5,10 +5,10 @@ using System.Web;
 
 namespace Stampit.Webapp.Models
 {
-    public class RedemtionViewModel
+    public class ScanViewModel
     {
         public string Base64Img { get; set; }
-
+        public string Stampcode { get; set; }
         public IEnumerable<ProductViewModel> Products { get; set; }
     }
 }

@@ -69,6 +69,7 @@ namespace Stampit.Logic.Fakes
                     (from entity in Data
                      where entity.EnduserId == user?.Id
                         && !string.IsNullOrEmpty(user?.Id)
+                     orderby entity.Stamps.Count descending
                      select entity).Skip(page * pagesize).Take(pagesize)
                 );
         }
@@ -77,12 +78,14 @@ namespace Stampit.Logic.Fakes
         {
             return Task.FromResult
                 (
-                     from entity in Data
-                     where entity.EnduserId == user?.Id
-                        && !string.IsNullOrEmpty(user?.Id)
-                        && entity.ProductId == product?.Id
-                        && !string.IsNullOrEmpty(product?.Id)
-                     select entity
+                     (from entity in Data
+                      where entity.EnduserId == user?.Id
+                         && !string.IsNullOrEmpty(user?.Id)
+                         && entity.ProductId == product?.Id
+                         && !string.IsNullOrEmpty(product?.Id)
+                      orderby entity.Stamps.Count descending
+                      select entity)
+                    as IEnumerable<Stampcard>
                 );
         }
     }

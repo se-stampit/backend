@@ -14,10 +14,11 @@ namespace Stampit.Logic.Fakes
         public Task CreateOrUpdateAsync(T entity)
         {
             var entry = Data.Where(t => t.Id == entity.Id).FirstOrDefault();
-            if (entry == null)
+            if (entry == null || string.IsNullOrEmpty(entity.Id))
             {
                 entity.CreatedAt = DateTime.Now;
                 entity.UpdatedAt = null;
+                entity.Id = Guid.NewGuid().ToString().Replace("-", "");
                 Data.Add(entity);
             }
             else
