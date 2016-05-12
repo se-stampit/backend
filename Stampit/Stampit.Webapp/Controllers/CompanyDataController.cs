@@ -9,14 +9,15 @@ namespace Stampit.Webapp.Controllers
 {
     public class CompanyDataController : Controller
     {
-        public static IEnumerable<Company> CompaniesList = new List<Company>
+        public static IEnumerable<Company> CompanyList = new List<Company>
         {
             new Company()
                 {
                     Id=Guid.NewGuid().ToString(),
-                    CompanyName="CoffeeRoom",
-                    ContactName="CoffeeMaster",
-                    Description="Nice coffee house"
+                    CompanyName="Fussal",
+                    ContactName="Mr. Fussal",
+                    ContactAddress="fussal@gmx.at",
+                    Description="MyFrozenyogurt, MyCafé, MyDonuts und MyYogurt"
                 },
             new Company()
                 {
@@ -27,11 +28,31 @@ namespace Stampit.Webapp.Controllers
                 }
         }.AsReadOnly();
 
-        public static IEnumerable<Product> ProductsList = new List<Product>
+        public static IEnumerable<Store> StoreList = new List<Store>
+        {
+            new Store()
+                {
+                    Id=Guid.NewGuid().ToString(),
+                    Company=CompanyList.FirstOrDefault(),
+                    Latitude=48.303487,
+                    Longitude=14.288781,
+                    Address="Landstraße 34"
+                },
+                new Store()
+                {
+                    Id=Guid.NewGuid().ToString(),
+                    Company=CompanyList.FirstOrDefault(),
+                    Latitude=48.302487,
+                    Longitude=14.285555,
+                    Address="Landstraße 56"
+                },
+        };
+
+        public static IEnumerable<Product> ProductList = new List<Product>
         {
             new Product()
             {
-                Company=CompaniesList.FirstOrDefault(),
+                Company=CompanyList.FirstOrDefault(),
                 Id=Guid.NewGuid().ToString(),
                 Productname="Coffee",
                 Price=2.5,
@@ -42,7 +63,7 @@ namespace Stampit.Webapp.Controllers
             },
             new Product()
             {
-                Company=CompaniesList.FirstOrDefault(),
+                Company=CompanyList.FirstOrDefault(),
                 Id =Guid.NewGuid().ToString(),
                 Productname="Tea",
                 Price=2,
@@ -53,7 +74,7 @@ namespace Stampit.Webapp.Controllers
             },
             new Product()
             {
-                Company=CompaniesList.LastOrDefault(),
+                Company=CompanyList.LastOrDefault(),
                 Id =Guid.NewGuid().ToString(),
                 Productname="Kebap",
                 Price=5,
@@ -64,8 +85,8 @@ namespace Stampit.Webapp.Controllers
             },
                         new Product()
             {
-                Company=CompaniesList.LastOrDefault(),
-                Id =Guid.NewGuid().ToString(),
+                Company=CompanyList.LastOrDefault(),
+                Id = Guid.NewGuid().ToString(),
                 Productname="Pizza",
                 Price=7,
                 Active=true,
@@ -75,21 +96,57 @@ namespace Stampit.Webapp.Controllers
             }
         }.AsReadOnly();
 
+        public static IEnumerable<Businessuser> UserList = new List<Businessuser>
+        {
+            new Businessuser()
+                {
+                   Role=new Role() {RoleName="Manager"},
+                   RoleId="Manager",
+                    Company=CompanyList.FirstOrDefault(),
+                    FirstName="Mr.",
+                    LastName="Fussal",
+                    MailAddress="fussal@gmx.at"
+                },
+                new Businessuser()
+                {
+                    Role=new Role() {RoleName="Shop"},
+                    RoleId="Shop",
+                    FirstName="Shop",
+                    LastName="",
+                    MailAddress="shop@gmx.at",
+                    Company=CompanyList.FirstOrDefault()
+                },
+        };
+
         // GET: CompanyData
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: CompanyData
-        public ActionResult Products()
+        // GET: CompanyData/Products
+        public PartialViewResult Products()
         {
-            return PartialView(ProductsList);
+            return PartialView(ProductList);
         }
-        public ActionResult CompanyData()
+        // GET: CompanyData/CompanyData
+        public PartialViewResult CompanyData()
         {
-            return PartialView(CompaniesList.First());
+            return PartialView(CompanyList.First());
         }
+
+        // GET: CompanyData/Stores
+        public PartialViewResult Stores()
+        {
+            return PartialView(StoreList);
+        }
+
+        // GET: CompanyData/Users
+        public PartialViewResult Users()
+        {
+            return PartialView(UserList);
+        }
+
 
         // GET: CompanyData/Create
         public ActionResult Create()
@@ -105,7 +162,7 @@ namespace Stampit.Webapp.Controllers
             {
                 // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Products");
             }
             catch
             {
@@ -116,18 +173,30 @@ namespace Stampit.Webapp.Controllers
         // GET: CompanyData/Edit/5
         public ActionResult Edit(String id)
         {
-            return View(ProductsList.FirstOrDefault());
+            return View(ProductList.FirstOrDefault());
         }
 
         // POST: CompanyData/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(String id, FormCollection collection)
         {
+            var product = ProductList.Where(x => x.Id.Equals(id)).FirstOrDefault();
             try
             {
                 // TODO: Add update logic here
+                //get all fields
+                foreach (var key in collection.AllKeys)
+                {
+                    if (key.ToString().CompareTo("__RequestVerificationToken") != 0 && key.ToString().CompareTo("Id") != 0)
+                    {
+                        
 
-                return RedirectToAction("Index");
+                    }
+                        
+                }
+
+                    return RedirectToAction("Index");
             }
             catch
             {
@@ -155,6 +224,11 @@ namespace Stampit.Webapp.Controllers
             {
                 return View();
             }
+        }
+
+        public JsonResult GetStores()
+        {
+            return Json(StoreList, JsonRequestBehavior.AllowGet);
         }
     }
 }

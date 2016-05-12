@@ -8,13 +8,17 @@
 		Html.RenderAction("CompanyData");
 	}
 </div>
-<br /><br /><br /><br />
+<br /><br />
 <a name="Filialen"></a>
 <h2>Filialen</h2>
 <br />
+<div>
+	@{
+		Html.RenderAction("Stores");
+	}
+</div>
 
-
-<br /><br /><br /><br />
+<br /><br />
 <a name="Produkte"></a>
 <h2>Produkte</h2>
 <br />
@@ -23,7 +27,12 @@
 		Html.RenderAction("Products");
 	}
 </div>
-  <br /><br /><br /><br />
+  <br /><br />
 <a name="Mitarbeiter"></a><br />
 <h2>Mitarbeiter</h2>
+<div>
+	@{
+		Html.RenderAction("Users");
+	}
+</div>
 <br />

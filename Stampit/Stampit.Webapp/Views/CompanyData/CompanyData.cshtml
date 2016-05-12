@@ -1,45 +1,62 @@
 ﻿@model Stampit.Entity.Company
-<div>
-	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.CompanyName)
-		</dt>
+@{
+	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
 
-		<dd>
-			@Html.DisplayFor(model => model.CompanyName)
-		</dd>
+	<div class="form-horizontal">
 
-		<dt>
-			@Html.DisplayNameFor(model => model.ContactAddress)
-		</dt>
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Id)
 
-		<dd>
-			@Html.DisplayFor(model => model.ContactAddress)
-		</dd>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<img src="@Url.Content("~/Content/img/Logo_Stampit.png")" alt="Logo" />
+			</div>
+			<div class="col-md-offset-2 col-md-10">
+				<input id="input" type="file">
+			</div>
+		</div>
+		<br />
+		<div class="form-group">
+			@Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.ContactName)
-		</dt>
+		<div class="form-group">
+			@Html.LabelFor(model => model.ContactAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ContactAddress, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ContactAddress, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-		<dd>
-			@Html.DisplayFor(model => model.ContactName)
-		</dd>
+		<div class="form-group">
+			@Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Description)
-		</dt>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextAreaFor(model => model.Description)
+				@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
 
-		<dd>
-			@Html.DisplayFor(model => model.Description)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.BlobId)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.BlobId)
-		</dd>
-
-	</dl>
-</div>

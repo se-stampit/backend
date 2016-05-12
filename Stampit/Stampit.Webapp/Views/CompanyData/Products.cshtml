@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Stampit.Entity.Product>
+@{
+	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
 <table class="table">
     <tr>
         <th>
@@ -51,5 +54,5 @@
 
 </table>
 <p>
-	@Html.ActionLink("Create New", "Create")
+	<input type="submit" value="Create new" class="btn btn-default" />
 </p>

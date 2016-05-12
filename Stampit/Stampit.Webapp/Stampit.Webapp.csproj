@@ -306,6 +306,10 @@
     <Content Include="Views\CompanyData\Products.cshtml" />
     <Content Include="Views\CompanyData\CompanyData.cshtml" />
     <Content Include="Views\CompanyData\Edit.cshtml" />
+    <Content Include="Views\CompanyData\Stores.cshtml" />
+    <Content Include="Views\Shared\_LayoutPartial.cshtml" />
+    <Content Include="Views\CompanyData\Delete.cshtml" />
+    <Content Include="Views\CompanyData\Users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
@@ -337,7 +341,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\img\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
