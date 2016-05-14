@@ -3,18 +3,16 @@
 
 @section scripts
 {
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script type="text/javascript">
         $(function () {
             var con = $.hubConnection();
             var hub = con.createHubProxy('scan');
             hub.on('onScan', function (code,valid) {
-                $('#code').text("Code Scanned!");
                 var thisPageCode = "@Model.Stampcode";
                 if(code == thisPageCode)
                 {
+                    $('#code').text("Code Scanned!");
                     $('#confirmModel').modal('show');
                     //location.href='@Url.Action("Clear", "KioskMode", new { })';
                 }
