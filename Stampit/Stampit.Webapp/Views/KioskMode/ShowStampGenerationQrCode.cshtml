@@ -1,9 +1,48 @@
 ﻿@using Stampit.Webapp.Models
 @model ScanViewModel
 
+@section scripts
+{
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var con = $.hubConnection();
+            var hub = con.createHubProxy('scan');
+            hub.on('onScan', function (code,valid) {
+                $('#code').text("Code Scanned!");
+                var thisPageCode = "@Model.Stampcode";
+                if(code == thisPageCode)
+                {
+                    $('#confirmModel').modal('show');
+                    //location.href='@Url.Action("Clear", "KioskMode", new { })';
+                }
+            });
+            con.start(function () {
+
+            });
+        });
+    </script>
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body text-center">
+                <img src="http://vignette1.wikia.nocookie.net/whentheycry/images/2/2a/Check.png/revision/latest?cb=20120629163937" width="250" height="250" />
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="text-center col-md-12">
     <h2>Bitte scannen Sie den QRCode mit der Stampit App um den Stempel zu erhalten</h2>
-    <h2>Code: @Model.Stampcode</h2>
+    <h2 id="code">Code: @Model.Stampcode</h2>
     <br />
     <img src="@($"data:image/png;base64,{Model.Base64Img}")" />
     <br /><br />

@@ -16,12 +16,14 @@ namespace Stampit.Service.Controllers
         private IStampCodeService StampcodeService { get; }
         private IEnduserRepository EnduserRepository { get; }
         private IStampcardRepository StampcardRepository { get; }
-
-        public MeController(IStampCodeService stampcodeService, IEnduserRepository enduserRepository, IStampcardRepository stampcardRepository)
+        private IPushNotifier Notifier { get; }
+        
+        public MeController(IStampCodeService stampcodeService, IEnduserRepository enduserRepository, IStampcardRepository stampcardRepository, IPushNotifier notifier)
         {
             this.StampcodeService = stampcodeService;
             this.EnduserRepository = enduserRepository;
             this.StampcardRepository = stampcardRepository;
+            this.Notifier = notifier;
         }
 
         [System.Web.Http.HttpPost]
@@ -31,14 +33,17 @@ namespace Stampit.Service.Controllers
             try
             {
                 await StampcodeService.ScanCodeAsync(stampcode.Stampcode, scanner);
+                this.Notifier.OnScan(stampcode.Stampcode, true);
                 return Ok();
             }
             catch(IllegalCodeException)
             {
+                this.Notifier.OnScan(stampcode.Stampcode, false);
                 return StatusCode(HttpStatusCode.BadRequest);
             }
             catch(NotRedeemableStampcardException)
             {
+                this.Notifier.OnScan(stampcode.Stampcode, false);
                 return StatusCode(HttpStatusCode.BadRequest);
             }
         }
