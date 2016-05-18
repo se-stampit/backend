@@ -1,0 +1,64 @@
+﻿@model Stampit.Entity.Product
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Id)
+		<div class="form-group">
+			@Html.LabelFor(model => model.Productname, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Productname, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Productname, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.RequiredStampCount, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.RequiredStampCount, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.RequiredStampCount, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.BonusDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.BonusDescription, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.BonusDescription, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.MaxDuration, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.MaxDuration, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.MaxDuration, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				<div class="checkbox">
+					@Html.EditorFor(model => model.Active)
+					@Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+<div>
+	@Html.ActionLink("Zurück", "Index", "CompanyData", null, null, "Products", null, null)
+</div>

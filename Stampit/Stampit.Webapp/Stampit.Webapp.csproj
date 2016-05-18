@@ -215,7 +215,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KioskModeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\StatisticController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -256,6 +258,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\xedit.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
@@ -303,13 +306,19 @@
     <Content Include="Views\KioskMode\RedeemStampCard.cshtml" />
     <Content Include="Views\CompanyData\Index.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
-    <Content Include="Views\CompanyData\Products.cshtml" />
-    <Content Include="Views\CompanyData\CompanyData.cshtml" />
-    <Content Include="Views\CompanyData\Edit.cshtml" />
+    <Content Include="Views\CompanyData\CompanyDetail.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\CompanyData\Stores.cshtml" />
     <Content Include="Views\Shared\_LayoutPartial.cshtml" />
-    <Content Include="Views\CompanyData\Delete.cshtml" />
-    <Content Include="Views\CompanyData\Users.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\CompanyData\TestView.cshtml" />
+    <Content Include="Views\CompanyData\MapsEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

@@ -26,7 +26,7 @@ namespace Stampit.Logic.Fakes
                 int idx = Data.IndexOf(entry);
                 entry.UpdatedAt = DateTime.Now;
                 Data.RemoveAt(idx);
-                Data.Insert(idx, entity);
+                Data.Insert(idx, entry);
             }
 
             return Task.FromResult(new object());

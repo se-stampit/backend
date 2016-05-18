@@ -36,9 +36,9 @@ namespace Stampit.Entity
             Entity other = obj as Entity;
             if (obj == null || other == null) return false;
 
-            if (string.IsNullOrEmpty(other.Id) && string.IsNullOrEmpty(this.Id))
+            if (string.IsNullOrEmpty(other?.Id) && string.IsNullOrEmpty(this.Id))
                 return base.Equals(obj);
-            return other.Id == this.Id;
+            return other?.Id == this.Id;
         }
 
         public override int GetHashCode()
@@ -56,7 +56,7 @@ namespace Stampit.Entity
             return entity?.Equals(other) ?? false;
         }
 
-        public static bool operator != (Entity entity, Entity other)
+        public static bool operator !=(Entity entity, Entity other)
         {
             return !(entity == other);
         }

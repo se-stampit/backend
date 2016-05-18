@@ -1,6 +1,6 @@
-﻿@{
-	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
-}
+﻿@using Newtonsoft.Json;
+@using Stampit.Entity;
+@model IEnumerable<Store>
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 
 <!-- This css is to ensure that the google map contols (zoom bar etc) show and size correctly. -->
@@ -8,7 +8,7 @@
 	#map_canvas img {
 		max-width: none;
 	}
-</style>0
+</style>
 
 <!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
 <style>
@@ -19,14 +19,10 @@
 		background-color: white;
 	}
 </style>
-<input type="submit" value="Create new" class="btn btn-default" />
 <!-- This is the div that will contain the Google Map -->
 <div id="map_canvas" style="height: 600px;"></div>
 
 <!-- Enclose the Javascript in a "section" so that it is rendered in the correct order after scripts have been loaded etc -->
-@section scripts {
-	<section class="scripts">
-
 		<script type="text/javascript">
 
 			$(document).ready(function () {
@@ -39,14 +35,7 @@
 				// Google has tweaked their interface somewhat - this tells the api to use that new UI
 				google.maps.visualRefresh = true;
 
-				// a sample list of JSON encoded data of places to visit in Liverpool, UK
-				// you can either make up a JSON list server side, or call it from a controller using JSONResult
-				var data = [
-							{ "Id": 1, "PlaceName": "Fussal", "Address": "Landstraße 15", "Longitude": "48.303487", "Latitude": "14.288781" , "Description": "MyFrozenyogurt, MyCafé, MyDonuts und MyYogurt"},
-							{ "Id": 2, "PlaceName": "Fussal", "Address": "Landstraße 55", "Longitude": "48.303487", "Latitude": "14.285555" , "Description": "MyFrozenyogurt, MyCafé, MyDonuts und MyYogurt" }
-						
-				];
-				var model = @Html.Raw(Json.Encode(Model));
+				var modeldata = @Html.Raw(JsonConvert.SerializeObject(Model));
 				
 				var Linz = new google.maps.LatLng(48.303487, 14.288781);
 
@@ -63,9 +52,10 @@
 
 				// Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
 	
-				$.each(data, function (i, item) {
+				$.each(modeldata, function (i, item) {
+				
 					var marker = new google.maps.Marker({
-						'position': new google.maps.LatLng(item.Longitude, item.Latitude),
+						'position': new google.maps.LatLng(item.Latitude.toString(),item.Longitude.toString()),
 						'map': map,
 						'title': item.Address
 					});
@@ -73,20 +63,37 @@
 					// Make the marker-pin blue!
 					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
 
+					contentString = "<div class='infoDiv'><h2>" + item.Company.CompanyName + "</h2>" + "<div><a href='#' id='address' data-type='text' data-placement='right' data-title='Enter address'>"+item.Address+"</a>"
+					content = "<div class='info'><iframe src='CompanyData/MapsEdit'></iframe></div>"
 					// put in some information about each json object - in this case, the opening hours.
-					var infowindow = new google.maps.InfoWindow({
-						content: "<div class='infoDiv'><h2>" + item.PlaceName + "</h2>" + "<div><h4>" + item.Address + "</h4></div>" + "<div><h5>"+ item.Description+ "</h5></div></div>"
-					});
-
+					var infowindow = new google.maps.InfoWindow();
+					infowindow.setContent(content);
+	
 					// finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
 					google.maps.event.addListener(marker, 'click', function () {
 						infowindow.open(map, marker);
 					});
 
 				})
+
+				// This event listener will call addMarker() when the map is clicked.
+				map.addListener('click', function(event) {
+					var marker = new google.maps.Marker({
+						'position': event.latLng,
+						'map': map,
+						'title': "Address"
+					});
+
+					// put in some information about each json object - in this case, the opening hours.
+					var infowindow = new google.maps.InfoWindow({
+						content: "<div class='infoDiv'><h2>" + "CompanyName" + "</h2>" + "<div><h4>" +"Address" + "</h4></div>" + "<div><h5>"+ "Description"+ "</h5></div></div>"
+					});
+
+					google.maps.event.addListener(marker, 'click', function () {
+						infowindow.open(map, marker);
+					});
+
+				});
+
 			}
-
-
 		</script>
-	</section>
-}

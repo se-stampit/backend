@@ -3,13 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Digitalize the usage of 'Bonus StampCards' " />
     <title>StampIt.at</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-    <meta name="description" content="Digitalize the usage of 'Bonus StampCards' " />
+	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/jquery")
+	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	@RenderSection("scripts", required: false)
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -18,16 +26,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("StampIt", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				@Html.ActionLink("StampIt", "Index", "CompanyData",null,new { @class = "navbar-brand" })
             </div>
+			
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stammdaten<b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Stammdaten <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li>@Html.ActionLink("Firmendaten", "Index", "CompanyData", null, null, "Firmendaten", null, null)</li>
 							<li>@Html.ActionLink("Filialen", "Index", "CompanyData", null, null, "Filialen", null, null)</li>
-							<li>@Html.ActionLink("Produkte", "Index", "CompanyData", null, null, "Produkte", null, null)</li>
+							<li>@Html.ActionLink("Produkte", "Index", "CompanyData", null, null, "Products", null, null)</li>
 							<li>@Html.ActionLink("Mitarbeiter", "Index", "CompanyData", null, null, "Mitarbeiter", null, null)</li>
 						</ul>
 					</li>
@@ -45,7 +54,9 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
+		
         @RenderBody()
         <hr />
         <footer>
@@ -53,8 +64,6 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+	@RenderSection("scripts", required: false)
 </body>
 </html>

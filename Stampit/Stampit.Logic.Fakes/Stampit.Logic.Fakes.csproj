@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\FakeBusinessuserRepository.cs" />
+    <Compile Include="DataAccess\FakeStoreRepository.cs" />
     <Compile Include="FakeStampcodeProvider.cs" />
     <Compile Include="DataAccess\FakeBaseRepository.cs" />
     <Compile Include="DataAccess\FakeBlobRepository.cs" />

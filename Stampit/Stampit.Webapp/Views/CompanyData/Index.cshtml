@@ -3,9 +3,10 @@
 <h1 align="center">Stammdaten</h1>
 <h2>Firmendaten</h2>
 <br />
+
 <div>
 	@{
-		Html.RenderAction("CompanyData");
+		Html.RenderAction("CompanyDetail");
 	}
 </div>
 <br /><br />
@@ -19,20 +20,22 @@
 </div>
 
 <br /><br />
-<a name="Produkte"></a>
+<a name="Products"></a>
 <h2>Produkte</h2>
+@{
+	Html.RenderAction("Index", "Products","1235s");
+}
 <br />
 <div>
-	@{
-		Html.RenderAction("Products");
-	}
+	
 </div>
   <br /><br />
 <a name="Mitarbeiter"></a><br />
 <h2>Mitarbeiter</h2>
 <div>
 	@{
-		Html.RenderAction("Users");
+		Html.RenderAction("Index", "Users");
 	}
 </div>
+
 <br />

@@ -17,7 +17,7 @@ namespace Stampit.Logic.Fakes
         public FakeProductRepository(ICompanyRepository companyRepository)
         {
             this.CompanyRepository = companyRepository;
-            var companies = CompanyRepository.GetAllAsync(0, 10).Result; //Result only allowed because of fakerepository which returns the result immediatly and no state machine is generated
+            var companies = CompanyRepository.GetAllAsync(0).Result; //Result only allowed because of fakerepository which returns the result immediatly and no state machine is generated
             this.TestCompany1 = companies.FirstOrDefault();
             this.TestCompany2 = companies.LastOrDefault();
             for (int i = 0; i < this.Data.Count; i++)

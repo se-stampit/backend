@@ -42,15 +42,19 @@ namespace Stampit.Webapp.App_Start
 
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
+            var businessuserRepository = new FakeBusinessuserRepository();
             var companyRepository = new FakeCompanyRepository(blobRepository);
             var productRepository = new FakeProductRepository(companyRepository);
             var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
+            var storeRepository = new FakeStoreRepository(companyRepository);
 
             container.RegisterInstance<IBlobRepository>(blobRepository);
             container.RegisterInstance<IEnduserRepository>(enduserRepository);
+            container.RegisterInstance<IBusinessuserRepository>(businessuserRepository);
             container.RegisterInstance<ICompanyRepository>(companyRepository);
             container.RegisterInstance<IProductRepository>(productRepository);
             container.RegisterInstance<IStampcardRepository>(stampcardRepository);
+            container.RegisterInstance<IStoreRepository>(storeRepository);
         }
     }
 }

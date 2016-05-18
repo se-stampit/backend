@@ -1,122 +1,30 @@
 ﻿using Stampit.Entity;
+using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Stampit.CommonType;
 
 namespace Stampit.Webapp.Controllers
 {
     public class CompanyDataController : Controller
     {
-        public static IEnumerable<Company> CompanyList = new List<Company>
-        {
-            new Company()
-                {
-                    Id=Guid.NewGuid().ToString(),
-                    CompanyName="Fussal",
-                    ContactName="Mr. Fussal",
-                    ContactAddress="fussal@gmx.at",
-                    Description="MyFrozenyogurt, MyCafé, MyDonuts und MyYogurt"
-                },
-            new Company()
-                {
-                    Id=Guid.NewGuid().ToString(),
-                    CompanyName="KebapHouse",
-                    ContactName="KebapMan",
-                    Description="Nice kebap house"
-                }
-        }.AsReadOnly();
+        private ICompanyRepository CompanyRepository { get; }
+        private IStoreRepository StoreRepository { get; }
+        private IProductRepository ProductRepository { get; }
+        private IBusinessuserRepository BusinessuserRepository { get; }
 
-        public static IEnumerable<Store> StoreList = new List<Store>
+        public CompanyDataController(ICompanyRepository companyRepository, IStoreRepository storeRepository, IProductRepository productRepository, IBusinessuserRepository businessuserRepository)
         {
-            new Store()
-                {
-                    Id=Guid.NewGuid().ToString(),
-                    Company=CompanyList.FirstOrDefault(),
-                    Latitude=48.303487,
-                    Longitude=14.288781,
-                    Address="Landstraße 34"
-                },
-                new Store()
-                {
-                    Id=Guid.NewGuid().ToString(),
-                    Company=CompanyList.FirstOrDefault(),
-                    Latitude=48.302487,
-                    Longitude=14.285555,
-                    Address="Landstraße 56"
-                },
-        };
-
-        public static IEnumerable<Product> ProductList = new List<Product>
-        {
-            new Product()
-            {
-                Company=CompanyList.FirstOrDefault(),
-                Id=Guid.NewGuid().ToString(),
-                Productname="Coffee",
-                Price=2.5,
-                Active=true,
-                BonusDescription="Get one free coffee",
-                RequiredStampCount=10,
-                MaxDuration=365
-            },
-            new Product()
-            {
-                Company=CompanyList.FirstOrDefault(),
-                Id =Guid.NewGuid().ToString(),
-                Productname="Tea",
-                Price=2,
-                Active=true,
-                BonusDescription="Get one free tea",
-                RequiredStampCount=5,
-                MaxDuration=365
-            },
-            new Product()
-            {
-                Company=CompanyList.LastOrDefault(),
-                Id =Guid.NewGuid().ToString(),
-                Productname="Kebap",
-                Price=5,
-                Active=true,
-                BonusDescription="Get one free kebap",
-                RequiredStampCount=10,
-                MaxDuration=365
-            },
-                        new Product()
-            {
-                Company=CompanyList.LastOrDefault(),
-                Id = Guid.NewGuid().ToString(),
-                Productname="Pizza",
-                Price=7,
-                Active=true,
-                BonusDescription="Get one free pizza",
-                RequiredStampCount=10,
-                MaxDuration=365
-            }
-        }.AsReadOnly();
-
-        public static IEnumerable<Businessuser> UserList = new List<Businessuser>
-        {
-            new Businessuser()
-                {
-                   Role=new Role() {RoleName="Manager"},
-                   RoleId="Manager",
-                    Company=CompanyList.FirstOrDefault(),
-                    FirstName="Mr.",
-                    LastName="Fussal",
-                    MailAddress="fussal@gmx.at"
-                },
-                new Businessuser()
-                {
-                    Role=new Role() {RoleName="Shop"},
-                    RoleId="Shop",
-                    FirstName="Shop",
-                    LastName="",
-                    MailAddress="shop@gmx.at",
-                    Company=CompanyList.FirstOrDefault()
-                },
-        };
+            this.CompanyRepository = companyRepository;
+            this.StoreRepository = storeRepository;
+            this.ProductRepository = productRepository;
+            this.BusinessuserRepository = businessuserRepository;
+        }
 
         // GET: CompanyData
         public ActionResult Index()
@@ -124,111 +32,60 @@ namespace Stampit.Webapp.Controllers
             return View();
         }
 
-        // GET: CompanyData/Products
-        public PartialViewResult Products()
+        // GET: CompanyData
+        public PartialViewResult TestView()
         {
-            return PartialView(ProductList);
+            return PartialView();
         }
+
         // GET: CompanyData/CompanyData
-        public PartialViewResult CompanyData()
+        public async Task<PartialViewResult> CompanyDetail()
         {
-            return PartialView(CompanyList.First());
+            var companylist = await CompanyRepository.GetAllAsync(0);
+            return PartialView(companylist.FirstOrDefault());
         }
 
         // GET: CompanyData/Stores
-        public PartialViewResult Stores()
+        public async Task<PartialViewResult> Stores()
         {
-            return PartialView(StoreList);
+            var storelist = await StoreRepository.GetAllAsync(0);
+            return PartialView(storelist);
         }
 
-        // GET: CompanyData/Users
-        public PartialViewResult Users()
+        // GET: CompanyData/Stores
+        public async Task<ActionResult> MapsEdit(String id)
         {
-            return PartialView(UserList);
+            var store = await StoreRepository.FindByIdAsync(id);
+            return View(store);
         }
 
-
-        // GET: CompanyData/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: CompanyData/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Products");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompanyData/Edit/5
-        public ActionResult Edit(String id)
-        {
-            return View(ProductList.FirstOrDefault());
-        }
-
-        // POST: CompanyData/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(String id, FormCollection collection)
+        public async Task<ActionResult> Save(Company company, HttpPostedFileBase file)
         {
-            var product = ProductList.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            if(company == null) return RedirectToAction("Index","CompanyData");
+            
             try
             {
-                // TODO: Add update logic here
-                //get all fields
-                foreach (var key in collection.AllKeys)
+                await CompanyRepository.CreateOrUpdateAsync(company);
+                // Verify that the user selected a file
+                if (file != null && file.ContentLength > 0)
                 {
-                    if (key.ToString().CompareTo("__RequestVerificationToken") != 0 && key.ToString().CompareTo("Id") != 0)
-                    {
-                        
+                    // extract only the filename
+                    var fileName = Path.GetFileName(file.FileName);
 
-                    }
-                        
+                    var image = CommonType.ImageUtil.GetImageFromUrl(fileName);
+
+                    company.Blob.Content = image.Result;
+                    await CompanyRepository.CreateOrUpdateAsync(company);
                 }
-
-                    return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompanyData/Delete/5
-        public ActionResult Delete(String id)
-        {
-            return View();
-        }
-
-        // POST: CompanyData/Delete/5
-        [HttpPost]
-        public ActionResult Delete(String id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
+                // redirect back to the index action to show the form once again
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View("Index");
             }
-        }
-
-        public JsonResult GetStores()
-        {
-            return Json(StoreList, JsonRequestBehavior.AllowGet);
         }
     }
 }

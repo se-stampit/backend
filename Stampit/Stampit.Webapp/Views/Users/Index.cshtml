@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<Stampit.Entity.Businessuser>
-@{
-	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
-}
 
 <table class="table">
     <tr>
@@ -35,13 +32,13 @@
             @Html.DisplayFor(modelItem => item.RoleId)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+			@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+			@Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }
 
 </table>
 <p>
-	<input type="submit" value="Create new" class="btn btn-default" />
+	@Html.ActionLink("Create new", "Create", null, new { @class = "btn btn-default" })
 </p>
