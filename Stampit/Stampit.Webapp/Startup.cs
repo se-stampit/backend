@@ -17,6 +17,8 @@ namespace Stampit.Webapp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ConfigureAuth(app);
             new Stampit.Service.Startup().Configuration(app, UnityConfig.GetConfiguredContainer());
+
+            app.MapSignalR();
         }
     }
 }

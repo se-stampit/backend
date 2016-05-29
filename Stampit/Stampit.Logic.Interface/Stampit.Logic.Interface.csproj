@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPushNotifier.cs" />
     <Compile Include="IQrCodeGenerator.cs" />
     <Compile Include="IStampCodeProvider.cs" />
     <Compile Include="DataAccess\IBlobRepository.cs" />

@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity.Configuration;
 using Stampit.Logic.Interface;
 using Stampit.Logic;
 using Stampit.Logic.Fakes;
+using Stampit.Webapp.Push;
 
 namespace Stampit.Webapp.App_Start
 {
@@ -39,6 +40,7 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<IStampCodeProvider, FakeStampcodeProvider>();
             container.RegisterType<IStampCodeService, StampCodeService>();
             container.RegisterInstance<IStampCodeStorage>(LocalStampCodeStorage.GetStampCodeStorage());
+            container.RegisterType<IPushNotifier, ScanHub>();
 
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();

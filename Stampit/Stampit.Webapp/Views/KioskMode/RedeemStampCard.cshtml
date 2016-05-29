@@ -1,6 +1,38 @@
 ﻿@using Stampit.Webapp.Models
 @model ScanViewModel
 
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script type="text/javascript">
+        var isLastValid = true;
+
+        $(function () {
+            var con = $.hubConnection();
+            var hub = con.createHubProxy('scan');
+            hub.on('onScan', function (code,valid) {
+                isLastValid = valid;
+                var thisPageCode = "@Model.Stampcode";
+                if(code == thisPageCode)
+                {
+                    if(valid)
+                    {
+                        $('#code').text('Code wurde gescannt!');
+                        $('#successModel').modal('show');
+                    }
+                    else
+                    {
+                        $('#failedModel').modal('show');
+                    }
+                }
+            });
+            con.start(function () {
+
+            });
+        });
+    </script>
+}
+
 <div class="flexcontainer">
     <div class="col-md-3">
         <div class="products">
@@ -32,13 +64,52 @@
     </div>
     <div class="col-md-9 text-center">
         <h2>Bitte scannen Sie den QRCode mit der Stampit App um die Stempelkarte einzulösen</h2>
-        <h3>Der Code (@Model.Stampcode) gilt für das Produkt <b>@Model.Products.Where(p => p.IsSelected).FirstOrDefault().Product.Productname</b></h3>
+        <h3 id="code">Der Code (@Model.Stampcode) gilt für das Produkt <b>@Model.Products.Where(p => p.IsSelected).FirstOrDefault().Product.Productname</b></h3>
         <br />
         <img src="@($"data:image/png;base64,{Model.Base64Img}")" />
         <br /><br />
         <button type="button" class="btn btn-lg btn-primary btn-default btn-cash-stamp" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'">Zurück</button>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="successModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Scan war erfolgreich</h4>
+            </div>
+            <div class="modal-body text-center">
+                <img src="http://vignette1.wikia.nocookie.net/whentheycry/images/2/2a/Check.png/revision/latest?cb=20120629163937" width="200" height="200" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'">Zurück</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="failedModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Sie haben leider nicht genügend Stempel für dieses Produkt</h4>
+            </div>
+            <div class="modal-body text-center">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Dialog-error-round.svg/2000px-Dialog-error-round.svg.png" width="200" height="200" />
+            </div>
+            <div class="modal-footer row">
+                <div class="col-md-6 text-center">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'">Zurück</button>
+                </div>
+                <div class="col-md-6 text-center">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" onclick="location.href='@Url.Action("RedeemStampCard", "KioskMode", new { })'">Erneut versuchen</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @functions {
 
