@@ -43,8 +43,8 @@ namespace Stampit.Webapp.App_Start
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
             var roleRepository = new FakeRoleRepository();
-            var businessuserRepository = new FakeBusinessuserRepository(roleRepository);
             var companyRepository = new FakeCompanyRepository(blobRepository);
+            var businessuserRepository = new FakeBusinessuserRepository(roleRepository, companyRepository);
             var productRepository = new FakeProductRepository(companyRepository);
             var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
             var storeRepository = new FakeStoreRepository(companyRepository);

@@ -26,31 +26,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-				@Html.ActionLink("StampIt", "Index", "CompanyData",null,new { @class = "navbar-brand" })
+				@Html.ActionLink("StampIt", "Index", "Profile", null,new { @class = "navbar-brand" })
             </div>
 			
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Stammdaten <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Profile <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Firmendaten", "Index", "CompanyData", null, null, "Firmendaten", null, null)</li>
-							<li>@Html.ActionLink("Filialen", "Index", "CompanyData", null, null, "Filialen", null, null)</li>
-							<li>@Html.ActionLink("Products", "Index", "CompanyData", null, null, "Products", null, null)</li>
-							<li>@Html.ActionLink("Users", "Index", "CompanyData", null, null, "Users", null, null)</li>
+							<li>@Html.ActionLink("Company Data", "Index", "Profile", null, null, "Company Data", null, null)</li>
+							<li>@Html.ActionLink("Stores", "Index", "Profile", null, null, "Stores", null, null)</li>
+							<li>@Html.ActionLink("Products", "Index", "Profile", null, null, "Products", null, null)</li>
+							<li>@Html.ActionLink("Users", "Index", "Profile", null, null, "Users", null, null)</li>
 						</ul>
 					</li>
 					<li class="dropdown">						
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistik<b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistics<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li>@Html.ActionLink("Stempelkarten", "Index", "Statistic", null, null, "Stempelkarten", null, null)</li>
 							<li>@Html.ActionLink("Umsatz", "Index", "Statistic", null, null, "Umsatz", null, null)</li>
 							<li>@Html.ActionLink("Kunden", "Index", "Statistic", null, null, "Kunden", null, null)</li>
 						</ul>
 					</li>
-                    <li>@Html.ActionLink("Kiosk Modus", "Index", "KioskMode")</li>
+                    <li>@Html.ActionLink("Kiosk Mode", "Index", "KioskMode")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                
             </div>
         </div>
     </div>

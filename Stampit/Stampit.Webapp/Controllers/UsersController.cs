@@ -30,22 +30,24 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Products/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var user = await GetUsersViewModel("");
+            return View(user);
         }
 
         // POST: Products/Create
         [HttpPost]
-        public async Task<ActionResult> Create(Businessuser user)
+        public async Task<ActionResult> Create(UsersViewModel item)
         {
-            if (user == null) return View();
+            if (item == null) return View();
 
             try
             {
-                await BusinessuserRepository.CreateOrUpdateAsync(user);
+                item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
+                await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-                return RedirectToAction("Index", "CompanyData");
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -67,12 +69,14 @@ namespace Stampit.Webapp.Controllers
         {
             if (item == null) return View();
 
+            //TODO: update attributes
+
             try
             {
                 item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-                return RedirectToAction("Index", "CompanyData");
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -93,7 +97,7 @@ namespace Stampit.Webapp.Controllers
             try
             {
                 await BusinessuserRepository.Delete(user);
-                return RedirectToAction("Index", "CompanyData");
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -105,13 +109,14 @@ namespace Stampit.Webapp.Controllers
         {
             UsersViewModel viewModel = new UsersViewModel();
 
-            if (Roles == null)
-            {
+            if (Roles == null) {
                 Roles = await RoleRepository.GetAllAsync(0);
             }
 
-            var user = await BusinessuserRepository.FindByIdAsync(id);
-            viewModel.User = user;
+            if(id!=null && !id.Equals("")) {
+                var user = await BusinessuserRepository.FindByIdAsync(id);
+                viewModel.User = user;
+            }
 
             viewModel.Roles = Roles.Select(r => new SelectListItem
             {

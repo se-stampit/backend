@@ -34,6 +34,7 @@ namespace Stampit.Webapp.Controllers
 
         // POST: Products/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Product product)
         {
             if (product == null) return View();
@@ -42,7 +43,7 @@ namespace Stampit.Webapp.Controllers
             {
                 await ProductRepository.CreateOrUpdateAsync(product);
 
-                return RedirectToAction("Index", "CompanyData");
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -63,12 +64,19 @@ namespace Stampit.Webapp.Controllers
         public async Task<ActionResult> Edit(Product product)
         {
             if (product == null) return View();
+            var prod = await ProductRepository.FindByIdAsync(product.Id);
 
             try
             {
-                await ProductRepository.CreateOrUpdateAsync(product);
+                prod.Active = product.Active;
+                prod.BonusDescription = product.BonusDescription;
+                prod.MaxDuration = product.MaxDuration;
+                prod.Price = product.Price;
+                prod.Productname = product.Productname;
+                prod.RequiredStampCount = product.RequiredStampCount;
 
-                return RedirectToAction("Index", "CompanyData");
+                await ProductRepository.CreateOrUpdateAsync(prod);
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -85,12 +93,13 @@ namespace Stampit.Webapp.Controllers
 
         // POST: Products/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(Product product)
         {
             try
             {
                 await ProductRepository.Delete(product);
-                return RedirectToAction("Index", "CompanyData");
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {

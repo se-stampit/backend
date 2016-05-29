@@ -14,77 +14,50 @@ namespace Stampit.Webapp.Controllers
     public class CompanyDataController : Controller
     {
         private ICompanyRepository CompanyRepository { get; }
-        private IStoreRepository StoreRepository { get; }
-        private IProductRepository ProductRepository { get; }
-        private IBusinessuserRepository BusinessuserRepository { get; }
 
-        public CompanyDataController(ICompanyRepository companyRepository, IStoreRepository storeRepository, IProductRepository productRepository, IBusinessuserRepository businessuserRepository)
+        public CompanyDataController(ICompanyRepository companyRepository)
         {
             this.CompanyRepository = companyRepository;
-            this.StoreRepository = storeRepository;
-            this.ProductRepository = productRepository;
-            this.BusinessuserRepository = businessuserRepository;
         }
 
         // GET: CompanyData
-        public ActionResult Index()
+        public async Task<PartialViewResult> Index()
         {
-            return View();
+            var company = await CompanyRepository.FindByIdAsync("ID123");
+            return PartialView(company);
         }
-
-        // GET: CompanyData
-        public PartialViewResult TestView()
-        {
-            return PartialView();
-        }
-
-        // GET: CompanyData/CompanyData
-        public async Task<PartialViewResult> CompanyDetail()
-        {
-            var companylist = await CompanyRepository.GetAllAsync(0);
-            return PartialView(companylist.FirstOrDefault());
-        }
-
-        // GET: CompanyData/Stores
-        public async Task<PartialViewResult> Stores()
-        {
-            var storelist = await StoreRepository.GetAllAsync(0);
-            return PartialView(storelist);
-        }
-
-        // GET: CompanyData/Stores
-        public async Task<ActionResult> MapsEdit(String id)
-        {
-            var store = await StoreRepository.FindByIdAsync(id);
-            return View(store);
-        }
-
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save(Company company, HttpPostedFileBase file)
+        public async Task<ActionResult> Save(Company company)
         {
-            if(company == null) return RedirectToAction("Index","CompanyData");
-            
+            if(company == null) return RedirectToAction("Index","Profile");
+
+            Company com = await CompanyRepository.FindByIdAsync(company.Id);
             try
             {
-                await CompanyRepository.CreateOrUpdateAsync(company);
+                /*
                 // Verify that the user selected a file
-                if (file != null && file.ContentLength > 0)
-                {
+                if (file != null && file.ContentLength > 0) {
                     // extract only the filename
                     var fileName = Path.GetFileName(file.FileName);
-
                     var image = CommonType.ImageUtil.GetImageFromUrl(fileName);
-
                     company.Blob.Content = image.Result;
-                    await CompanyRepository.CreateOrUpdateAsync(company);
-                }
-                // redirect back to the index action to show the form once again
-                return RedirectToAction("Index");
+                }*/
+               
+                //persist data
+                
+                com.CompanyName = company.CompanyName;
+                com.ContactAddress = company.ContactAddress;
+                com.ContactName = company.ContactName;
+                com.Description = company.Description;
+
+                await CompanyRepository.CreateOrUpdateAsync(com);
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
-                return View("Index");
+                return RedirectToAction("Index", "Profile");
             }
         }
     }

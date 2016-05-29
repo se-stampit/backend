@@ -211,6 +211,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\CompanyDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KioskModeController.cs" />
@@ -305,11 +306,11 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\KioskMode\ShowStampGenerationQrCode.cshtml" />
     <Content Include="Views\KioskMode\RedeemStampCard.cshtml" />
-    <Content Include="Views\CompanyData\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
-    <Content Include="Views\CompanyData\CompanyDetail.cshtml" />
+    <Content Include="Views\CompanyData\Index.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
-    <Content Include="Views\CompanyData\Stores.cshtml" />
+    <Content Include="Views\Profile\Stores.cshtml" />
     <Content Include="Views\Shared\_LayoutPartial.cshtml" />
     <Content Include="Views\Products\Delete.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
@@ -318,8 +319,8 @@
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\CompanyData\TestView.cshtml" />
-    <Content Include="Views\CompanyData\MapsEdit.cshtml" />
+    <Content Include="Views\Profile\TestView.cshtml" />
+    <Content Include="Views\Profile\MapsEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">
