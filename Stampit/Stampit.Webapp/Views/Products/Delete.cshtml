@@ -52,15 +52,6 @@
         <dd>
             @Html.DisplayFor(model => model.Active)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CompanyId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CompanyId)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
@@ -68,7 +59,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Zurück", "Index", "CompanyData", null, null, "Products", null, null)
+            @Html.ActionLink("Back to the list", "Index", "CompanyData", null, null, "Products", null, null)
         </div>
     }
 </div>

@@ -80,7 +80,6 @@ namespace Stampit.Webapp.Controllers
         public async Task<ActionResult> Delete(String id)
         {
             var product = await ProductRepository.FindByIdAsync(id);
-            await ProductRepository.Delete(product);
             return View(product);
         }
 
@@ -90,8 +89,7 @@ namespace Stampit.Webapp.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                await ProductRepository.Delete(product);
                 return RedirectToAction("Index", "CompanyData");
             }
             catch

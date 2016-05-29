@@ -42,7 +42,8 @@ namespace Stampit.Webapp.App_Start
 
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
-            var businessuserRepository = new FakeBusinessuserRepository();
+            var roleRepository = new FakeRoleRepository();
+            var businessuserRepository = new FakeBusinessuserRepository(roleRepository);
             var companyRepository = new FakeCompanyRepository(blobRepository);
             var productRepository = new FakeProductRepository(companyRepository);
             var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
@@ -50,6 +51,7 @@ namespace Stampit.Webapp.App_Start
 
             container.RegisterInstance<IBlobRepository>(blobRepository);
             container.RegisterInstance<IEnduserRepository>(enduserRepository);
+            container.RegisterInstance<IRoleRepository>(roleRepository);
             container.RegisterInstance<IBusinessuserRepository>(businessuserRepository);
             container.RegisterInstance<ICompanyRepository>(companyRepository);
             container.RegisterInstance<IProductRepository>(productRepository);

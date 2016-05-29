@@ -1,5 +1,6 @@
 ﻿using Stampit.Entity;
 using Stampit.Logic.Interface;
+using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace Stampit.Webapp.Controllers
     public class UsersController : Controller
     {
         private IBusinessuserRepository BusinessuserRepository { get; }
+        private IRoleRepository RoleRepository { get; }
+        private static IEnumerable<Role> Roles { get; set; }
 
-        public UsersController(IBusinessuserRepository businessuserRepository)
+        public UsersController(IBusinessuserRepository businessuserRepository, IRoleRepository roleRepository)
         {
             this.BusinessuserRepository = businessuserRepository;
+            this.RoleRepository = roleRepository;
         }
 
         // GET: Users
@@ -41,7 +45,7 @@ namespace Stampit.Webapp.Controllers
             {
                 await BusinessuserRepository.CreateOrUpdateAsync(user);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "CompanyData");
             }
             catch
             {
@@ -52,22 +56,23 @@ namespace Stampit.Webapp.Controllers
         // GET: Products/Edit/5
         public async Task<ActionResult> Edit(String id)
         {
-            var product = await BusinessuserRepository.FindByIdAsync(id);
-            return View(product);
+            var user = await GetUsersViewModel(id);
+            return View(user);
         }
 
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Businessuser item)
+        public async Task<ActionResult> Edit(UsersViewModel item)
         {
             if (item == null) return View();
 
             try
             {
-                await BusinessuserRepository.CreateOrUpdateAsync(item);
+                item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
+                await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "CompanyData");
             }
             catch
             {
@@ -83,18 +88,38 @@ namespace Stampit.Webapp.Controllers
 
         // POST: Products/Delete/5
         [HttpPost]
-        public async Task<ActionResult> Delete(Businessuser product)
+        public async Task<ActionResult> Delete(Businessuser user)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                await BusinessuserRepository.Delete(user);
+                return RedirectToAction("Index", "CompanyData");
             }
             catch
             {
                 return View();
             }
+        }
+
+        private async Task<UsersViewModel> GetUsersViewModel(String id)
+        {
+            UsersViewModel viewModel = new UsersViewModel();
+
+            if (Roles == null)
+            {
+                Roles = await RoleRepository.GetAllAsync(0);
+            }
+
+            var user = await BusinessuserRepository.FindByIdAsync(id);
+            viewModel.User = user;
+
+            viewModel.Roles = Roles.Select(r => new SelectListItem
+            {
+                Text = r.RoleName,
+                Value = r.Id
+            });
+
+            return viewModel;
         }
     }
 }

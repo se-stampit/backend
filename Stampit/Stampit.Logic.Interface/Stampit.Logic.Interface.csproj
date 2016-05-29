@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IRoleRepository.cs" />
     <Compile Include="DataAccess\IBusinessuserRepository.cs" />
     <Compile Include="DataAccess\IStoreRepository.cs" />
     <Compile Include="IQrCodeGenerator.cs" />

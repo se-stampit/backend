@@ -15,12 +15,14 @@ namespace Stampit.Logic.Fakes
             new Role()
             {
                 Id = Guid.NewGuid().ToString().Replace("-",""),
-                RoleName="Manager",
+                RoleName = "Manager",
+                CreatedAt = DateTime.Now
             },
             new Role()
             {
                 Id = Guid.NewGuid().ToString().Replace("-",""),
-                RoleName="KioskUser",
+                RoleName = "KioskUser",
+                CreatedAt = DateTime.Now
             }
         };
     }
