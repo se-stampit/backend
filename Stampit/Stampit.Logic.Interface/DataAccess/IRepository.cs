@@ -32,5 +32,11 @@ namespace Stampit.Logic.Interface
         /// </summary>
         /// <param name="entity">The entity to be created or updated</param>
         Task CreateOrUpdateAsync(T entity);
+        /// <summary>
+        /// Removes a entity from the database
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task Delete(T entity);
     }
 }

@@ -32,6 +32,12 @@ namespace Stampit.Logic.Fakes
             return Task.FromResult(new object());
         }
 
+        public Task Delete(T entity)
+        {
+            Data.Remove(entity);
+            return Task.FromResult(new object());
+        }
+
         public Task<T> FindByIdAsync(string id)
         {
             return Task.FromResult
