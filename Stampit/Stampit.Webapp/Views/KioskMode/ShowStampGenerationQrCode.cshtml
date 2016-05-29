@@ -5,16 +5,18 @@
 {
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script type="text/javascript">
+        var isLastValid = true;
+
         $(function () {
             var con = $.hubConnection();
             var hub = con.createHubProxy('scan');
             hub.on('onScan', function (code,valid) {
+                isLastValid = valid;
                 var thisPageCode = "@Model.Stampcode";
                 if(code == thisPageCode)
                 {
-                    $('#code').text("Code Scanned!");
+                    $('#code').text("Code wurde gescannt!");
                     $('#confirmModel').modal('show');
-                    //location.href='@Url.Action("Clear", "KioskMode", new { })';
                 }
             });
             con.start(function () {
@@ -28,8 +30,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='@Url.Action("Clear", "KioskMode", new { })'"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Scan war erfolgreich</h4>
             </div>
             <div class="modal-body text-center">
                 <img src="http://vignette1.wikia.nocookie.net/whentheycry/images/2/2a/Check.png/revision/latest?cb=20120629163937" width="250" height="250" />
