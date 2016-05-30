@@ -1,11 +1,11 @@
-﻿using Stampit.CommonType;
-using Stampit.Entity;
+﻿using Newtonsoft.Json;
+using Stampit.CommonType;
 using Stampit.Logic.Interface;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -16,17 +16,19 @@ namespace Stampit.Service.Controllers
         private IStampCodeService StampcodeService { get; }
         private IEnduserRepository EnduserRepository { get; }
         private IStampcardRepository StampcardRepository { get; }
+        private IBlobRepository BlobRepository { get; }
         private IPushNotifier Notifier { get; }
         
-        public MeController(IStampCodeService stampcodeService, IEnduserRepository enduserRepository, IStampcardRepository stampcardRepository, IPushNotifier notifier)
+        public MeController(IStampCodeService stampcodeService, IEnduserRepository enduserRepository, IStampcardRepository stampcardRepository, IBlobRepository blobRepository, IPushNotifier notifier)
         {
             this.StampcodeService = stampcodeService;
             this.EnduserRepository = enduserRepository;
             this.StampcardRepository = stampcardRepository;
+            this.BlobRepository = blobRepository;
             this.Notifier = notifier;
         }
 
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public async Task<IHttpActionResult> Scan([FromBody]StampcodeDTO stampcode)
         {
             var scanner = (await EnduserRepository.GetAllAsync(0)).First();
@@ -47,8 +49,31 @@ namespace Stampit.Service.Controllers
                 return StatusCode(HttpStatusCode.BadRequest);
             }
         }
+
+        [HttpGet]
+        [Route("api/blob/{blobid}/content")]
+        public async Task<HttpResponseMessage> GetBlobContent(string blobid)
+        {
+            try
+            {
+                var blob = await BlobRepository.FindByIdAsync(blobid);
+                if (blob == null) throw new ArgumentException(nameof(blobid));
+
+                var byteContent = new ByteArrayContent(blob.Content);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue(blob.ContentType);
+                return new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = byteContent
+                };
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+        }
         
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         [Route("api/me/stampcard")]
         public async Task<IHttpActionResult> GetStampcards()
         {
@@ -72,7 +97,7 @@ namespace Stampit.Service.Controllers
             return Content(HttpStatusCode.OK, result);
         }
         
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         [Route("api/me/stampcard/count")]
         public async Task<IHttpActionResult> GetStampcardCount()
         {
@@ -83,7 +108,7 @@ namespace Stampit.Service.Controllers
 
         public class StampcodeDTO
         {
-            [Newtonsoft.Json.JsonProperty("stampcode")]
+            [JsonProperty("stampcode")]
             public string Stampcode { get; set; }
         }
     }
