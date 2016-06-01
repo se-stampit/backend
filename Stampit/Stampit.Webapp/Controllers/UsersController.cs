@@ -14,19 +14,23 @@ namespace Stampit.Webapp.Controllers
     {
         private IBusinessuserRepository BusinessuserRepository { get; }
         private IRoleRepository RoleRepository { get; }
+        private ICompanyRepository CompanyRepository { get; }
+
         private static IEnumerable<Role> Roles { get; set; }
 
-        public UsersController(IBusinessuserRepository businessuserRepository, IRoleRepository roleRepository)
+        public UsersController(IBusinessuserRepository businessuserRepository, IRoleRepository roleRepository, ICompanyRepository companyRepository)
         {
             this.BusinessuserRepository = businessuserRepository;
             this.RoleRepository = roleRepository;
+            this.CompanyRepository = companyRepository;
         }
 
         // GET: Users
         public async Task<PartialViewResult> Index()
         {
+            String companyID = Session["companyID"].ToString();
             var userlist = await BusinessuserRepository.GetAllAsync(0);
-            return PartialView(userlist);
+            return PartialView(userlist.Where(user => user.CompanyId == companyID));
         }
 
         // GET: Products/Create
@@ -45,6 +49,13 @@ namespace Stampit.Webapp.Controllers
             try
             {
                 item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
+
+                String companyID = Session["companyID"].ToString();
+                item.User.CompanyId = companyID;
+
+                var company = await CompanyRepository.FindByIdAsync(companyID);
+                item.User.Company = company;
+
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
                 return RedirectToAction("Index", "Profile");
@@ -73,8 +84,14 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
-                item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
-                await BusinessuserRepository.CreateOrUpdateAsync(item.User);
+                var user = await BusinessuserRepository.FindByIdAsync(item.User.Id);
+                user.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
+                user.RoleId = item.User.RoleId;
+                user.FirstName = item.User.FirstName;
+                user.LastName = item.User.LastName;
+                user.MailAddress = item.User.MailAddress;
+
+                await BusinessuserRepository.CreateOrUpdateAsync(user);
 
                 return RedirectToAction("Index", "Profile");
             }
@@ -86,8 +103,8 @@ namespace Stampit.Webapp.Controllers
         // GET: Products/Delete/5
         public async Task<ActionResult> Delete(String id)
         {
-            var product = await BusinessuserRepository.FindByIdAsync(id);
-            return View(product);
+            var user = await BusinessuserRepository.FindByIdAsync(id);
+            return View(user);
         }
 
         // POST: Products/Delete/5
@@ -111,6 +128,7 @@ namespace Stampit.Webapp.Controllers
 
             if (Roles == null) {
                 Roles = await RoleRepository.GetAllAsync(0);
+                Roles.Where(role => !role.RoleName.Equals("Admin"));
             }
 
             if(id!=null && !id.Equals("")) {

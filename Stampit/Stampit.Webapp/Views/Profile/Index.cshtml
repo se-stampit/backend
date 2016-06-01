@@ -1,9 +1,9 @@
 ﻿<a name="Profile"></a>
-<h1 align="center">Profile</h1>
 <br />
 <div>
 	<a name="CompanyData"></a>
 	<h2>Company Data</h2>
+	<br />
 	<br />
 	@{
 		Html.RenderAction("Index", "CompanyData");
@@ -16,6 +16,9 @@
 	<br />
 	@{
 		Html.RenderAction("Stores");
+	}
+	@{
+		Html.RenderAction("StoreList");
 	}
 	<br />
 </div>

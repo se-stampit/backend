@@ -1,0 +1,10 @@
+﻿@model Stampit.Entity.Store
+<div class="infoDiv">
+	<div>
+		<h2>@Html.DisplayFor(model => model.Company.CompanyName)</h2>
+		<h3>@Html.DisplayFor(model => model.Address)</h3>
+	</div>
+	<div>
+		@Html.DisplayFor(model => model.Company.Description)
+	</div>
+</div>

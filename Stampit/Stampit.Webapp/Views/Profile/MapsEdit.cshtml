@@ -1,17 +1,12 @@
-﻿@{
-	@Scripts.Render("~/Scripts/xedit.js")
-}
-@{
-	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
-}
-<div class="container">
+﻿@model Stampit.Entity.Store
+<div class="infoDiv">
 	<div>
-		<span>Username:</span>
-		<a href="#" id="username" data-type="text" data-placement="right" data-title="Enter username">superuser</a>
+		<h2>@Html.DisplayFor(model => model.Company.CompanyName)</h2>
+		<h3>@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })</h3>
 	</div>
-
 	<div>
-		<span>Status:</span>
-		<a href="#" id="status"></a>
+		@Html.TextAreaFor(model => model.Company.Description, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Company.Description, "", new { @class = "text-danger" })
 	</div>
 </div>

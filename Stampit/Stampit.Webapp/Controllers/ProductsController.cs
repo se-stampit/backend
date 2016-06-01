@@ -12,19 +12,20 @@ namespace Stampit.Webapp.Controllers
     public class ProductsController : Controller
     {
         private IProductRepository ProductRepository { get; }
+        private ICompanyRepository CompanyRepository { get; }
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductRepository productRepository, ICompanyRepository companyRepository)
         {
             this.ProductRepository = productRepository;
+            this.CompanyRepository = companyRepository;
         }
         // GET: Products
-        public async Task<PartialViewResult> Index(String id)
+        public async Task<PartialViewResult> Index()
         {
-            //TODO: get all from company
+            String companyID = Session["companyID"].ToString();
             var productlist = await ProductRepository.GetAllAsync(0);
-            return PartialView(productlist);
+            return PartialView(productlist.Where(prod => prod.CompanyId == companyID));
         }
-
 
         // GET: Products/Create
         public ActionResult Create()
@@ -41,6 +42,11 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
+                String companyID = Session["companyID"].ToString();
+                var company = await CompanyRepository.FindByIdAsync(companyID);
+
+                product.CompanyId = companyID;
+                product.Company = company;
                 await ProductRepository.CreateOrUpdateAsync(product);
 
                 return RedirectToAction("Index", "Profile");

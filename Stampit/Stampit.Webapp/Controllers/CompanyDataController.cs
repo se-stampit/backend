@@ -23,30 +23,21 @@ namespace Stampit.Webapp.Controllers
         // GET: CompanyData
         public async Task<PartialViewResult> Index()
         {
+            Session["companyID"] = "ID123";
             var company = await CompanyRepository.FindByIdAsync("ID123");
             return PartialView(company);
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save(Company company)
+        public async Task<ActionResult> SaveData(Company company)
         {
-            if(company == null) return RedirectToAction("Index","Profile");
+            if (company == null) return RedirectToAction("Index", "Profile");
 
-            Company com = await CompanyRepository.FindByIdAsync(company.Id);
             try
             {
-                /*
-                // Verify that the user selected a file
-                if (file != null && file.ContentLength > 0) {
-                    // extract only the filename
-                    var fileName = Path.GetFileName(file.FileName);
-                    var image = CommonType.ImageUtil.GetImageFromUrl(fileName);
-                    company.Blob.Content = image.Result;
-                }*/
-               
-                //persist data
-                
+                //persist data 
+                Company com = await CompanyRepository.FindByIdAsync(company.Id);
                 com.CompanyName = company.CompanyName;
                 com.ContactAddress = company.ContactAddress;
                 com.ContactName = company.ContactName;
@@ -59,6 +50,37 @@ namespace Stampit.Webapp.Controllers
             {
                 return RedirectToAction("Index", "Profile");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SaveImage(HttpPostedFileBase file)
+        {
+            try
+            {
+                Company com = await CompanyRepository.FindByIdAsync("ID123");
+                
+                // Verify that the user selected a file
+                if (file != null && file.ContentLength > 0)
+                {
+                    //TODO: create new Blob
+
+                    // extract only the filename
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                    file.SaveAs(path);
+                    var image = CommonType.ImageUtil.GetImageFromFile(path);
+                    com.Blob.Content = image.Result;
+
+                    await CompanyRepository.CreateOrUpdateAsync(com);
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+
+            return RedirectToAction("Index", "Profile");
         }
     }
 }
