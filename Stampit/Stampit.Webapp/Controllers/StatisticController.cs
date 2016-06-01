@@ -13,5 +13,23 @@ namespace Stampit.Webapp.Controllers
         {
             return View();
         }
+
+        // GET: StampCardStatistics
+        public ActionResult CardsInCirculation()
+        {
+            return View();
+        }
+
+        // GET: StampCardStatistics
+        public ActionResult CardStatus()
+        {
+            return View();
+        }
+
+        // GET: StampCardStatistics
+        public ActionResult Sales()
+        {
+            return View();
+        }
     }
 }

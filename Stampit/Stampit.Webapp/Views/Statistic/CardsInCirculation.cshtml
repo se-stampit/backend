@@ -1,0 +1,9 @@
+﻿@{
+    var myChart = new Chart(width: 600, height: 400)
+       .AddTitle("Stampcards in cirulation")
+       .AddLegend(title: "Legend:")
+       .AddSeries(chartType: "pie",
+          xValue: new[] { "redeemed cards", "unredeemed cards"},
+          yValues: new[] { "3", "6"})
+       .Write(format: "png");
+})
