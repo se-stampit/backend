@@ -321,6 +321,9 @@
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Profile\TestView.cshtml" />
     <Content Include="Views\Profile\MapsEdit.cshtml" />
+    <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
+    <Content Include="Views\Statistic\CardStatus.cshtml" />
+    <Content Include="Views\Statistic\Sales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

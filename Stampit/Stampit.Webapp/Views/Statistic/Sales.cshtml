@@ -1,0 +1,9 @@
+﻿@{
+    var myChart = new Chart(width: 600, height: 400)
+       .AddTitle("Sales per product")
+       .AddLegend(title: "Legend:")
+       .AddSeries(chartType: "pie",
+          xValue: new[] { "Pizza", "Kebap", "Döner", "Salat" },
+          yValues: new[] { "3", "6", "5", "10" })
+       .Write(format: "png");
+})

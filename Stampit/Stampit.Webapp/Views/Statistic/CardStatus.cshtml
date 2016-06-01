@@ -1,0 +1,10 @@
+﻿@{
+    var myChart = new Chart(width: 600, height: 400)
+       .AddTitle("Cardstatus per product")
+       .SetXAxis(title: "Amount of stamps", min: 0)
+       .SetYAxis(title: "Amount of cards", min: 0, max: 10)
+       .AddSeries(chartType: "bar", axisLabel: "hallo",
+          xValue: new[] { "< 6", "6", "7", "8", "9", "10" },
+          yValues: new[] { "0", "0", "1", "1", "1", "6" })
+       .Write(format: "png");
+}
