@@ -14,7 +14,9 @@
 
 <br />
 <h4>Pizza: </h4>
-<img src="/Statistic/CardStatus" width: 600, height: 400 />
+@{
+	Html.RenderAction("CardStatus", "Statistic");
+}
 
 <br/>
 <br/>

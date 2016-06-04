@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Chart.Mvc.ComplexChart;
 
 namespace Stampit.Webapp.Controllers
 {
