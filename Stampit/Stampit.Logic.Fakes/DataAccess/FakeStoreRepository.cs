@@ -31,14 +31,18 @@ namespace Stampit.Logic.Fakes
                 Id = Guid.NewGuid().ToString(),
                 Latitude = 48.303487,
                 Longitude = 14.288781,
-                Address = "Landstraße 34"
+                StoreName = "First Shop",
+                Address = "Landstraße 34",
+                Description = "Our first Shop in the Linz"
             },
             new Store()
             {
                 Id = Guid.NewGuid().ToString(),
                 Latitude = 48.302487,
                 Longitude = 14.285555,
-                Address = "Landstraße 56"
+                StoreName = "Second Shop",
+                Address = "Landstraße 56",
+                Description = "Our second Shop in the Linz"
             }
         };
     }
