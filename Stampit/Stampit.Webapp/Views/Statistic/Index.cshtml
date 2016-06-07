@@ -5,8 +5,9 @@
 <h1 align="center">Statistiken</h1>
 
 <h2>Stempelkarten</h2>
-
-<img src="/Statistic/CardsInCirculation" width: 600, height: 400/>
+@{
+    Html.RenderAction("CardsInCirculation", "Statistic");
+}
 <br />
 <h6>Redeemed cards: 3</h6>
 <h6>Unredeemed cards: 6</h6>
@@ -15,9 +16,8 @@
 <br />
 <h4>Pizza: </h4>
 @{
-	Html.RenderAction("CardStatus", "Statistic");
+    Html.RenderAction("CardStatus", "Statistic");
 }
-
 <br/>
 <br/>
 
