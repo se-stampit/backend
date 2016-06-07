@@ -49,29 +49,6 @@ namespace Stampit.Service.Controllers
                 return StatusCode(HttpStatusCode.BadRequest);
             }
         }
-
-        [HttpGet]
-        [Route("api/blob/{blobid}/content")]
-        public async Task<HttpResponseMessage> GetBlobContent(string blobid)
-        {
-            try
-            {
-                var blob = await BlobRepository.FindByIdAsync(blobid);
-                if (blob == null) throw new ArgumentException(nameof(blobid));
-
-                var byteContent = new ByteArrayContent(blob.Content);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue(blob.ContentType);
-                return new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = byteContent
-                };
-            }
-            catch
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
-        }
         
         [HttpGet]
         [Route("api/me/stampcard")]

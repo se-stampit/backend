@@ -24,7 +24,7 @@ namespace Stampit.Logic.Fakes
                     {
                         Id = Guid.NewGuid().ToString().Replace("-",""),
                         CreatedAt = DateTime.Now,
-                        AuthId = "test",
+                        Token = "test",
                         AuthService = "fb"
                     }
                 },
