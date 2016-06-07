@@ -10,7 +10,7 @@ namespace Stampit.CommonType
 {
     public static class ImageUtil
     {
-        public static async Task<byte[]> GetImageFromFile(string filePath)
+        public static Task<byte[]> GetImageFromFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException(nameof(filePath));
@@ -19,11 +19,19 @@ namespace Stampit.CommonType
             
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (var ms = new MemoryStream())
-                {
-                    await fs.CopyToAsync(ms);
-                    return ms.ToArray();
-                }
+                return GetImageFromStream(fs);
+            }
+        }
+
+        public static async Task<byte[]> GetImageFromStream(Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException(nameof(stream));
+
+            using (var ms = new MemoryStream())
+            {
+                await stream.CopyToAsync(ms);
+                return ms.ToArray();
             }
         }
 

@@ -215,6 +215,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\CompanyDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -340,6 +341,7 @@
     <Content Include="Views\Stores\Create.cshtml" />
     <Content Include="Views\Statistic\CardStatus.cshtml" />
     <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
+    <Content Include="Views\Admin\CreateUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

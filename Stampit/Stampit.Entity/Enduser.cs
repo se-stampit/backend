@@ -11,6 +11,8 @@ namespace Stampit.Entity
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "E-Mail")]
+        [Required(ErrorMessage = "The E-Mail address is required")]
+        [EmailAddress(ErrorMessage = "Invalid E-Mail Address")]
         public string MailAddress { get; set; }
         
         public virtual ICollection<Stampcard> Stampcards { get; set; }

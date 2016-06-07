@@ -83,8 +83,10 @@
 					var marker = new google.maps.Marker({
 						'position': event.latLng,
 						'map': map,
+						'title': 'Click to create a new store here',
 						draggable:true
 					});
+					
 					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
 					
 					google.maps.event.addListener(marker, 'click', function () {

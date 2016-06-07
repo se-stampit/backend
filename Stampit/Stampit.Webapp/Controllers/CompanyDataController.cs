@@ -63,14 +63,14 @@ namespace Stampit.Webapp.Controllers
                 // Verify that the user selected a file
                 if (file != null && file.ContentLength > 0)
                 {
-                    //TODO: create new Blob
-
-                    // extract only the filename
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
-                    file.SaveAs(path);
-                    var image = CommonType.ImageUtil.GetImageFromFile(path);
-                    com.Blob.Content = image.Result;
+                    com.Blob = new Blob
+                    {
+                        Id = Guid.NewGuid().ToString().Replace("-", ""),
+                        CreatedAt = DateTime.Now,
+                        Filename = file.FileName,
+                        ContentType = file.ContentType,
+                        Content = await CommonType.ImageUtil.GetImageFromStream(file.InputStream)
+                };
 
                     await CompanyRepository.CreateOrUpdateAsync(com);
                 }

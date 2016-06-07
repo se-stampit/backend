@@ -128,7 +128,7 @@ namespace Stampit.Webapp.Controllers
 
             if (Roles == null) {
                 Roles = await RoleRepository.GetAllAsync(0);
-                Roles.Where(role => !role.RoleName.Equals("Admin"));
+                Roles = Roles.Where(role => !role.RoleName.Equals("Admin"));
             }
 
             if(id!=null && !id.Equals("")) {
