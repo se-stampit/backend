@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Stampit.Entity
 {
     public class Store : Entity
     {
+        [Display(Name = "Store Name")]
         public string StoreName { get; set; }
         public string Address{ get; set; }
         public double Latitude{ get; set; }

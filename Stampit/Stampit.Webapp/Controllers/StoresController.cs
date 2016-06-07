@@ -1,4 +1,5 @@
-﻿using Stampit.Logic.Interface;
+﻿using Stampit.Entity;
+using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,45 +12,62 @@ namespace Stampit.Webapp.Controllers
     public class StoresController : Controller
     {
         private IStoreRepository StoreRepository { get; }
-    
-        public StoresController(IStoreRepository storeRepository)
+        private ICompanyRepository CompanyRepository { get; }
+
+        public StoresController(IStoreRepository storeRepository, ICompanyRepository companyRepository)
         {
             this.StoreRepository = storeRepository;
+            this.CompanyRepository = companyRepository;
         }
 
         // GET: Stores
         public ActionResult Index()
         {
-            return View();
-        }
-
-        // GET: Stores/Create
-        public ActionResult StoresMap()
-        {
             return PartialView();
         }
-        // GET: Stores/Create
-        public async Task<PartialViewResult> StoresList()
+
+        public async Task<ActionResult> StoresMap()
         {
+            String companyID = Session["companyID"].ToString();
             var storelist = await StoreRepository.GetAllAsync(0);
-            return PartialView(storelist);
+            return PartialView(storelist.Where(com => com.CompanyId == companyID));
         }
 
-        // GET: Stores/Create
-        public ActionResult Create()
+        public async Task<PartialViewResult> StoresList()
         {
-            return View();
+            String companyID = Session["companyID"].ToString();
+            var storelist = await StoreRepository.GetAllAsync(0);
+            return PartialView(storelist.Where(com => com.CompanyId == companyID));
+        }
+        
+        // GET: Stores/Create
+        public ActionResult Create(double? lat=null, double? lng=null)
+        {
+            if(lat==null||lng==null) return RedirectToAction("Index", "Profile");
+
+            Store s = new Store();
+            s.Latitude = lat.Value;
+            s.Longitude = lng.Value;
+
+            return View(s);
         }
 
         // POST: Stores/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(Store store)
         {
+            if (store == null) return View();
+
             try
             {
-                // TODO: Add insert logic here
+                String companyID = Session["companyID"].ToString();
+                var company = await CompanyRepository.FindByIdAsync(companyID);
 
-                return RedirectToAction("Index");
+                store.CompanyId = companyID;
+                store.Company = company;
+                await StoreRepository.CreateOrUpdateAsync(store);
+
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -58,20 +76,29 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Stores/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(String id)
         {
-            return View();
+            var store = await StoreRepository.FindByIdAsync(id);
+            return View(store);
         }
 
         // POST: Stores/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(Store store)
         {
+            if (store == null) return View();
+            var sto = await StoreRepository.FindByIdAsync(store.Id);
+
             try
             {
-                // TODO: Add update logic here
+                sto.Address = store.Address;
+                sto.Description = store.Description;
+                sto.Latitude = store.Latitude;
+                sto.Longitude = store.Longitude;
+                sto.StoreName = store.StoreName;
 
-                return RedirectToAction("Index");
+                await StoreRepository.CreateOrUpdateAsync(store);
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
@@ -80,24 +107,24 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Stores/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(String id)
         {
-            return View();
+            var store = await StoreRepository.FindByIdAsync(id);
+            return View(store);
         }
 
         // POST: Stores/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(Store store)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                await StoreRepository.Delete(store);
+                return RedirectToAction("Index", "Profile");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
     }

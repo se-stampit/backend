@@ -14,8 +14,8 @@
 <!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
 <style>
 	.infoDiv {
-		height: 200px;
-		width: 300px;
+		height: unset;
+		width: unset;
 		-webkit-user-select: none;
 		background-color: white;
 	}
@@ -62,7 +62,7 @@
 					// Make the marker-pin blue!
 					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
 
-					contentString = "<div class='infoDiv'><h2>" + item.Company.CompanyName + "</h2>" + "<h3>"+item.Address+"</h3></div>"
+					contentString = "<div class='infoDiv'>" + "<h3>"+item.StoreName+"</h3>" + "<h4>"+item.Address+"</h4>"+ "<h6>"+item.Description+"</h6></div>"
 					content = "<div class='info'><iframe frameborder='0' src='Profile/MapsView/"+item.Id+"'></iframe></div>"
 					// put in some information about each json object - in this case, the opening hours.
 					var infowindow = new google.maps.InfoWindow();
@@ -87,13 +87,8 @@
 					});
 					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
 					
-					// put in some information about each json object - in this case, the opening hours.
-					var infowindow = new google.maps.InfoWindow({
-						content: "<div class='infoDiv'><h2>" + "CompanyName" + "</h2>" + "<div><h4>" +"Address" + "</h4></div>" + "<div><h5>"+ "Description"+ "</h5></div></div>"
-					});
-
 					google.maps.event.addListener(marker, 'click', function () {
-						infowindow.open(map, marker);
+						window.location.href = '/Stores/Create?lat='+event.latLng.lat()+"&lng="+event.latLng.lng();
 					});
 					
 				});
