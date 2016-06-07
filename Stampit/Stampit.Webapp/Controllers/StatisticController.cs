@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Chart.Mvc.ComplexChart;
+using Chart.Mvc.SimpleChart;
 
 namespace Stampit.Webapp.Controllers
 {
@@ -18,13 +19,38 @@ namespace Stampit.Webapp.Controllers
         // GET: StampCardStatistics
         public ActionResult CardsInCirculation()
         {
-            return View();
+            List<SimpleData> data = new List<SimpleData> {
+
+                new SimpleData
+                    {
+                        Value = 300,
+                        Color = "#F7464A",
+                        Highlight = "#FF5A5E",
+                        Label = "Red"
+                    },
+                    new SimpleData
+                    {
+                        Value = 50,
+                        Color = "#46BFBD",
+                        Highlight = "#5AD3D1",
+                        Label = "Green"
+                    },
+                    new SimpleData
+                    {
+                        Value = 100,
+                        Color = "#FDB45C",
+                        Highlight = "#FFC870",
+                        Label = "Yellow"
+                    }
+
+            };
+            return PartialView(data);
         }
 
         // GET: StampCardStatistics
         public ActionResult CardStatus()
         {
-            return View();
+            return PartialView();
         }
 
         // GET: StampCardStatistics

@@ -326,8 +326,12 @@
     <Content Include="Views\Profile\TestView.cshtml" />
     <Content Include="Views\Profile\MapsEdit.cshtml" />
     <Content Include="Views\Profile\MapsView.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Statistic\CardStatus.cshtml" />
     <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
+=======
+    <Content Include="Views\Stores\Delete.cshtml" />
+>>>>>>> 616bc22ebc9422fa0a26ce3856815feee103126f
     <Content Include="Views\Statistic\Sales.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\CreateCompany.cshtml" />
@@ -335,8 +339,13 @@
     <Content Include="Views\Stores\StoresList.cshtml" />
     <Content Include="Views\Stores\Edit.cshtml" />
     <Content Include="Views\Stores\Index.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Stores\Delete.cshtml" />
     <Content Include="Views\Stores\Create.cshtml" />
+=======
+    <Content Include="Views\Statistic\CardStatus.cshtml" />
+    <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
+>>>>>>> 616bc22ebc9422fa0a26ce3856815feee103126f
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

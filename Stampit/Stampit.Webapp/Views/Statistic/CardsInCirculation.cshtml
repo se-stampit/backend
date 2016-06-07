@@ -1,9 +1,14 @@
-﻿@{
-    var myChart = new Chart(width: 600, height: 400)
-       .AddTitle("Stampcards in cirulation")
-       .AddLegend(title: "Legend:")
-       .AddSeries(chartType: "pie",
-          xValue: new[] { "redeemed cards", "unredeemed cards"},
-          yValues: new[] { "3", "6"})
-       .Write(format: "png");
-})
+﻿@model IEnumerable<SimpleData>
+@using Chart.Mvc.SimpleChart;
+@using Chart.Mvc.Extensions;
+
+<script src="~/Scripts/Chart.js"></script>
+
+@{
+    var pieChart = new PieChart();
+    pieChart.Data.AddRange(Model);
+}
+<div>
+    <canvas id="cardsInCirculationCanvas" width="400" height="400"></canvas>
+    @Html.CreateChart("cardsInCirculationCanvas", pieChart)
+</div>
