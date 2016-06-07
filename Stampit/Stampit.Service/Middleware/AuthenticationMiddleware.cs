@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
+using Stampit.CommonType;
 
 namespace Stampit.Service.Middleware
 {
@@ -15,6 +16,10 @@ namespace Stampit.Service.Middleware
 
         public override Task Invoke(IOwinContext context)
         {
+            if (context.Request.Headers.ContainsKey(Setting.AUTH_HEADER))
+            {
+                
+            }
             return this.Next?.Invoke(context);
         }
     }

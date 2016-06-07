@@ -11,7 +11,7 @@ namespace Stampit.Logic.Interface
     /// Defines an interface to deal with persistent data
     /// </summary>
     /// <typeparam name="T">The type of the entity to be stored</typeparam>
-    public interface IRepository<T> where T : Entity.Entity
+    public interface IRepository<T> : IDisposable where T : Entity.Entity
     {
         /// <summary>
         /// Returns all entities of the given page for the entity type T
