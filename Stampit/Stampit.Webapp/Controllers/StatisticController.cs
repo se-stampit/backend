@@ -88,7 +88,7 @@ namespace Stampit.Webapp.Controllers
                     }
 
             };
-            return View(sales);
+            return PartialView(sales);
         }
     }
 }
