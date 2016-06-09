@@ -47,16 +47,48 @@ namespace Stampit.Webapp.Controllers
             return PartialView(data);
         }
 
-        // GET: StampCardStatistics
+        // GET: CardStatusStatistics
         public ActionResult CardStatus()
         {
             return PartialView();
         }
 
-        // GET: StampCardStatistics
+        // GET: SalesStatistics
         public ActionResult Sales()
         {
-            return View();
+            List<SimpleData> sales = new List<SimpleData> {
+
+                new SimpleData
+                    {
+                        Value = 300,
+                        Color = "#F7464A",
+                        Highlight = "#FF5A5E",
+                        Label = "Pizza"
+                    },
+                    new SimpleData
+                    {
+                        Value = 50,
+                        Color = "#46BFBD",
+                        Highlight = "#5AD3D1",
+                        Label = "Kebap"
+                    },
+                    new SimpleData
+                    {
+                        Value = 100,
+                        Color = "#FDB45C",
+                        Highlight = "#FFC870",
+                        Label = "Döner"
+                    },
+                    new SimpleData
+                    {
+                        Value = 250,
+                        Color = "#001140",
+                        Highlight = "#0C7FE8",
+                        Label = "Salat"
+                    }
+
+            };
+            return View(sales);
         }
     }
 }
