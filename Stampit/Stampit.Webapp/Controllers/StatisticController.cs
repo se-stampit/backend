@@ -5,11 +5,25 @@ using System.Web;
 using System.Web.Mvc;
 using Chart.Mvc.ComplexChart;
 using Chart.Mvc.SimpleChart;
+using Stampit.Logic.Interface;
+using System.Threading.Tasks;
 
 namespace Stampit.Webapp.Controllers
 {
     public class StatisticController : Controller
     {
+
+        private IProductRepository ProductRepository { get; }
+        private ICompanyRepository CompanyRepository { get; }
+        private IEnduserRepository EnduserRepository { get; }
+
+        public StatisticController(IProductRepository productRepository, ICompanyRepository companyRepository, IEnduserRepository enduserRepository)
+        {
+            this.ProductRepository = productRepository;
+            this.CompanyRepository = companyRepository;
+            this.EnduserRepository = enduserRepository;
+        }
+
         // GET: Statistic
         public ActionResult Index()
         {
@@ -54,41 +68,25 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: SalesStatistics
-        public ActionResult Sales()
+        public async Task<ActionResult> Sales()
         {
-            List<SimpleData> sales = new List<SimpleData> {
+            var salesProduct = await ProductRepository.SalesPerProduct(null); //TODO!
 
-                new SimpleData
-                    {
-                        Value = 300,
+            var sales = from p in salesProduct
+                    select new SimpleData {
+                        Value = p.Value,
                         Color = "#F7464A",
                         Highlight = "#FF5A5E",
-                        Label = "Pizza"
-                    },
-                    new SimpleData
-                    {
-                        Value = 50,
-                        Color = "#46BFBD",
-                        Highlight = "#5AD3D1",
-                        Label = "Kebap"
-                    },
-                    new SimpleData
-                    {
-                        Value = 100,
-                        Color = "#FDB45C",
-                        Highlight = "#FFC870",
-                        Label = "Döner"
-                    },
-                    new SimpleData
-                    {
-                        Value = 250,
-                        Color = "#001140",
-                        Highlight = "#0C7FE8",
-                        Label = "Salat"
-                    }
-
-            };
+                        Label = p.Key.Productname
+                    };
             return PartialView(sales);
+        }
+
+        // GET: CustomerStatistics
+        public async Task<ActionResult> Customer()
+        {
+            var countEnduser = await EnduserRepository.CountEnduser(null); //TODO!
+            return PartialView(countEnduser);
         }
     }
 }

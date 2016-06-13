@@ -21,5 +21,12 @@ namespace Stampit.Logic.Interface
         /// <param name="pagesize">The size of each page, default value is 10</param>
         /// <returns>The list of the requested products</returns>
         Task<IEnumerable<Product>> FindProductsFromCompany(Company company, int pagenr, int pagesize = Setting.DEFAULT_PAGE_SIZE);
+
+        /// <summary>
+        /// Calculates the sales of the products of the given company
+        /// </summary>
+        /// <param name="company">The company to define which products should be returned</param>
+        /// <returns>The dictionary of the requested prodacts and their sales</returns>
+        Task<IDictionary<Product, double>> SalesPerProduct(Company company);
     }
 }
