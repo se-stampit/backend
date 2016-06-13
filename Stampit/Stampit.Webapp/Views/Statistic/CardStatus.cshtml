@@ -2,6 +2,11 @@
 @using Chart.Mvc.Extensions;
 
 @{
+
+    //Foreach für die Ausgabe des Produktnamens
+    <h4></h4>
+
+
     var barChart = new BarChart();
     barChart.ComplexData.Labels.AddRange(new[] { "January", "February", "March", "April", "May", "June", "July" });
     barChart.ComplexData.Datasets.AddRange(new List<ComplexDataset> {

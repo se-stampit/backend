@@ -100,5 +100,66 @@ namespace Stampit.Logic.Fakes
         {
             return Task.FromResult(15);
         }
+
+        //TODO
+        //X-Achsis, Y-Achsis
+        public Task<IDictionary<Product, IDictionary<int, int>>> GetAllStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(new Dictionary<Product, IDictionary<int, int>>()
+            {
+                { Data[0].Product, 
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,7},
+                      {5,6},
+                      {6,5},
+                      {7,4},
+                      {8,3},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[1].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,7},
+                      {5,6},
+                      {6,5},
+                      {7,4},
+                      {8,3},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[2].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,7},
+                      {5,6},
+                      {6,5},
+                      {7,4},
+                      {8,3},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[3].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,7},
+                      {5,6},
+                      {6,5},
+                      {7,4},
+                      {8,3},
+                      {9,2},
+                      {10,1}
+                }}
+            } as IDictionary<Product, IDictionary<int, int>>);
+        }
     }
 }

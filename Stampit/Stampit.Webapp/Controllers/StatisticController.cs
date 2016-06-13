@@ -59,9 +59,36 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CardStatusStatistics
-        public ActionResult CardStatus()
+        public async Task<ActionResult> CardStatus()
         {
-            return PartialView();
+            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(null); //TODO;
+
+            var stampcards = from s in stampcardsCompany
+                             select new BarChart {
+                                 ComplexData = new ComplexData
+                                 {
+                                     Labels = (from data in s.Value
+                                              select data.Key.ToString()).ToList(),
+                                     Datasets = (from data in s.Value
+                                                 select new ComplexDataset {
+                                                     Data = (from y in data.Value
+                                                             select (double)y).ToList()
+                                                 }).ToList()
+                                 }
+                             };
+
+            /*
+             * Data = new List<double> { 65, 59, 80, 81, 56, 55, 40 },
+                                      Label = "My First dataset",
+                                      FillColor = "rgba(220,220,220,0.2)",
+                                      StrokeColor = "rgba(220,220,220,1)",
+                                      PointColor = "rgba(220,220,220,1)",
+                                      PointStrokeColor = "#fff",
+                                      PointHighlightFill = "#fff",
+                                      PointHighlightStroke = "rgba(220,220,220,1)"
+             */
+
+            return PartialView(stampcards);
         }
 
         // GET: SalesStatistics
