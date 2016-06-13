@@ -92,6 +92,7 @@ namespace Stampit.Logic.Fakes
             return Task.FromResult(companyProducts);
         }
 
+        //TODO!
         public Task<IDictionary<Product, double>> SalesPerProduct(Company company)
         {
             return Task.FromResult(new Dictionary<Product, double>()

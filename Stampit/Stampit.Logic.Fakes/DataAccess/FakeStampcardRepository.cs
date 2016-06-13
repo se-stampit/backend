@@ -88,5 +88,17 @@ namespace Stampit.Logic.Fakes
                     as IEnumerable<Stampcard>
                 );
         }
+
+        //TODO
+        public Task<int> CountStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(20);
+        }
+
+        //TODO
+        public Task<int> CountRedeemedStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(15);
+        }
     }
 }

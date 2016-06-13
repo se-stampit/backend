@@ -2,18 +2,15 @@
 
 <br />
 
-<h1 align="center">Statistiken</h1>
+<h1 align="center">Statistics</h1>
 
-<h2>Stempelkarten</h2>
+<h2>Stampcard statistics</h2>
 @{
     Html.RenderAction("CardsInCirculation", "Statistic");
 }
 <br />
-<h6>Redeemed cards: 3</h6>
-<h6>Unredeemed cards: 6</h6>
-<h6>Cards total: 9</h6>
-
 <br />
+
 <h4>Pizza: </h4>
 @{
     Html.RenderAction("CardStatus", "Statistic");
@@ -22,7 +19,7 @@
 <br/>
 
 <a name="Umsatz"></a>
-<h2>Umsatz</h2>
+<h2>Sales statistics</h2>
 @{
     Html.RenderAction("Sales", "Statistic");
 }
@@ -31,7 +28,7 @@
 <br />
 
 <a name="Kunden"></a>
-<h2>Kunden</h2>
+<h2>Customer statistics</h2>
 @{
     Html.RenderAction("Customer", "Statistic");
 }

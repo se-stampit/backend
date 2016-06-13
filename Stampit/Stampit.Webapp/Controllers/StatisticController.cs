@@ -16,12 +16,14 @@ namespace Stampit.Webapp.Controllers
         private IProductRepository ProductRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
         private IEnduserRepository EnduserRepository { get; }
+        private IStampcardRepository StampcardRepository { get; }
 
-        public StatisticController(IProductRepository productRepository, ICompanyRepository companyRepository, IEnduserRepository enduserRepository)
+        public StatisticController(IProductRepository productRepository, ICompanyRepository companyRepository, IEnduserRepository enduserRepository, IStampcardRepository stampcardRepository)
         {
             this.ProductRepository = productRepository;
             this.CompanyRepository = companyRepository;
             this.EnduserRepository = enduserRepository;
+            this.StampcardRepository = stampcardRepository;
         }
 
         // GET: Statistic
@@ -31,31 +33,26 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: StampCardStatistics
-        public ActionResult CardsInCirculation()
+        public async Task<ActionResult> CardsInCirculation()
         {
+            var total = await StampcardRepository.CountStampcardsFromCompany(null); //TODO
+            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(null); //TODO
+            var unredeemed = total-redeemed;
             List<SimpleData> data = new List<SimpleData> {
-
                 new SimpleData
-                    {
-                        Value = 300,
-                        Color = "#F7464A",
-                        Highlight = "#FF5A5E",
-                        Label = "Red"
-                    },
-                    new SimpleData
-                    {
-                        Value = 50,
-                        Color = "#46BFBD",
-                        Highlight = "#5AD3D1",
-                        Label = "Green"
-                    },
-                    new SimpleData
-                    {
-                        Value = 100,
-                        Color = "#FDB45C",
-                        Highlight = "#FFC870",
-                        Label = "Yellow"
-                    }
+                {
+                    Value = redeemed,
+                    Color = "#46BFBD",
+                    Highlight = "#5AD3D1",
+                    Label = "RedeemedCards"
+                },
+                new SimpleData
+                {
+                    Value = unredeemed,
+                    Color = "#FDB45C",
+                    Highlight = "#FFC870",
+                    Label = "UnredeemedCards"
+                }
 
             };
             return PartialView(data);

@@ -73,6 +73,7 @@ namespace Stampit.Logic.Fakes
             }
         };
 
+        //TODO!
         public Task<long> CountEnduser(Company company)
         {
             long enduser = 3;
