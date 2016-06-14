@@ -32,5 +32,10 @@ namespace Stampit.Logic.Fakes
                 Stampcards = new List<Stampcard>()
             }
         };
+
+        public Task<Enduser> FindByMailAddress(string mailaddress)
+        {
+            return Task.FromResult(Data.Where(user => user.MailAddress == mailaddress).FirstOrDefault());
+        }
     }
 }

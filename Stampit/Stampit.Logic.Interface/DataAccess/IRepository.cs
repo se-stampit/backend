@@ -32,5 +32,10 @@ namespace Stampit.Logic.Interface
         /// </summary>
         /// <param name="entity">The entity to be created or updated</param>
         Task CreateOrUpdateAsync(T entity);
+        /// <summary>
+        /// Counts the entities in the current repository
+        /// </summary>
+        /// <returns>The count of entities</returns>
+        Task<long> Count();
     }
 }

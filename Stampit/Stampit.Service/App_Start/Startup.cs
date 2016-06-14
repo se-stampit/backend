@@ -28,8 +28,9 @@ namespace Stampit.Service
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Stampit.Entity.IsoDateTimeWithoutPlusConverter());
             config.EnsureInitialized();
 
+            app.UseExceptionHandler();
             app.UseAuthentication(container.Resolve<IAuthenticationTokenStorage>());
-            //app.UseAuthorization();
+            app.UseAuthorization();
             app.UseWebApi(config);
         }
     }

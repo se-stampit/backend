@@ -44,6 +44,7 @@ namespace Stampit.Service.Middleware
                     throw new HttpException(400, "The given mailaddress is not the same as the mailaddress of the external account");
 
                 context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = endusermail;
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = AuthTokens.GenerateSessionToken(endusermail);
             }
 
             if (authMode == RequestAuthenticationMode.LOGIN)
@@ -60,7 +61,7 @@ namespace Stampit.Service.Middleware
                     throw new HttpException(400, "The given mailaddress is not the same as the mailaddress of the external account");
 
                 context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = endusermail;
-                context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = AuthTokens.GenerateAuthToken(endusermail);
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = AuthTokens.GenerateSessionToken(endusermail);
             }
 
             if(authMode == RequestAuthenticationMode.SESSIONTOKEN)
@@ -69,7 +70,8 @@ namespace Stampit.Service.Middleware
                 if (!AuthTokens.LoggedInUsers.ContainsKey(sessionToken))
                     throw new UnauthorizedAccessException();
                 var enduser = AuthTokens.LoggedInUsers[sessionToken];
-                context.Request.Environment[Setting.LOGGED_IN_USER] = enduser;
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = sessionToken;
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = enduser;
             }
 
             if(authMode == RequestAuthenticationMode.NONE)

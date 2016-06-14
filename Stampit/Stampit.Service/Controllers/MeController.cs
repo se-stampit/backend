@@ -28,7 +28,29 @@ namespace Stampit.Service.Controllers
             this.Notifier = notifier;
         }
 
+        [HttpGet]
+        [Route("api/me")]
+        public async Task<IHttpActionResult> GetMe()
+        {
+            var mail = Request.GetOwinContext().Environment[Setting.AUTH_ENVIRONMENT_ID]?.ToString();
+            var user = await EnduserRepository.FindByMailAddress(mail);
+            if (user == null) return BadRequest("No user is currently logged in and can't be returned");
+
+            return Content(HttpStatusCode.OK,
+                new
+                {
+                    id = user.Id,
+                    createdAt = user.CreatedAt,
+                    updatedAt = user.UpdatedAt,
+                    firstName = user.FirstName,
+                    lastName = user.LastName,
+                    mailAddress = user.MailAddress
+                }
+            );
+        }
+
         [HttpPost]
+        [Route("api/me/scan")]
         public async Task<IHttpActionResult> Scan([FromBody]StampcodeDTO stampcode)
         {
             var scanner = (await EnduserRepository.GetAllAsync(0)).First();

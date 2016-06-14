@@ -51,6 +51,11 @@ namespace Stampit.Logic.Fakes
                 );
         }
 
+        public Task<long> Count()
+        {
+            return Task.FromResult(Data.LongCount());
+        }
+
         public void Dispose()
         {
         }

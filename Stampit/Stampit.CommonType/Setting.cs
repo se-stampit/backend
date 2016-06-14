@@ -14,6 +14,5 @@
         public const string AUTH_ANONYMOUS = "anonymous";
         public const string AUTH_ENVIRONMENT_SESSIONTOKEN = "sessiontoken";
         public const string AUTH_MODE = "authmode";
-        public const string LOGGED_IN_USER = "loggedinuser";
     }
 }

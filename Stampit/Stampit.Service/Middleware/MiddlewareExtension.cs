@@ -31,6 +31,16 @@ namespace Stampit.Service.Middleware
             return builder;
         }
 
+        public static IAppBuilder UseExceptionHandler(this IAppBuilder builder)
+        {
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder));
+
+            builder.Use<ExceptionHandlerMiddleware>();
+
+            return builder;
+        }
+
         public static RequestAuthenticationMode GetAuthenticationMode(this IOwinContext context)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));

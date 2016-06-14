@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IStoreRepository.cs" />
     <Compile Include="IAuthenticationTokenStorage.cs" />
     <Compile Include="IPushNotifier.cs" />
     <Compile Include="IQrCodeGenerator.cs" />

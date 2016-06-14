@@ -41,16 +41,19 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<IStampCodeService, StampCodeService>();
             container.RegisterInstance<IStampCodeStorage>(LocalStampCodeStorage.GetStampCodeStorage());
             container.RegisterType<IPushNotifier, ScanHub>();
+            container.RegisterInstance<IAuthenticationTokenStorage>(AuthenticationTokenStorage.GetAuthenticationTokenStorage());
 
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
             var companyRepository = new FakeCompanyRepository(blobRepository);
+            var storeRepository = new FakeStoreRepository(companyRepository);
             var productRepository = new FakeProductRepository(companyRepository);
             var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
 
             container.RegisterInstance<IBlobRepository>(blobRepository);
             container.RegisterInstance<IEnduserRepository>(enduserRepository);
             container.RegisterInstance<ICompanyRepository>(companyRepository);
+            container.RegisterInstance<IStoreRepository>(storeRepository);
             container.RegisterInstance<IProductRepository>(productRepository);
             container.RegisterInstance<IStampcardRepository>(stampcardRepository);
         }
