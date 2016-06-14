@@ -12,66 +12,81 @@ using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Stampit.Entity;
 using Newtonsoft.Json;
+using Stampit.Logic.Interface;
 
 namespace Stampit.Service.Middleware
 {
     public class AuthenticationMiddleware : OwinMiddleware
     {
-        public AuthenticationMiddleware(OwinMiddleware next) : base(next)
+        private IAuthenticationTokenStorage AuthTokens { get; }
+
+        public AuthenticationMiddleware(OwinMiddleware next, IAuthenticationTokenStorage authTokens) : base(next)
         {
+            this.AuthTokens = authTokens;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            if(context.Request.Uri.AbsolutePath.ToLower().EndsWith("login"))
+            var authMode = context.GetAuthenticationMode();
+            context.Request.Environment[Setting.AUTH_MODE] = authMode;
+
+            if (authMode == RequestAuthenticationMode.REGISTER)
             {
                 var loginprovider = await context.Request.Body.ConvertStreamToObject(JsonConvert.DeserializeObject<Loginprovider>);
-                string sessionToken = await Login(loginprovider);
-                Authenticate(context);
+                context.Request.Body.Position = 0; //Reset stream to be able to read the body in webapi again
+
+                if (loginprovider == null || loginprovider.Enduser == null)
+                    throw new HttpException(400, "For registration a authprovider and valid user are required");
+                if (loginprovider.AuthService != Setting.GOOGLE_AUTHPROVIDER)
+                    throw new HttpException(400, "Only google is valid as authenticationprovider");
+                var endusermail = await GoogleAuthenticate(loginprovider.Token);
+                if (endusermail != loginprovider.Enduser.MailAddress)
+                    throw new HttpException(400, "The given mailaddress is not the same as the mailaddress of the external account");
+
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = endusermail;
             }
 
-            if (context.Request.Uri.AbsolutePath.ToLower().EndsWith("register"))
+            if (authMode == RequestAuthenticationMode.LOGIN)
             {
+                var loginprovider = await context.Request.Body.ConvertStreamToObject(JsonConvert.DeserializeObject<Loginprovider>);
+                context.Request.Body.Position = 0; //Reset stream to be able to read the body in webapi again
 
+                if (loginprovider == null)
+                    throw new HttpException(400, "For login a authprovider is required");
+                if (loginprovider.AuthService != Setting.GOOGLE_AUTHPROVIDER)
+                    throw new HttpException(400, "Only google is valid as authenticationprovider");
+                var endusermail = await GoogleAuthenticate(loginprovider.Token);
+                if (endusermail != loginprovider.Enduser.MailAddress)
+                    throw new HttpException(400, "The given mailaddress is not the same as the mailaddress of the external account");
+
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = endusermail;
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = AuthTokens.GenerateAuthToken(endusermail);
             }
 
-            context.Request.Body.Position = 0;
+            if(authMode == RequestAuthenticationMode.SESSIONTOKEN)
+            {
+                string sessionToken = context.Request.Headers[Setting.AUTH_HEADER];
+                if (!AuthTokens.LoggedInUsers.ContainsKey(sessionToken))
+                    throw new UnauthorizedAccessException();
+                var enduser = AuthTokens.LoggedInUsers[sessionToken];
+                context.Request.Environment[Setting.LOGGED_IN_USER] = enduser;
+            }
+
+            if(authMode == RequestAuthenticationMode.NONE)
+            {
+                context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = Setting.AUTH_ANONYMOUS;
+            }
+
             this.Next?.Invoke(context);
         }
 
-        public async Task<string> Login(Loginprovider provider)
+        public async Task<string> GoogleAuthenticate(string accesstoken)
         {
-            return "";
-        }
-
-        public async Task<string> Register(Loginprovider provider)
-        {
-            return "";
-        }
-
-        public void Authenticate(IOwinContext context)
-        {
-            try
-            {
-                if (context.Request.Headers.ContainsKey(Setting.AUTH_HEADER))
-                {
-                    Oauth2Service service = new Oauth2Service(new Google.Apis.Services.BaseClientService.Initializer());
-                    Oauth2Service.TokeninfoRequest request = service.Tokeninfo();
-                    request.AccessToken = context.Request.Headers[Setting.AUTH_HEADER];
-
-                    Tokeninfo info = request.Execute();
-                    context.Request.Environment[Setting.AUTH_ENVIRONMENT_ACCESSTOKEN] = context.Request.Headers[Setting.AUTH_HEADER];
-                    context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = info.Email;
-                }
-                else
-                {
-                    context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = Setting.AUTH_ANONYMOUS;
-                }
-            }
-            catch
-            {
-                throw new NotImplementedException();
-            }
+            var service = new Oauth2Service(new Google.Apis.Services.BaseClientService.Initializer());
+            var request = service.Tokeninfo();
+            request.AccessToken = accesstoken;
+            var tokeninfo = await request.ExecuteAsync();
+            return tokeninfo.Email;
         }
     }
 }

@@ -199,6 +199,7 @@
     <Compile Include="Middleware\AuthenticationMiddleware.cs" />
     <Compile Include="Middleware\AutorizationMiddleware.cs" />
     <Compile Include="Middleware\MiddlewareExtension.cs" />
+    <Compile Include="Middleware\RequestAuthenticationMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http;
 using Stampit.Service.Middleware;
 using Newtonsoft.Json;
+using Stampit.Logic.Interface;
 
 namespace Stampit.Service
 {
@@ -27,7 +28,7 @@ namespace Stampit.Service
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Stampit.Entity.IsoDateTimeWithoutPlusConverter());
             config.EnsureInitialized();
 
-            app.UseAuthentication();
+            app.UseAuthentication(container.Resolve<IAuthenticationTokenStorage>());
             //app.UseAuthorization();
             app.UseWebApi(config);
         }

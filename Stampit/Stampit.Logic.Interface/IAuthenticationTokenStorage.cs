@@ -9,7 +9,16 @@ namespace Stampit.Logic.Interface
 {
     public interface IAuthenticationTokenStorage
     {
-        IDictionary<string,Enduser> LoggedInUsers { get; }
-        string GenerateAuthToken(Enduser user);
+        /// <summary>
+        /// For each sessiontoken, the user's mailaddress is specified
+        /// </summary>
+        IDictionary<string,string> LoggedInUsers { get; }
+
+        /// <summary>
+        /// Generates a new sessiontoken for authentication and stores it in the LoggedInUsers dictionary
+        /// </summary>
+        /// <param name="usermail">The mail to identify the user</param>
+        /// <returns>A new generated sessiontoken for the upcoming requests</returns>
+        string GenerateAuthToken(string usermail);
     }
 }

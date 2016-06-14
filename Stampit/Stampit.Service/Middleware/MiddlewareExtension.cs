@@ -1,4 +1,7 @@
-﻿using Owin;
+﻿using Microsoft.Owin;
+using Owin;
+using Stampit.CommonType;
+using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +11,12 @@ namespace Stampit.Service.Middleware
 {
     public static class MiddlewareExtension
     {
-        public static IAppBuilder UseAuthentication(this IAppBuilder builder)
+        public static IAppBuilder UseAuthentication(this IAppBuilder builder, IAuthenticationTokenStorage authTokens)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            builder.Use<AuthenticationMiddleware>();
+            builder.Use<AuthenticationMiddleware>(authTokens);
 
             return builder;
         }
@@ -26,6 +29,20 @@ namespace Stampit.Service.Middleware
             builder.Use<AutorizationMiddleware>();
 
             return builder;
+        }
+
+        public static RequestAuthenticationMode GetAuthenticationMode(this IOwinContext context)
+        {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
+            if (context.Request.Uri.AbsolutePath.ToLower().EndsWith("register"))
+                return RequestAuthenticationMode.REGISTER;
+            if (context.Request.Uri.AbsolutePath.ToLower().EndsWith("login"))
+                return RequestAuthenticationMode.LOGIN;
+            if (context.Request.Headers.ContainsKey(Setting.AUTH_HEADER))
+                return RequestAuthenticationMode.SESSIONTOKEN;
+
+            return RequestAuthenticationMode.NONE;
         }
     }
 }
