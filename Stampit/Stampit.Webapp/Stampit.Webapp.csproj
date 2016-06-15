@@ -238,6 +238,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-Stampit.Webapp-20160414050018.mdf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -316,7 +317,6 @@
     <Content Include="Views\CompanyData\Index.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Stores\StoresMap.cshtml" />
-    <Content Include="Views\Shared\_LayoutPartial.cshtml" />
     <Content Include="Views\Products\Delete.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
@@ -343,6 +343,9 @@
     <Content Include="Views\Admin\CreateUser.cshtml" />
     <Content Include="Views\Statistic\Sales.cshtml" />
     <Content Include="Views\Statistic\Customer.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Account\Login_bak.cshtml" />
+    <Content Include="Views\Shared\_Layout_Members.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

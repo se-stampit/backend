@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IBusinessuserRepository BusinessuserRepository { get; }
@@ -44,14 +45,41 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             return View();
         }
 
+        // GET: Admin/Edit/5
+        public ActionResult CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(UsersViewModel item)
+        {
+            if (item == null) return View();
+
+            try
+            {
+                Roles = await RoleRepository.GetAllAsync(0);
+                Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
+                item.User.Role = Roles.FirstOrDefault();
+
+                await BusinessuserRepository.CreateOrUpdateAsync(item.User);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // POST: Admin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Businessuser id)
         {
             try
             {

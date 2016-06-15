@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
+    [Authorize]
     public class KioskModeController : Controller
     {
         private const string SESSION_STATE = "SessionState";

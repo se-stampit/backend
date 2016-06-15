@@ -83,6 +83,18 @@ namespace Stampit.Webapp.Controllers
                                  },
                                 Product = s.Key
                              };
+
+            /*
+             * Data = new List<double> { 65, 59, 80, 81, 56, 55, 40 },
+                                      Label = "My First dataset",
+                                      FillColor = "rgba(220,220,220,0.2)",
+                                      StrokeColor = "rgba(220,220,220,1)",
+                                      PointColor = "rgba(220,220,220,1)",
+                                      PointStrokeColor = "#fff",
+                                      PointHighlightFill = "#fff",
+                                      PointHighlightStroke = "rgba(220,220,220,1)"
+             */
+
             return PartialView(stampcards);
         }
 

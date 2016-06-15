@@ -50,9 +50,9 @@ namespace Stampit.Logic.Fakes
             new Businessuser()
             {
                 Id = Guid.NewGuid().ToString().Replace("-",""),
-                FirstName="Test",
-                LastName="User",
-                MailAddress="test.user@gmail.com",
+                FirstName="Richard",
+                LastName="Leinweber",
+                MailAddress="r.leinweber@gmail.com",
                 CreatedAt = DateTime.Now
             }
         };
