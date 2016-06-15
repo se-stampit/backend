@@ -28,7 +28,29 @@ namespace Stampit.Service.Controllers
             this.Notifier = notifier;
         }
 
+        [HttpGet]
+        [Route("api/me")]
+        public async Task<IHttpActionResult> GetMe()
+        {
+            var mail = Request.GetOwinContext().Environment[Setting.AUTH_ENVIRONMENT_ID]?.ToString();
+            var user = await EnduserRepository.FindByMailAddress(mail);
+            if (user == null) return BadRequest("No user is currently logged in and can't be returned");
+
+            return Content(HttpStatusCode.OK,
+                new
+                {
+                    id = user.Id,
+                    createdAt = user.CreatedAt,
+                    updatedAt = user.UpdatedAt,
+                    firstName = user.FirstName,
+                    lastName = user.LastName,
+                    mailAddress = user.MailAddress
+                }
+            );
+        }
+
         [HttpPost]
+        [Route("api/me/scan")]
         public async Task<IHttpActionResult> Scan([FromBody]StampcodeDTO stampcode)
         {
             var scanner = (await EnduserRepository.GetAllAsync(0)).First();
@@ -47,29 +69,6 @@ namespace Stampit.Service.Controllers
             {
                 this.Notifier.OnScan(stampcode.Stampcode, false);
                 return StatusCode(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [HttpGet]
-        [Route("api/blob/{blobid}/content")]
-        public async Task<HttpResponseMessage> GetBlobContent(string blobid)
-        {
-            try
-            {
-                var blob = await BlobRepository.FindByIdAsync(blobid);
-                if (blob == null) throw new ArgumentException(nameof(blobid));
-
-                var byteContent = new ByteArrayContent(blob.Content);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue(blob.ContentType);
-                return new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = byteContent
-                };
-            }
-            catch
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
         }
         

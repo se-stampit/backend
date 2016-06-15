@@ -50,5 +50,14 @@ namespace Stampit.Logic.Fakes
                      select entity).Skip(page * pagesize).Take(pagesize)
                 );
         }
+
+        public Task<long> Count()
+        {
+            return Task.FromResult(Data.LongCount());
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }
