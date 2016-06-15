@@ -109,13 +109,13 @@ namespace Stampit.Logic.Fakes
             {
                 { Data[0].Product, 
                   new Dictionary<int, int>() {
-                      {1,10},
-                      {2,9},
-                      {3,8},
-                      {4,7},
+                      {1,40},
+                      {2,15},
+                      {3,22},
+                      {4,44},
                       {5,6},
                       {6,5},
-                      {7,4},
+                      {7,21},
                       {8,3},
                       {9,2},
                       {10,1}
@@ -125,11 +125,11 @@ namespace Stampit.Logic.Fakes
                       {1,10},
                       {2,9},
                       {3,8},
-                      {4,7},
+                      {4,34},
                       {5,6},
-                      {6,5},
+                      {6,47},
                       {7,4},
-                      {8,3},
+                      {8,30},
                       {9,2},
                       {10,1}
                 }},
@@ -142,7 +142,7 @@ namespace Stampit.Logic.Fakes
                       {5,6},
                       {6,5},
                       {7,4},
-                      {8,3},
+                      {8,37},
                       {9,2},
                       {10,1}
                 }},
@@ -150,14 +150,14 @@ namespace Stampit.Logic.Fakes
                   new Dictionary<int, int>() {
                       {1,10},
                       {2,9},
-                      {3,8},
+                      {3,28},
                       {4,7},
-                      {5,6},
+                      {5,15},
                       {6,5},
                       {7,4},
                       {8,3},
                       {9,2},
-                      {10,1}
+                      {10,11}
                 }}
             } as IDictionary<Product, IDictionary<int, int>>);
         }

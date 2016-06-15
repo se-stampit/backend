@@ -7,6 +7,7 @@ using Chart.Mvc.ComplexChart;
 using Chart.Mvc.SimpleChart;
 using Stampit.Logic.Interface;
 using System.Threading.Tasks;
+using Stampit.Entity;
 
 namespace Stampit.Webapp.Controllers
 {
@@ -64,30 +65,24 @@ namespace Stampit.Webapp.Controllers
             var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(null); //TODO;
 
             var stampcards = from s in stampcardsCompany
-                             select new BarChart {
-                                 ComplexData = new ComplexData
+                             select new BarChartDTO
+                             {
+                                 BarChart = new BarChart
                                  {
-                                     Labels = (from data in s.Value
-                                              select data.Key.ToString()).ToList(),
-                                     Datasets = (from data in s.Value
-                                                 select new ComplexDataset {
-                                                     Data = (from y in data.Value
-                                                             select (double)y).ToList()
-                                                 }).ToList()
-                                 }
+                                     ComplexData = new ComplexData
+                                     {
+                                         Labels = (from data in s.Value
+                                                   select data.Key.ToString()).ToList(),
+                                         Datasets = (from data in s.Value
+                                                     select new ComplexDataset
+                                                     {
+                                                         Data = s.Value.Values.Select(val => (double)val).ToList(),
+                                                         FillColor = "rgba(220,220,220,0.2)"
+                                                     }).Take(1).ToList()
+                                     }
+                                 },
+                                Product = s.Key
                              };
-
-            /*
-             * Data = new List<double> { 65, 59, 80, 81, 56, 55, 40 },
-                                      Label = "My First dataset",
-                                      FillColor = "rgba(220,220,220,0.2)",
-                                      StrokeColor = "rgba(220,220,220,1)",
-                                      PointColor = "rgba(220,220,220,1)",
-                                      PointStrokeColor = "#fff",
-                                      PointHighlightFill = "#fff",
-                                      PointHighlightStroke = "rgba(220,220,220,1)"
-             */
-
             return PartialView(stampcards);
         }
 
@@ -112,5 +107,11 @@ namespace Stampit.Webapp.Controllers
             var countEnduser = await EnduserRepository.CountEnduser(null); //TODO!
             return PartialView(countEnduser);
         }
+    }
+
+    public class BarChartDTO
+    {
+        public Product Product { get; set; }
+        public BarChart BarChart { get; set; }
     }
 }
