@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Stampit.Entity;
-using System.Threading.Tasks;
 
 namespace Stampit.Logic.Interface
 {

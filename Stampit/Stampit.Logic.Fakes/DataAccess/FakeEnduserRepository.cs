@@ -24,8 +24,8 @@ namespace Stampit.Logic.Fakes
                     {
                         Id = Guid.NewGuid().ToString().Replace("-",""),
                         CreatedAt = DateTime.Now,
-                        AuthId = "test",
-                        AuthService = "fb"
+                        Token = "test",
+                        AuthService = "google"
                     }
                 },
                 MailAddress = "max@mustermann.at",
@@ -44,8 +44,8 @@ namespace Stampit.Logic.Fakes
                     {
                         Id = Guid.NewGuid().ToString().Replace("-",""),
                         CreatedAt = DateTime.Now,
-                        AuthId = "monaMuster",
-                        AuthService = "fb"
+                        Token = "monaMuster",
+                        AuthService = "google"
                     }
                 },
                 MailAddress = "mona@musterfrau.at",
@@ -64,8 +64,8 @@ namespace Stampit.Logic.Fakes
                     {
                         Id = Guid.NewGuid().ToString().Replace("-",""),
                         CreatedAt = DateTime.Now,
-                        AuthId = "mimmiMuster",
-                        AuthService = "fb"
+                        Token = "mimmiMuster",
+                        AuthService = "google"
                     }
                 },
                 MailAddress = "mimmi@musterkind.at",
