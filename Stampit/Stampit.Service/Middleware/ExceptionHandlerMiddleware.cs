@@ -56,6 +56,7 @@ namespace Stampit.Service.Middleware
             );
             context.Response.ContentLength = json.ToCharArray().LongLength;
             await context.Response.WriteAsync(json);
+            await context.Response.Body.FlushAsync();
         }
     }
 }

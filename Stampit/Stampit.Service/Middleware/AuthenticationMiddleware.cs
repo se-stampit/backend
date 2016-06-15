@@ -57,8 +57,6 @@ namespace Stampit.Service.Middleware
                 if (loginprovider.AuthService != Setting.GOOGLE_AUTHPROVIDER)
                     throw new HttpException(400, "Only google is valid as authenticationprovider");
                 var endusermail = await GoogleAuthenticate(loginprovider.Token);
-                if (endusermail != loginprovider.Enduser.MailAddress)
-                    throw new HttpException(400, "The given mailaddress is not the same as the mailaddress of the external account");
 
                 context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = endusermail;
                 context.Request.Environment[Setting.AUTH_ENVIRONMENT_SESSIONTOKEN] = AuthTokens.GenerateSessionToken(endusermail);
@@ -79,7 +77,7 @@ namespace Stampit.Service.Middleware
                 context.Request.Environment[Setting.AUTH_ENVIRONMENT_ID] = Setting.AUTH_ANONYMOUS;
             }
 
-            this.Next?.Invoke(context);
+            await this.Next?.Invoke(context);
         }
 
         public async Task<string> GoogleAuthenticate(string accesstoken)

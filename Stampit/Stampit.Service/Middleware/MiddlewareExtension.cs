@@ -26,7 +26,7 @@ namespace Stampit.Service.Middleware
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            builder.Use<AutorizationMiddleware>();
+            builder.Use<AuthorizationMiddleware>();
 
             return builder;
         }
@@ -44,6 +44,9 @@ namespace Stampit.Service.Middleware
         public static RequestAuthenticationMode GetAuthenticationMode(this IOwinContext context)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
+
+            if (!context.Request.Uri.AbsolutePath.ToLower().Contains("/api/"))
+                return RequestAuthenticationMode.NONE;
 
             if (context.Request.Uri.AbsolutePath.ToLower().EndsWith("register"))
                 return RequestAuthenticationMode.REGISTER;
