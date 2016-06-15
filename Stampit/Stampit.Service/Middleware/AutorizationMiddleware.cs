@@ -13,9 +13,18 @@ namespace Stampit.Service.Middleware
         {
         }
 
-        public override Task Invoke(IOwinContext context)
+        public override async Task Invoke(IOwinContext context)
         {
-            return this.Next?.Invoke(context);
+            if(IsLoginRequired(context?.Request?.Uri?.ToString().ToLower()))
+            {
+
+            }
+            await this.Next?.Invoke(context);
+        }
+
+        private bool IsLoginRequired(string url)
+        {
+            return url?.Contains("/api/me") ?? true;
         }
     }
 }
