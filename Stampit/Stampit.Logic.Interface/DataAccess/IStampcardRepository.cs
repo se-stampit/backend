@@ -28,5 +28,23 @@ namespace Stampit.Logic.Interface
         /// <param name="product">The product which is assoziated with the stampcards</param>
         /// <returns>The list of the requested stampcards which are orderd descending by the amount of gained stamps</returns>
         Task<IEnumerable<Stampcard>> GetAllStampcardsFromProduct(Enduser user, Product product);
+        /// <summary>
+        /// Finds the stampcards of the given company
+        /// </summary>
+        /// <param name="company">The company to define which amount should be returned</param>
+        /// <returns>The list of the requested stampcards</returns>
+        Task<IDictionary<Product, IDictionary<int,int>>> GetAllStampcardsFromCompany(Company company);
+        /// <summary>
+        /// Counts the stampcards in circulation of the given company
+        /// </summary>
+        /// <param name="company">The company to define which amount should be returned</param>
+        /// <returns>Returns the amount of the total stampcards in circulation</returns>
+        Task<int> CountStampcardsFromCompany(Company company);
+        /// <summary>
+        /// Counts the redeemed stampcards of the given company
+        /// </summary>
+        /// <param name="company">The company to define which amount should be returned</param>
+        /// <returns>Returns the amount of the redeemed stampcards</returns>
+        Task<int> CountRedeemedStampcardsFromCompany(Company company);
     }
 }

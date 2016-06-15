@@ -1,0 +1,12 @@
+﻿@model Stampit.Entity.Store
+<div class="infoDiv">
+	<div>
+		<h2>@Html.DisplayFor(model => model.Company.CompanyName)</h2>
+		<h3>@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })</h3>
+	</div>
+	<div>
+		@Html.TextAreaFor(model => model.Company.Description, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Company.Description, "", new { @class = "text-danger" })
+	</div>
+</div>

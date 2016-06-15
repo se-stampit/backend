@@ -24,11 +24,17 @@ namespace Stampit.Logic.Fakes
             else
             {
                 int idx = Data.IndexOf(entry);
-                entry.UpdatedAt = DateTime.Now;
+                entity.UpdatedAt = DateTime.Now;
                 Data.RemoveAt(idx);
                 Data.Insert(idx, entity);
             }
 
+            return Task.FromResult(new object());
+        }
+
+        public Task Delete(T entity)
+        {
+            Data.Remove(entity);
             return Task.FromResult(new object());
         }
 

@@ -40,22 +40,37 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<IStampCodeProvider, FakeStampcodeProvider>();
             container.RegisterType<IStampCodeService, StampCodeService>();
             container.RegisterInstance<IStampCodeStorage>(LocalStampCodeStorage.GetStampCodeStorage());
+            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(
+            new InjectionConstructor(typeof(Models.ApplicationDbContext)));
+            container.RegisterType<System.Data.Entity.DbContext, Models.ApplicationDbContext>(
+    new HierarchicalLifetimeManager());
+            container.RegisterType<Microsoft.AspNet.Identity.UserManager<Models.ApplicationUser>>(
+                new HierarchicalLifetimeManager());
+            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(
+                new HierarchicalLifetimeManager());
+
+            container.RegisterType<Controllers.AccountController>(
+                new InjectionConstructor());
+
             container.RegisterType<IPushNotifier, ScanHub>();
             container.RegisterInstance<IAuthenticationTokenStorage>(AuthenticationTokenStorage.GetAuthenticationTokenStorage());
 
             var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
+            var roleRepository = new FakeRoleRepository();
             var companyRepository = new FakeCompanyRepository(blobRepository);
-            var storeRepository = new FakeStoreRepository(companyRepository);
+            var businessuserRepository = new FakeBusinessuserRepository(roleRepository, companyRepository);
             var productRepository = new FakeProductRepository(companyRepository);
             var stampcardRepository = new FakeStampcardRepository(productRepository, enduserRepository);
+            var storeRepository = new FakeStoreRepository(companyRepository);
 
             container.RegisterInstance<IBlobRepository>(blobRepository);
             container.RegisterInstance<IEnduserRepository>(enduserRepository);
+            container.RegisterInstance<IRoleRepository>(roleRepository);
+            container.RegisterInstance<IBusinessuserRepository>(businessuserRepository);
             container.RegisterInstance<ICompanyRepository>(companyRepository);
             container.RegisterInstance<IStoreRepository>(storeRepository);
             container.RegisterInstance<IProductRepository>(productRepository);
-            container.RegisterInstance<IStampcardRepository>(stampcardRepository);
-        }
+            container.RegisterInstance<IStampcardRepository>(stampcardRepository);        }
     }
 }

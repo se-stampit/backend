@@ -17,7 +17,7 @@ namespace Stampit.Logic.Fakes
         public FakeProductRepository(ICompanyRepository companyRepository)
         {
             this.CompanyRepository = companyRepository;
-            var companies = CompanyRepository.GetAllAsync(0, 10).Result; //Result only allowed because of fakerepository which returns the result immediatly and no state machine is generated
+            var companies = CompanyRepository.GetAllAsync(0).Result; //Result only allowed because of fakerepository which returns the result immediatly and no state machine is generated
             this.TestCompany1 = companies.FirstOrDefault();
             this.TestCompany2 = companies.LastOrDefault();
             for (int i = 0; i < this.Data.Count; i++)
@@ -87,9 +87,22 @@ namespace Stampit.Logic.Fakes
             var companyProducts = (from p in Data
                                    where p.CompanyId == company?.Id
                                       && !string.IsNullOrEmpty(company?.Id)
+                                      && p.Active
                                    select p).Skip(pagenr * pagesize).Take(pagesize);
 
             return Task.FromResult(companyProducts);
+        }
+
+        //TODO!
+        public Task<IDictionary<Product, double>> SalesPerProduct(Company company)
+        {
+            return Task.FromResult(new Dictionary<Product, double>()
+            {
+                { Data[0], 1000 },
+                { Data[1], 1500 },
+                { Data[2], 2000 },
+                { Data[3], 2500 }
+            } as IDictionary<Product,double>);
         }
     }
 }

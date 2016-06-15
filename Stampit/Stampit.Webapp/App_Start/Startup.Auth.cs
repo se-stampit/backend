@@ -58,11 +58,11 @@ namespace Stampit.Webapp
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "668297770997-rablnqnu6og81q7lci62giu297c96hs6.apps.googleusercontent.com",
+                ClientSecret = "RgDWjFJX6AflAWEEPIgmh7S5"
+            });
         }
     }
 }

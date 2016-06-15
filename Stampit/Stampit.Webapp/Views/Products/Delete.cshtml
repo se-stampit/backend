@@ -1,0 +1,65 @@
+﻿@model Stampit.Entity.Product
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Productname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Productname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequiredStampCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequiredStampCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BonusDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BonusDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to the list", "Index", "Profile", null, null, "Products", null, null)
+        </div>
+    }
+</div>

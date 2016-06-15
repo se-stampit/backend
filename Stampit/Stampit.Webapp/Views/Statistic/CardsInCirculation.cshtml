@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SimpleData>
+@using Chart.Mvc.SimpleChart;
+@using Chart.Mvc.Extensions;
+
+<script src="~/Scripts/Chart.js"></script>
+
+@{
+    var pieChart = new PieChart();
+    pieChart.Data.AddRange(Model);
+}
+<div>
+    <canvas id="cardsInCirculationCanvas" width="400" height="400"></canvas>
+    @Html.CreateChart("cardsInCirculationCanvas", pieChart)
+</div>
+<br />
+<div>
+    @{
+        double sum = 0;
+        foreach (var item in Model)
+        {
+            sum += item.Value;
+        }
+        <h4>Total stampcards: @sum </h4>
+    }
+</div>

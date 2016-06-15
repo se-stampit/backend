@@ -1,0 +1,21 @@
+﻿@using Stampit.Webapp.Controllers;
+@using Chart.Mvc.ComplexChart;
+@using Chart.Mvc.Extensions;
+@model IEnumerable<BarChartDTO>
+
+<script src="~/Scripts/Chart.js"></script>
+
+@{
+    int cnt = 0;
+    foreach (var item in Model)
+    {
+        string canvasName = "cardStatusCanvas" + cnt + "";
+        cnt++;
+        <h4>@(item?.Product?.Productname ?? "Kein Product")</h4>
+
+        <div>
+            <canvas id="@canvasName" width="400" height="400"></canvas>
+            @Html.CreateChart(canvasName, item.BarChart)
+        </div>
+    }
+}

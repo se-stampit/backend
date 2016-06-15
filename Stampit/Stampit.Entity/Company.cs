@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
-	
+using System.ComponentModel.DataAnnotations;	
+
 namespace Stampit.Entity
 {
 	public class Company : Entity
 	{
+        [Display(Name = "Company Name")]
 		public string CompanyName { get; set; }
+        [Display(Name = "Contact Address")]
         public string ContactAddress { get; set; }
+        [Display(Name = "Contact Name")]
         public string ContactName { get; set; }
         public string Description { get; set; }
         

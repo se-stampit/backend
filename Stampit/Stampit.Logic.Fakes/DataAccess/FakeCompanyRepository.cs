@@ -26,7 +26,7 @@ namespace Stampit.Logic.Fakes
         {
             new Company()
             {
-                Id = Guid.NewGuid().ToString().Replace("-",""),
+                Id = "ID123",
                 CreatedAt = DateTime.Now,
                 Products = new List<Product>(),
                 Businessusers = new List<Businessuser>(),

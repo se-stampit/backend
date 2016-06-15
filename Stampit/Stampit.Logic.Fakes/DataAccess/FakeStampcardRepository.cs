@@ -88,5 +88,78 @@ namespace Stampit.Logic.Fakes
                     as IEnumerable<Stampcard>
                 );
         }
+
+        //TODO
+        public Task<int> CountStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(20);
+        }
+
+        //TODO
+        public Task<int> CountRedeemedStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(15);
+        }
+
+        //TODO
+        //X-Achsis, Y-Achsis
+        public Task<IDictionary<Product, IDictionary<int, int>>> GetAllStampcardsFromCompany(Company company)
+        {
+            return Task.FromResult(new Dictionary<Product, IDictionary<int, int>>()
+            {
+                { Data[0].Product, 
+                  new Dictionary<int, int>() {
+                      {1,40},
+                      {2,15},
+                      {3,22},
+                      {4,44},
+                      {5,6},
+                      {6,5},
+                      {7,21},
+                      {8,3},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[1].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,34},
+                      {5,6},
+                      {6,47},
+                      {7,4},
+                      {8,30},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[2].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,8},
+                      {4,7},
+                      {5,6},
+                      {6,5},
+                      {7,4},
+                      {8,37},
+                      {9,2},
+                      {10,1}
+                }},
+                { Data[3].Product,
+                  new Dictionary<int, int>() {
+                      {1,10},
+                      {2,9},
+                      {3,28},
+                      {4,7},
+                      {5,15},
+                      {6,5},
+                      {7,4},
+                      {8,3},
+                      {9,2},
+                      {10,11}
+                }}
+            } as IDictionary<Product, IDictionary<int, int>>);
+        }
     }
 }

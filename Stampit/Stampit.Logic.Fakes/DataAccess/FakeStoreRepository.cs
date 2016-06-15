@@ -1,4 +1,4 @@
-﻿using Stampit.Logic.Interface;
+using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

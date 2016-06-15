@@ -3,58 +3,83 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Digitalize the usage of 'Bonus StampCards' " />
     <title>StampIt.at</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-    <meta name="description" content="The description of my page" />
+	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/jquery")
+	<script src="~/Scripts/bootstrap.min.js"></script>
+	
 </head>
 <body>
+@if (Request.IsAuthenticated)
+{
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("StampIt", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink("StampIt", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+
+            <nav role="navigation" id="navbarCollapse" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stammdaten<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Firmendaten", "Index", "CompanyData", null, null, "Firmendaten", null, null)</li>
-							<li>@Html.ActionLink("Filialen", "Index", "CompanyData", null, null, "Filialen", null, null)</li>
-							<li>@Html.ActionLink("Produkte", "Index", "CompanyData", null, null, "Produkte", null, null)</li>
-							<li>@Html.ActionLink("Mitarbeiter", "Index", "CompanyData", null, null, "Mitarbeiter", null, null)</li>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a>
+						<ul role="menu" class="dropdown-menu">
+							<li>@Html.ActionLink("Company Data", "Index", "Profile", null, null, "CompanyData", null, null)</li>
+							<li>@Html.ActionLink("Stores", "Index", "Profile", null, null, "Stores", null, null)</li>
+							<li>@Html.ActionLink("Products", "Index", "Profile", null, null, "Products", null, null)</li>
+							<li>@Html.ActionLink("Users", "Index", "Profile", null, null, "Users", null, null)</li>
 						</ul>
 					</li>
-					<li class="dropdown">						
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistik<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Stempelkarten", "Index", "Statistic", null, null, "Stempelkarten", null, null)</li>
-							<li>@Html.ActionLink("Umsatz", "Index", "Statistic", null, null, "Umsatz", null, null)</li>
-							<li>@Html.ActionLink("Kunden", "Index", "Statistic", null, null, "Kunden", null, null)</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistics<b class="caret"></b></a>
+						<ul role="menu" class="dropdown-menu">
+							<li>@Html.ActionLink("StampCards", "Index", "Statistic", null, null, "Stempelkarten", null, null)</li>
+							<li>@Html.ActionLink("Sales", "Index", "Statistic", null, null, "Umsatz", null, null)</li>
+							<li>@Html.ActionLink("Customer", "Index", "Statistic", null, null, "Kunden", null, null)</li>
 						</ul>
 					</li>
-                    <li>@Html.ActionLink("Kiosk Modus", "Index", "KioskMode")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
+					<li>@Html.ActionLink("Kiosk Mode", "Index", "KioskMode")</li>
+					<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+				</ul>
+				<div style="margin-right:25px">
+					@Html.Partial("_LoginPartial")
+				</div>
+            </nav>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - StampIt</p>
-        </footer>
-    </div>
+}
+else
+{
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			@Html.ActionLink("StampIt", "Index", "Home", null, new { @class = "navbar-brand" })
+		</div>
+		<div style="margin-right:25px">
+			@Html.Partial("_LoginPartial")
+		</div>
+		</div>
+		}
+		<div class="container body-content">
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+			@RenderBody()
+			<hr />
+			<footer>
+				<p>&copy; @DateTime.Now.Year - StampIt</p>
+			</footer>
+		</div>
+
+		@RenderSection("scripts", required: false)
 </body>
 </html>

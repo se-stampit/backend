@@ -167,6 +167,23 @@ textarea {
     box-shadow: 3px 3px 0 0 #297439;
     outline: none !important;
 }
+.btn-cancel {
+	background-color: #c9302c;
+    border-color: #8F2925;
+    box-shadow: 3px 3px 0 0 #8F2925;
+    outline: none !important;
+}
+.btn-cancel:hover {
+    background-color: #d43f3a;
+    border-color: #c9302c;
+}
+
+.btn-cancel:active:focus {
+    background-color: gray;
+    border-color: gray;
+    box-shadow: none;
+    margin: 3px -3px -3px 3px;
+}
 
 .btn-success:hover {
     background-color: #5cb85c;
