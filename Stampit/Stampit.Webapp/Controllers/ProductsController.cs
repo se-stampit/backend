@@ -13,6 +13,7 @@ namespace Stampit.Webapp.Controllers
     {
         private IProductRepository ProductRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
+        private const string SESSION_STATE = "SessionState";
 
         public ProductsController(IProductRepository productRepository, ICompanyRepository companyRepository)
         {
@@ -49,6 +50,8 @@ namespace Stampit.Webapp.Controllers
                 product.Company = company;
                 await ProductRepository.CreateOrUpdateAsync(product);
 
+                Session[SESSION_STATE] = null;
+
                 return RedirectToAction("Index", "Profile");
             }
             catch
@@ -82,6 +85,9 @@ namespace Stampit.Webapp.Controllers
                 prod.RequiredStampCount = product.RequiredStampCount;
 
                 await ProductRepository.CreateOrUpdateAsync(prod);
+
+                Session[SESSION_STATE] = null;
+
                 return RedirectToAction("Index", "Profile");
             }
             catch

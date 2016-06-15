@@ -17,8 +17,6 @@ namespace Stampit.Webapp.Controllers
         private IRoleRepository RoleRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
 
-        private static IEnumerable<Role> Roles { get; set; }
-
         public AdminController(IBusinessuserRepository businessuserRepository, IRoleRepository roleRepository, ICompanyRepository companyRepository)
         {
             this.BusinessuserRepository = businessuserRepository;
@@ -45,9 +43,42 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Admin/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
+            if (id != null && !id.Equals(""))
+            {
+                var user = await BusinessuserRepository.FindByIdAsync(id);
+                return View(user);
+            }
             return View();
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        public async Task<ActionResult> Edit(Businessuser item)
+        {
+            if (item == null) return View();
+            
+            try
+            {
+                var user = await BusinessuserRepository.FindByIdAsync(item.Id);
+                var Roles = await RoleRepository.GetAllAsync(0);
+                Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
+
+                user.Role = Roles.FirstOrDefault();
+                user.RoleId = user.Role.Id;
+                user.FirstName = item.FirstName;
+                user.LastName = item.LastName;
+                user.MailAddress = item.MailAddress;
+
+                await BusinessuserRepository.CreateOrUpdateAsync(user);
+
+                return RedirectToAction("Index", "Admin");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: Admin/Edit/5
@@ -63,7 +94,7 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
-                Roles = await RoleRepository.GetAllAsync(0);
+                var Roles = await RoleRepository.GetAllAsync(0);
                 Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
                 item.User.Role = Roles.FirstOrDefault();
 
@@ -76,68 +107,31 @@ namespace Stampit.Webapp.Controllers
                 return View();
             }
         }
-
-        // POST: Admin/Edit/5
-        [HttpPost]
-        public ActionResult Edit(Businessuser id)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+        
         // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
+            if (id != null && !id.Equals(""))
+            {
+                var user = await BusinessuserRepository.FindByIdAsync(id);
+                return View(user);
+            }
             return View();
         }
 
         // POST: Admin/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(Businessuser user)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                await BusinessuserRepository.Delete(user);
+                return RedirectToAction("Index", "Admin");
             }
             catch
             {
                 return View();
             }
-        }
-
-        private async Task<UsersViewModel> GetUsersViewModel(String id)
-        {
-            UsersViewModel viewModel = new UsersViewModel();
-
-            if (Roles == null)
-            {
-                Roles = await RoleRepository.GetAllAsync(0);
-                Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
-            }
-
-            if (id != null && !id.Equals(""))
-            {
-                var user = await BusinessuserRepository.FindByIdAsync(id);
-                viewModel.User = user;
-            }
-
-            viewModel.Roles = Roles.Select(r => new SelectListItem
-            {
-                Text = r.RoleName,
-                Value = r.Id
-            });
-
-            return viewModel;
         }
     }
 }

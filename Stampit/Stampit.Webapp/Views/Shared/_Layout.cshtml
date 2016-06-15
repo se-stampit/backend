@@ -48,7 +48,9 @@
 					<li>@Html.ActionLink("Kiosk Mode", "Index", "KioskMode")</li>
 					<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
 				</ul>
-				@Html.Partial("_LoginPartial")
+				<div style="margin-right:25px">
+					@Html.Partial("_LoginPartial")
+				</div>
             </nav>
     </div>
 }
@@ -64,7 +66,9 @@ else
 			</button>
 			@Html.ActionLink("StampIt", "Index", "Home", null, new { @class = "navbar-brand" })
 		</div>
-		@Html.Partial("_LoginPartial")
+		<div style="margin-right:25px">
+			@Html.Partial("_LoginPartial")
+		</div>
 		</div>
 		}
 		<div class="container body-content">

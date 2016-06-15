@@ -87,6 +87,7 @@ namespace Stampit.Logic.Fakes
             var companyProducts = (from p in Data
                                    where p.CompanyId == company?.Id
                                       && !string.IsNullOrEmpty(company?.Id)
+                                      && p.Active
                                    select p).Skip(pagenr * pagesize).Take(pagesize);
 
             return Task.FromResult(companyProducts);
