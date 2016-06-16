@@ -4,8 +4,8 @@
     {
         public const int DEFAULT_PAGE_SIZE = 100;
 
-        public const string CLIENT_ID = "171753847640-5kma91v860du16atcg637tmml44jrdak.apps.googleusercontent.com";
-        public const string CLIENT_SECRET = "wnSABb_oDIW3CToefPAhPV9o";
+        public const string CLIENT_ID = "171753847640-j0hev6tkois7dpp7rrn4gm3irfm9rsuu.apps.googleusercontent.com";
+        public const string CLIENT_SECRET = "qPKiAZwhy-7taRWYWcrqYPgn";
 
         public const string GOOGLE_AUTHPROVIDER = "google";
 
