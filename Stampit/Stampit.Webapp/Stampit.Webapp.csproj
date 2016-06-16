@@ -360,13 +360,8 @@
     <Content Include="Views\Statistic\Sales.cshtml" />
     <Content Include="Views\Statistic\Customer.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Account\Login_bak.cshtml" />
-    <Content Include="Views\Shared\_Layout_Members.cshtml" />
     <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
-    <Content Include="Views\CompanyData\Products.cshtml" />
-    <Content Include="Views\CompanyData\CompanyData.cshtml" />
-    <Content Include="Views\CompanyData\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using Stampit.Webapp.Models;
+using Stampit.CommonType;
 
 namespace Stampit.Webapp
 {
@@ -60,8 +61,8 @@ namespace Stampit.Webapp
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "668297770997-rablnqnu6og81q7lci62giu297c96hs6.apps.googleusercontent.com",
-                ClientSecret = "RgDWjFJX6AflAWEEPIgmh7S5"
+                ClientId = Setting.CLIENT_ID,
+                ClientSecret = Setting.CLIENT_SECRET
             });
         }
     }
