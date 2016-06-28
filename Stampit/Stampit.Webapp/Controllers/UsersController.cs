@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private IBusinessuserRepository BusinessuserRepository { get; }

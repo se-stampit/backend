@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Stampit.Webapp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Stampit.Webapp.Controllers
 {
@@ -10,6 +14,7 @@ namespace Stampit.Webapp.Controllers
     {
         public ActionResult Index()
         {
+           
             return View();
         }
 
@@ -26,5 +31,21 @@ namespace Stampit.Webapp.Controllers
 
             return View();
         }
+        /*
+        public void initRole()
+        {
+            setRole("Admin");
+            setRole("Manager");
+            setRole("KioskUser");
+        }
+
+        public void setRole(string rolename)
+        {
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+           
+            if (!Roles.RoleExists(rolename))
+                Roles.CreateRole(rolename);
+        }
+        */
     }
 }

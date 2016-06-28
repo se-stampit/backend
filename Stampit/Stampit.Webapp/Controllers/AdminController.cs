@@ -1,5 +1,6 @@
 ﻿using Stampit.Entity;
 using Stampit.Logic.Interface;
+using Stampit.Webapp.Controllers.Authorization;
 using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize("", Roles = "asdf")]
     public class AdminController : Controller
     {
         private IBusinessuserRepository BusinessuserRepository { get; }

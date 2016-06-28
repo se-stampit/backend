@@ -11,6 +11,7 @@ using Stampit.Entity;
 
 namespace Stampit.Webapp.Controllers
 {
+    [Authorize]
     public class StatisticController : Controller
     {
 
