@@ -349,7 +349,6 @@ namespace Stampit.Webapp.Controllers
             {
                 case SignInStatus.Success:
                     await SetLoginSessionState(loginInfo.Email, Session);
-                    //TODO: Implement SessionState -> current company and current user from repository with model.Email
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
