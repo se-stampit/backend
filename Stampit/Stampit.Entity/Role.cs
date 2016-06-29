@@ -7,6 +7,7 @@ namespace Stampit.Entity
     public class Role : Entity
     {
         [Display(Name = "Role Name")]
+        [Required]
         public string RoleName { get; set; }        
     }
 }

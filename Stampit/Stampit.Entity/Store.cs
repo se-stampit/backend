@@ -7,6 +7,7 @@ namespace Stampit.Entity
     public class Store : Entity
     {
         [Display(Name = "Store Name")]
+        [Required]
         public string StoreName { get; set; }
         public string Address{ get; set; }
         public double Latitude{ get; set; }

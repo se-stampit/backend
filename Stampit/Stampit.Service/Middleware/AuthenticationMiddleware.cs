@@ -84,7 +84,7 @@ namespace Stampit.Service.Middleware
         {
             var service = new Oauth2Service(new Google.Apis.Services.BaseClientService.Initializer());
             var request = service.Tokeninfo();
-            request.AccessToken = accesstoken;
+            request.IdToken = accesstoken;
             var tokeninfo = await request.ExecuteAsync();
             return tokeninfo.Email;
         }
