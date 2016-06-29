@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using Stampit.Webapp.Models;
 using System;
@@ -13,8 +14,6 @@ namespace Stampit.Webapp.Controllers
     [StampitAuthorize(Roles = "Manager")]
     public class UsersController : Controller
     {
-        private const string SESSION_COMPANY = "companyID";
-
         private IBusinessuserRepository BusinessuserRepository { get; }
         private IRoleRepository RoleRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
@@ -31,7 +30,7 @@ namespace Stampit.Webapp.Controllers
         // GET: Users
         public async Task<PartialViewResult> Index()
         {
-            string companyID = Session[SESSION_COMPANY].ToString();
+            string companyID = Session[Setting.SESSION_COMPANY].ToString();
             var userlist = await BusinessuserRepository.GetAllAsync(0);
             return PartialView(userlist.Where(user => user.CompanyId == companyID));
         }
@@ -53,7 +52,7 @@ namespace Stampit.Webapp.Controllers
             {
                 item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
 
-                string companyID = Session[SESSION_COMPANY].ToString();
+                string companyID = Session[Setting.SESSION_COMPANY].ToString();
                 item.User.CompanyId = companyID;
 
                 var company = await CompanyRepository.FindByIdAsync(companyID);
@@ -70,7 +69,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Products/Edit/5
-        public async Task<ActionResult> Edit(String id)
+        public async Task<ActionResult> Edit(string id)
         {
             var user = await GetUsersViewModel(id);
             return View(user);
@@ -104,7 +103,7 @@ namespace Stampit.Webapp.Controllers
             }
         }
         // GET: Products/Delete/5
-        public async Task<ActionResult> Delete(String id)
+        public async Task<ActionResult> Delete(string id)
         {
             var user = await BusinessuserRepository.FindByIdAsync(id);
             return View(user);
@@ -125,7 +124,7 @@ namespace Stampit.Webapp.Controllers
             }
         }
 
-        private async Task<UsersViewModel> GetUsersViewModel(String id)
+        private async Task<UsersViewModel> GetUsersViewModel(string id)
         {
             UsersViewModel viewModel = new UsersViewModel();
 
