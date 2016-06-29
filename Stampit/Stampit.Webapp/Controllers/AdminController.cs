@@ -82,7 +82,7 @@ namespace Stampit.Webapp.Controllers
 
             await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-            return View();
+            return Redirect("CreateCompany");
         }
         public async Task<ActionResult> AdminUser()
         {
