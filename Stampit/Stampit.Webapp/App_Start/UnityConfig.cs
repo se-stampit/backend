@@ -47,8 +47,6 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<Microsoft.AspNet.Identity.UserManager<Models.ApplicationUser>>(new HierarchicalLifetimeManager());
             container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<Controllers.AccountController>(new InjectionConstructor());
-
             container.RegisterType<IPushNotifier, ScanHub>();
             container.RegisterInstance<IAuthenticationTokenStorage>(AuthenticationTokenStorage.GetAuthenticationTokenStorage());
 
@@ -79,6 +77,10 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<ICompanyRepository, CompanyRepository>();
             container.RegisterType<IStoreRepository, StoreRepository>();
             container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<IStampcardRepository, StampcardRepository>();        }
+            container.RegisterType<IStampcardRepository, StampcardRepository>();
+
+
+            container.RegisterType<Controllers.AccountController>(new InjectionConstructor(container.Resolve<IBusinessuserRepository>()));
+        }
     }
 }
