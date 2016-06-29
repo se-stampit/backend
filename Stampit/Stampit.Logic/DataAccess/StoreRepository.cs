@@ -12,12 +12,16 @@ namespace Stampit.Logic.DataAccess
     {
         public Task<IEnumerable<Store>> GetStoresOfCompany(Company company)
         {
-            throw new NotImplementedException();
+            if (company == null) throw new ArgumentNullException(nameof(company));
+
+            return Task.FromResult(company.Stores.AsEnumerable());
         }
 
         public Task<long> GetStoresOfCompanyCount(Company company)
         {
-            throw new NotImplementedException();
+            if (company == null) throw new ArgumentNullException(nameof(company));
+
+            return Task.FromResult(company.Stores.LongCount());
         }
     }
 }

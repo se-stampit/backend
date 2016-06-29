@@ -12,22 +12,24 @@ namespace Stampit.Logic.DataAccess
     {
         public Task<int> CountRedeemedStampcardsFromCompany(Company company)
         {
-            throw new NotImplementedException();
+            if (company == null) throw new ArgumentNullException(nameof(company));
+
+
         }
 
         public Task<int> CountStampcardsFromCompany(Company company)
         {
-            throw new NotImplementedException();
+            if (company == null) throw new ArgumentNullException(nameof(company));
         }
 
         public Task<IEnumerable<Stampcard>> GetAllStampcards(Enduser user, int page, int pagesize = 100)
         {
-            throw new NotImplementedException();
+            if (user == null) throw new ArgumentNullException(nameof(user));
         }
 
         public Task<IDictionary<Product, IDictionary<int, int>>> GetAllStampcardsFromCompany(Company company)
         {
-            throw new NotImplementedException();
+            if (company == null) throw new ArgumentNullException(nameof(company));
         }
 
         public Task<IEnumerable<Stampcard>> GetAllStampcardsFromProduct(Enduser user, Product product)
