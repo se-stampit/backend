@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
@@ -29,14 +30,14 @@ namespace Stampit.Webapp.Controllers
 
         public async Task<ActionResult> StoresMap()
         {
-            String companyID = Session["companyID"].ToString();
+            string companyID = Session[Setting.SESSION_COMPANY].ToString();
             var storelist = await StoreRepository.GetAllAsync(0);
             return PartialView(storelist.Where(com => com.CompanyId == companyID));
         }
 
         public async Task<PartialViewResult> StoresList()
         {
-            String companyID = Session["companyID"].ToString();
+            string companyID = Session[Setting.SESSION_COMPANY].ToString();
             var storelist = await StoreRepository.GetAllAsync(0);
             return PartialView(storelist.Where(com => com.CompanyId == companyID));
         }
@@ -61,7 +62,7 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
-                String companyID = Session["companyID"].ToString();
+                string companyID = Session[Setting.SESSION_COMPANY].ToString();
                 var company = await CompanyRepository.FindByIdAsync(companyID);
 
                 store.CompanyId = companyID;
@@ -77,7 +78,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Stores/Edit/5
-        public async Task<ActionResult> Edit(String id)
+        public async Task<ActionResult> Edit(string id)
         {
             var store = await StoreRepository.FindByIdAsync(id);
             return View(store);
@@ -85,18 +86,18 @@ namespace Stampit.Webapp.Controllers
 
         // POST: Stores/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(Store store)
+        public async Task<ActionResult> Edit(Store item)
         {
-            if (store == null) return View();
-            var sto = await StoreRepository.FindByIdAsync(store.Id);
+            if (item == null) return View();
+            var store = await StoreRepository.FindByIdAsync(item.Id);
 
             try
             {
-                sto.Address = store.Address;
-                sto.Description = store.Description;
-                sto.Latitude = store.Latitude;
-                sto.Longitude = store.Longitude;
-                sto.StoreName = store.StoreName;
+                store.Address = item.Address;
+                store.Description = item.Description;
+                store.Latitude = item.Latitude;
+                store.Longitude = item.Longitude;
+                store.StoreName = item.StoreName;
 
                 await StoreRepository.CreateOrUpdateAsync(store);
                 return RedirectToAction("Index", "Profile");
@@ -108,7 +109,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Stores/Delete/5
-        public async Task<ActionResult> Delete(String id)
+        public async Task<ActionResult> Delete(string id)
         {
             var store = await StoreRepository.FindByIdAsync(id);
             return View(store);

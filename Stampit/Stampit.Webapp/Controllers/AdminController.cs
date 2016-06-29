@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using Stampit.Webapp.Models;
 using System;
@@ -14,8 +15,6 @@ namespace Stampit.Webapp.Controllers
     [StampitAuthorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private const string SESSION_COMPANY = "companyID";
-
         private IBusinessuserRepository BusinessuserRepository { get; }
         private IRoleRepository RoleRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
@@ -51,7 +50,8 @@ namespace Stampit.Webapp.Controllers
 
             if (item == null) return PartialView(model);
 
-            Session[SESSION_COMPANY] = item.Company.Id;
+            Session[Setting.SESSION_COMPANY] = item.Company.Id;
+            Session[Setting.SESSION_PRODUCTS] = null;
 
             return View(model);
         }

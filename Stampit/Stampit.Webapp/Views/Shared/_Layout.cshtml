@@ -57,7 +57,7 @@
 					}
 					@if (Session["role"].Equals("Manager") || Session["role"].Equals("Admin") || Session["role"].Equals("KioskUser"))
 					{
-						<li>@Html.ActionLink("Kiosk Mode", "Index", "KioskMode")</li>
+						<li>@Html.ActionLink("Kiosk", "Index", "KioskMode")</li>
 					}
 					@if (Session["role"].Equals("Admin"))
 					{

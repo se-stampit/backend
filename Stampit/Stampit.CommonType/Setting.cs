@@ -18,5 +18,6 @@
         public const string SESSION_USER = "userID";
         public const string SESSION_COMPANY = "companyID";
         public const string SESSION_ROLE = "role";
+        public const string SESSION_PRODUCTS = "products";
     }
 }

@@ -15,7 +15,6 @@ namespace Stampit.Webapp.Controllers
     {
         private IProductRepository ProductRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
-        private const string SESSION_STATE = "SessionState";
 
         public ProductsController(IProductRepository productRepository, ICompanyRepository companyRepository)
         {
@@ -52,7 +51,7 @@ namespace Stampit.Webapp.Controllers
                 product.Company = company;
                 await ProductRepository.CreateOrUpdateAsync(product);
 
-                Session[SESSION_STATE] = null;
+                Session[Setting.SESSION_PRODUCTS] = null;
 
                 return RedirectToAction("Index", "Profile");
             }
@@ -63,8 +62,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Products/Edit/5
-        public async Task<ActionResult> Edit(String id)
+        public async Task<ActionResult> Edit(string id)
         {
+            if (string.IsNullOrEmpty(id)) return View();
+
             var product = await ProductRepository.FindByIdAsync(id);
             return View(product);
         }
@@ -88,7 +89,7 @@ namespace Stampit.Webapp.Controllers
 
                 await ProductRepository.CreateOrUpdateAsync(prod);
 
-                Session[SESSION_STATE] = null;
+                Session[Setting.SESSION_PRODUCTS] = null;
 
                 return RedirectToAction("Index", "Profile");
             }
@@ -99,7 +100,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<ActionResult> Delete(String id)
+        public async Task<ActionResult> Delete(string id)
         {
             var product = await ProductRepository.FindByIdAsync(id);
             return View(product);

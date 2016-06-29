@@ -108,13 +108,16 @@ namespace Stampit.Webapp.Controllers
             var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
             var salesProduct = await ProductRepository.SalesPerProduct(currentCompany); //TODO!
 
+            Tupel<string,string> randColor;
+
             var sales = from p in salesProduct
                     select new SimpleData {
                         Value = p.Value,
-                        Color = "#F7464A",
-                        Highlight = "#FF5A5E",
+                        Color = (randColor = RandomColor()).Arg1,
+                        Highlight = randColor.Arg2,
                         Label = p.Key.Productname
                     };
+            
             return PartialView(sales);
         }
 
@@ -125,6 +128,24 @@ namespace Stampit.Webapp.Controllers
             var countEnduser = await EnduserRepository.CountEnduser(currentCompany); //TODO!
             return PartialView(countEnduser);
         }
+
+        private static Random rand = new Random(System.Environment.TickCount);
+
+        private Tupel<string,string> RandomColor()
+        {
+            string[] hex = new string[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+
+            string result = "#";
+            string highlightResult = "#";
+            for (int i = 0; i < 6; i++)
+            {
+                int next = rand.Next(0, hex.Length - 1);
+                result += hex[next];
+                highlightResult += hex[next + 2 > 15 ? 15 : next + 2];
+            }
+
+            return new Tupel<string, string>(result,highlightResult);
+        }
     }
 
     public class BarChartDTO
@@ -132,4 +153,7 @@ namespace Stampit.Webapp.Controllers
         public Product Product { get; set; }
         public BarChart BarChart { get; set; }
     }
+
+
+    
 }
