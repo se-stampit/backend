@@ -105,6 +105,19 @@ namespace Stampit.Service.Controllers
             return Content(HttpStatusCode.OK, new { count = stampcards.Count() });
         }
 
+        [HttpDelete]
+        [Route("api/me/stampcard/{stampcardid}")]
+        public async Task<IHttpActionResult> DeleteStampcard(string stampcardid)
+        {
+            var usermail = Request.GetOwinContext().Environment[Setting.AUTH_ENVIRONMENT_ID]?.ToString();
+            var enduser = await EnduserRepository.FindByMailAddress(usermail);
+            var stampcard = await StampcardRepository.FindByIdAsync(stampcardid);
+            if (stampcard == null || stampcard.EnduserId != enduser.Id)
+                return Content(HttpStatusCode.BadRequest, new { errorMessage = "The given stampcardid is not valid! This stampcard does not exist" });
+            await StampcardRepository.Delete(stampcard);
+            return Content(HttpStatusCode.NoContent, new { });
+        }
+
         public class StampcodeDTO
         {
             [JsonProperty("stampcode")]
