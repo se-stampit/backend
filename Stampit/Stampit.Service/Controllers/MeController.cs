@@ -110,12 +110,18 @@ namespace Stampit.Service.Controllers
         public async Task<IHttpActionResult> DeleteStampcard(string stampcardid)
         {
             var usermail = Request.GetOwinContext().Environment[Setting.AUTH_ENVIRONMENT_ID]?.ToString();
-            var enduser = await EnduserRepository.FindByMailAddress(usermail);
+            var enduser = await EnduserRepository.FindByMailAddress(usermail) ?? new Entity.Enduser();
             var stampcard = await StampcardRepository.FindByIdAsync(stampcardid);
-            if (stampcard == null || stampcard.EnduserId != enduser.Id)
+            //TODO Check on user
+            if (stampcard == null)
+            {
                 return Content(HttpStatusCode.BadRequest, new { errorMessage = "The given stampcardid is not valid! This stampcard does not exist" });
-            await StampcardRepository.Delete(stampcard);
-            return Content(HttpStatusCode.NoContent, new { });
+            }
+            else
+            {
+                await StampcardRepository.Delete(stampcard);
+                return Content(HttpStatusCode.NoContent, new { });
+            }
         }
 
         public class StampcodeDTO

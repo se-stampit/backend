@@ -34,7 +34,7 @@ namespace Stampit.Entity
         public override bool Equals(object obj)
         {
             Entity other = obj as Entity;
-            if (obj == null || other == null) return false;
+            if (obj == null || (object)other == null) return false;
 
             if (string.IsNullOrEmpty(other?.Id) && string.IsNullOrEmpty(this.Id))
                 return base.Equals(obj);
@@ -53,7 +53,12 @@ namespace Stampit.Entity
 
         public static bool operator == (Entity entity, Entity other)
         {
-            return entity?.Equals(other) ?? false;
+            if (System.Object.ReferenceEquals(entity, other))
+                return true;
+            if ((object)entity == null || (object)other == null)
+                return false;
+
+            return entity.Equals(other);
         }
 
         public static bool operator !=(Entity entity, Entity other)
