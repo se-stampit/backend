@@ -17,5 +17,13 @@ namespace Stampit.CommonType
 
             return result;
         }
+
+        public static IEnumerable<KeyValuePair<int,T>> IndexSequence<T>(this IEnumerable<T> source, int start, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return from idx in Enumerable.Range(start, count)
+                   select new KeyValuePair<int,T>(idx, source.ElementAt(idx));
+        }
     }
 }
