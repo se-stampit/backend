@@ -61,7 +61,14 @@
 					@Html.HiddenFor(model => model.Id)
 					<div class="form-group">
 						<div class="col-md-12">
-							<img src="@($"data:image/png;base64,{Model.Blob.Content.ToBase64()}")" width="200px" height="200px" />
+							@if (Model.Blob == null)
+							{
+								<img src="~/Content/Images/Unknown.png" width="200" height="200" />
+							}
+							else
+							{
+								<img src="@($"data:image/png;base64,{Model.Blob.Content.ToBase64()}")" width="200" height="200" />
+							}
 						</div>
 					</div>
 					<div class="form-group">

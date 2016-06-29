@@ -1,8 +1,8 @@
 ﻿<a name="Profile"></a>
 <br />
-@if (Session["companyID"]==null)
+@if (string.IsNullOrEmpty(Session["companyID"]?.ToString()))
 {
-	<h1>No Company found</h1>
+	<h1>No Company selected</h1>
 }
 else
 {

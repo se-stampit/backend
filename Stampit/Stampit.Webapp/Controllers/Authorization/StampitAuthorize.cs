@@ -4,21 +4,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Stampit.Webapp.Controllers.Authorization
+namespace Stampit.Webapp.Controllers
 {
     public class StampitAuthorize : AuthorizeAttribute
     {
-        public string Name { get; }
-
-        public StampitAuthorize(string name)
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            Name = name;
-        }
+            string role = httpContext.Session["role"]?.ToString().ToLower() ?? "none";
 
-        public override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            return;
-            base.OnAuthorization(filterContext);
+            string[] allowedRoles = Roles.Split(',').Select(r => r.ToLower()).ToArray();
+
+            return allowedRoles.Contains(role) || role == "admin";
         }
     }
 }

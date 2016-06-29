@@ -12,11 +12,9 @@ using Stampit.Webapp.Models;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class CompanyDataController : Controller
     {
-        private const string SESSION_COMPANY = "companyID";
-
         private ICompanyRepository CompanyRepository { get; }
 
         public CompanyDataController(ICompanyRepository companyRepository)
@@ -27,7 +25,7 @@ namespace Stampit.Webapp.Controllers
         // GET: CompanyData
         public async Task<PartialViewResult> Index()
         {
-            var session = Session[SESSION_COMPANY].ToString();
+            var session = Session[Setting.SESSION_COMPANY].ToString();
             var company = await CompanyRepository.FindByIdAsync(session);
             return PartialView(company);
         }
@@ -62,7 +60,7 @@ namespace Stampit.Webapp.Controllers
         {
             try
             {
-                Company com = await CompanyRepository.FindByIdAsync(Session[SESSION_COMPANY].ToString());
+                Company com = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
                 
                 // Verify that the user selected a file
                 if (file != null && file.ContentLength > 0)

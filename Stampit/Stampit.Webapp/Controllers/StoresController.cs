@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class StoresController : Controller
     {
         private IStoreRepository StoreRepository { get; }

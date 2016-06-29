@@ -2,14 +2,13 @@
 
 <br />
 
-<h1 align="center">Statistics</h1>
-
-@if (Session["companyID"] == null)
+@if (string.IsNullOrEmpty(Session["companyID"]?.ToString()))
 {
-	<h1>No Company found</h1>
+	<h1>No Company selected</h1>
 }
 else
 {
+	<h1 align="center">Statistics</h1>
 	<h2>Stampcard statistics</h2>
 	{
 		Html.RenderAction("CardsInCirculation", "Statistic");

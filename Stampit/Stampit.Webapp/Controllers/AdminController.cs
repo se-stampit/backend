@@ -1,6 +1,5 @@
 ﻿using Stampit.Entity;
 using Stampit.Logic.Interface;
-using Stampit.Webapp.Controllers.Authorization;
 using Stampit.Webapp.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Web.Security;
 
 namespace Stampit.Webapp.Controllers
 {
-    [StampitAuthorize("", Roles = "asdf")]
+    [StampitAuthorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private const string SESSION_COMPANY = "companyID";
@@ -36,14 +35,14 @@ namespace Stampit.Webapp.Controllers
         // GET: Admin/Create
         public ActionResult CreateCompany()
         {
-            return PartialView();
+            return View();
         }
 
         // GET: Admin/Create
         public ActionResult SelectCompany()
         {
             var model = getModelView().Result;
-            return PartialView(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -54,13 +53,17 @@ namespace Stampit.Webapp.Controllers
 
             Session[SESSION_COMPANY] = item.Company.Id;
 
-            return PartialView(model);
+            return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateCompany(AdminCompanyViewModel item)
         {
-            if (item == null) return Index();
+            if (item == null) return View();
+
+            item.Company.Products = new List<Product>();
+            item.Company.Stores = new List<Store>();
+            item.Company.Businessusers = new List<Businessuser>();
 
             //save company
             await CompanyRepository.CreateOrUpdateAsync(item.Company);
@@ -79,12 +82,12 @@ namespace Stampit.Webapp.Controllers
 
             await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-            return Index();
+            return View();
         }
-        public async Task<PartialViewResult> AdminUser()
+        public async Task<ActionResult> AdminUser()
         {
             var userlist = await BusinessuserRepository.GetAllAsync(0);
-            return PartialView(userlist.Where(user => user.Role.RoleName.Equals("Admin")));
+            return View(userlist.Where(user => user.Role.RoleName.Equals("Admin")));
         }
 
         // GET: Admin/Edit/5
@@ -145,11 +148,11 @@ namespace Stampit.Webapp.Controllers
 
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminUser");
             }
             catch
             {
-                return View();
+                return RedirectToAction("AdminUser");
             }
         }
         

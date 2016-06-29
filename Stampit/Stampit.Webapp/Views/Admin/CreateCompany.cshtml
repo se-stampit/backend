@@ -1,5 +1,7 @@
 ﻿@model Stampit.Webapp.Models.AdminCompanyViewModel
-
+<br />
+<h1>Create a new Company</h1>
+<br />
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -39,6 +41,7 @@
                 @Html.ValidationMessageFor(model => model.Company.Description, "", new { @class = "text-danger" })
             </div>
         </div>
+		<br />
 		<h3>Company Manager</h3>
 		<div class="form-group">
 			@Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })

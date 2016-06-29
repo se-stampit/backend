@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class UsersController : Controller
     {
         private const string SESSION_COMPANY = "companyID";

@@ -12,20 +12,22 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "KioskUser,Manager")]
     public class KioskModeController : Controller
     {
         private const string SESSION_STATE = "SessionState";
         private IProductRepository ProductRepository { get; }
+        private ICompanyRepository CompanyRepository { get; }
         private IQrCodeGenerator QrCodeGenerator { get; }
         private IStampCodeProvider StampCodeProvider { get; }
         private IStampCodeService StampCodeService { get; }
 
         private Company currentCompany;
 
-        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeProvider, IStampCodeService stampCodeService, IProductRepository productRepository)
+        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeProvider, IStampCodeService stampCodeService, IProductRepository productRepository, ICompanyRepository companyRepository)
         {
             this.ProductRepository = productRepository;
+            this.CompanyRepository = companyRepository;
             this.QrCodeGenerator = qrCodeGenerator;
             this.StampCodeService = stampCodeService;
             this.StampCodeProvider = stampCodeProvider;
@@ -34,9 +36,11 @@ namespace Stampit.Webapp.Controllers
         public async Task<ActionResult> Index()
         {
             var sessionState = Session[SESSION_STATE] as SessionState;
+            var comId = Session[Setting.SESSION_COMPANY].ToString();
             if (sessionState == null)
             {
-                this.currentCompany = (await ProductRepository.GetAllAsync(0)).First().Company;
+                this.currentCompany = (await CompanyRepository.FindByIdAsync(comId));
+
                 sessionState = new SessionState { Model = new List<ProductViewModel>() };
                 foreach (var product in await ProductRepository.FindProductsFromCompany(this.currentCompany, 0))
                 {

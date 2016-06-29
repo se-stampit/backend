@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,12 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class ProductsController : Controller
     {
         private IProductRepository ProductRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
         private const string SESSION_STATE = "SessionState";
-        private const string SESSION_COMPANY = "companyID";
 
         public ProductsController(IProductRepository productRepository, ICompanyRepository companyRepository)
         {
@@ -25,7 +25,7 @@ namespace Stampit.Webapp.Controllers
         // GET: Products
         public async Task<PartialViewResult> Index()
         {
-            string companyID = Session[SESSION_COMPANY].ToString();
+            string companyID = Session[Setting.SESSION_COMPANY].ToString();
             var productlist = await ProductRepository.GetAllAsync(0);
             return PartialView(productlist.Where(prod => prod.CompanyId == companyID));
         }
@@ -45,7 +45,7 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
-                string companyID = Session[SESSION_COMPANY].ToString();
+                string companyID = Session[Setting.SESSION_COMPANY].ToString();
                 var company = await CompanyRepository.FindByIdAsync(companyID);
 
                 product.CompanyId = companyID;

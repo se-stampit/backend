@@ -8,10 +8,11 @@ using Chart.Mvc.SimpleChart;
 using Stampit.Logic.Interface;
 using System.Threading.Tasks;
 using Stampit.Entity;
+using Stampit.CommonType;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class StatisticController : Controller
     {
 
@@ -29,7 +30,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Statistic
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             return View();
         }
@@ -37,8 +38,9 @@ namespace Stampit.Webapp.Controllers
         // GET: StampCardStatistics
         public async Task<ActionResult> CardsInCirculation()
         {
-            var total = await StampcardRepository.CountStampcardsFromCompany(null); //TODO
-            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(null); //TODO
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var total = await StampcardRepository.CountStampcardsFromCompany(currentCompany); //TODO
+            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(currentCompany); //TODO
             var unredeemed = total-redeemed;
             List<SimpleData> data = new List<SimpleData> {
                 new SimpleData
@@ -63,7 +65,8 @@ namespace Stampit.Webapp.Controllers
         // GET: CardStatusStatistics
         public async Task<ActionResult> CardStatus()
         {
-            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(null); //TODO;
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(currentCompany); //TODO;
 
             var stampcards = from s in stampcardsCompany
                              select new BarChartDTO
@@ -102,7 +105,8 @@ namespace Stampit.Webapp.Controllers
         // GET: SalesStatistics
         public async Task<ActionResult> Sales()
         {
-            var salesProduct = await ProductRepository.SalesPerProduct(null); //TODO!
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var salesProduct = await ProductRepository.SalesPerProduct(currentCompany); //TODO!
 
             var sales = from p in salesProduct
                     select new SimpleData {
@@ -117,7 +121,8 @@ namespace Stampit.Webapp.Controllers
         // GET: CustomerStatistics
         public async Task<ActionResult> Customer()
         {
-            var countEnduser = await EnduserRepository.CountEnduser(null); //TODO!
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var countEnduser = await EnduserRepository.CountEnduser(currentCompany); //TODO!
             return PartialView(countEnduser);
         }
     }

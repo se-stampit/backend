@@ -11,7 +11,7 @@ using Stampit.CommonType;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Manager")]
     public class ProfileController : Controller
     {
         private ICompanyRepository CompanyRepository { get; }
