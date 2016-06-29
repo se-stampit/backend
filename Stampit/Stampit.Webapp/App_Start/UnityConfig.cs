@@ -5,6 +5,7 @@ using Stampit.Logic.Interface;
 using Stampit.Logic;
 using Stampit.Logic.Fakes;
 using Stampit.Webapp.Push;
+using Stampit.Logic.DataAccess;
 
 namespace Stampit.Webapp.App_Start
 {
@@ -40,22 +41,17 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<IStampCodeProvider, FakeStampcodeProvider>();
             container.RegisterType<IStampCodeService, StampCodeService>();
             container.RegisterInstance<IStampCodeStorage>(LocalStampCodeStorage.GetStampCodeStorage());
-            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(
-            new InjectionConstructor(typeof(Models.ApplicationDbContext)));
-            container.RegisterType<System.Data.Entity.DbContext, Models.ApplicationDbContext>(
-    new HierarchicalLifetimeManager());
-            container.RegisterType<Microsoft.AspNet.Identity.UserManager<Models.ApplicationUser>>(
-                new HierarchicalLifetimeManager());
-            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(
-                new HierarchicalLifetimeManager());
+            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(new InjectionConstructor(typeof(Models.ApplicationDbContext)));
+            container.RegisterType<System.Data.Entity.DbContext, Models.ApplicationDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<Microsoft.AspNet.Identity.UserManager<Models.ApplicationUser>>(new HierarchicalLifetimeManager());
+            container.RegisterType<Microsoft.AspNet.Identity.IUserStore<Models.ApplicationUser>, Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<Controllers.AccountController>(
-                new InjectionConstructor());
+            container.RegisterType<Controllers.AccountController>(new InjectionConstructor());
 
             container.RegisterType<IPushNotifier, ScanHub>();
             container.RegisterInstance<IAuthenticationTokenStorage>(AuthenticationTokenStorage.GetAuthenticationTokenStorage());
 
-            var blobRepository = new FakeBlobRepository();
+            /*var blobRepository = new FakeBlobRepository();
             var enduserRepository = new FakeEnduserRepository();
             var roleRepository = new FakeRoleRepository();
             var companyRepository = new FakeCompanyRepository(blobRepository);
@@ -71,6 +67,16 @@ namespace Stampit.Webapp.App_Start
             container.RegisterInstance<ICompanyRepository>(companyRepository);
             container.RegisterInstance<IStoreRepository>(storeRepository);
             container.RegisterInstance<IProductRepository>(productRepository);
-            container.RegisterInstance<IStampcardRepository>(stampcardRepository);        }
+            container.RegisterInstance<IStampcardRepository>(stampcardRepository);*/
+
+            container.RegisterType<IBlobRepository, BlobRepository>();
+            container.RegisterType<IEnduserRepository, EnduserRepository>();
+            container.RegisterType<IRoleRepository,RoleRepository>();
+            container.RegisterType<IBusinessuserRepository, BusinessuserRepository>();
+            container.RegisterType<ICompanyRepository, CompanyRepository>();
+            container.RegisterType<IStoreRepository, StoreRepository>();
+            container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IStampcardRepository, StampcardRepository>();
+        }
     }
 }

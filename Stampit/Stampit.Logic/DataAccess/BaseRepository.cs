@@ -23,7 +23,7 @@ namespace Stampit.Logic.DataAccess
         
         public BaseRepository()
         {
-
+            DbContext = new StampitDbContext();
         }
 
         public Task<long> Count()
@@ -56,7 +56,7 @@ namespace Stampit.Logic.DataAccess
 
         public Task<IEnumerable<T>> GetAllAsync(int pagenr, int pagesize = 100)
         {
-            return Task.FromResult(Set.Skip(pagenr * pagesize).Take(pagesize).AsEnumerable());
+            return Task.FromResult(Set.AsEnumerable().Skip(pagenr * pagesize).Take(pagesize).AsEnumerable());
         }
 
         #region IDisposable Support

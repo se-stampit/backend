@@ -19,7 +19,6 @@ namespace Stampit.Entity
         [Display(Name = "E-Mail")]
         [Required(ErrorMessage = "The E-Mail address is required")]
         [EmailAddress(ErrorMessage = "Invalid E-Mail Address")]
-        [Index(name: "IX_MailAddress", Order = 1, IsUnique = true)]
         public string MailAddress { get; set; }
         
         public virtual ICollection<Stampcard> Stampcards { get; set; }
