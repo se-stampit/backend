@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Stampit.Webapp.Controllers
+@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,6 +17,11 @@
 <body>
 @if (Request.IsAuthenticated)
 {
+	if (string.IsNullOrEmpty(Session["role"]?.ToString()) || Session["role"]?.ToString() == "None")
+	{
+		DependencyResolver.Current.GetService<AccountController>().SetLoginSessionState(User.Identity.GetUserName(), Session).Wait();
+	}
+
     <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-header">
 				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -28,6 +35,8 @@
 
             <nav role="navigation" id="navbarCollapse" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+					@if (Session["role"].Equals("Manager") || Session["role"].Equals("Admin"))
+					{
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a>
 						<ul role="menu" class="dropdown-menu">
@@ -45,13 +54,27 @@
 							<li>@Html.ActionLink("Customer", "Index", "Statistic", null, null, "Kunden", null, null)</li>
 						</ul>
 					</li>
-					<li>@Html.ActionLink("Kiosk Mode", "Index", "KioskMode")</li>
-					<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+					}
+					@if (Session["role"].Equals("Manager") || Session["role"].Equals("Admin") || Session["role"].Equals("KioskUser"))
+					{
+						<li>@Html.ActionLink("Kiosk", "Index", "KioskMode")</li>
+					}
+					@if (Session["role"].Equals("Admin"))
+					{
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+							<ul role="menu" class="dropdown-menu">
+								<li>@Html.ActionLink("Select Company", "SelectCompany", "Admin")</li>
+								<li>@Html.ActionLink("Create Company", "CreateCompany", "Admin")</li>
+								<li>@Html.ActionLink("Admin Users", "AdminUser", "Admin")</li>
+							</ul>
+						</li>
+					}
 				</ul>
 				<div style="margin-right:25px">
 					@Html.Partial("_LoginPartial")
 				</div>
-            </nav>
+			</nav>
     </div>
 }
 else

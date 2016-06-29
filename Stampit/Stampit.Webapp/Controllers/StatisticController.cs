@@ -8,9 +8,11 @@ using Chart.Mvc.SimpleChart;
 using Stampit.Logic.Interface;
 using System.Threading.Tasks;
 using Stampit.Entity;
+using Stampit.CommonType;
 
 namespace Stampit.Webapp.Controllers
 {
+    [StampitAuthorize(Roles = "Manager")]
     public class StatisticController : Controller
     {
 
@@ -28,7 +30,7 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Statistic
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             return View();
         }
@@ -36,8 +38,9 @@ namespace Stampit.Webapp.Controllers
         // GET: StampCardStatistics
         public async Task<ActionResult> CardsInCirculation()
         {
-            var total = await StampcardRepository.CountStampcardsFromCompany(null); //TODO
-            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(null); //TODO
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var total = await StampcardRepository.CountStampcardsFromCompany(currentCompany); //TODO
+            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(currentCompany); //TODO
             var unredeemed = total-redeemed;
             List<SimpleData> data = new List<SimpleData> {
                 new SimpleData
@@ -62,7 +65,8 @@ namespace Stampit.Webapp.Controllers
         // GET: CardStatusStatistics
         public async Task<ActionResult> CardStatus()
         {
-            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(null); //TODO;
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(currentCompany); //TODO;
 
             var stampcards = from s in stampcardsCompany
                              select new BarChartDTO
@@ -101,23 +105,46 @@ namespace Stampit.Webapp.Controllers
         // GET: SalesStatistics
         public async Task<ActionResult> Sales()
         {
-            var salesProduct = await ProductRepository.SalesPerProduct(null); //TODO!
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var salesProduct = await ProductRepository.SalesPerProduct(currentCompany); //TODO!
+
+            Tupel<string,string> randColor;
 
             var sales = from p in salesProduct
                     select new SimpleData {
                         Value = p.Value,
-                        Color = "#F7464A",
-                        Highlight = "#FF5A5E",
+                        Color = (randColor = RandomColor()).Arg1,
+                        Highlight = randColor.Arg2,
                         Label = p.Key.Productname
                     };
+            
             return PartialView(sales);
         }
 
         // GET: CustomerStatistics
         public async Task<ActionResult> Customer()
         {
-            var countEnduser = await EnduserRepository.CountEnduser(null); //TODO!
+            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
+            var countEnduser = await EnduserRepository.CountEnduser(currentCompany); //TODO!
             return PartialView(countEnduser);
+        }
+
+        private static Random rand = new Random(System.Environment.TickCount);
+
+        private Tupel<string,string> RandomColor()
+        {
+            string[] hex = new string[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+
+            string result = "#";
+            string highlightResult = "#";
+            for (int i = 0; i < 6; i++)
+            {
+                int next = rand.Next(0, hex.Length - 1);
+                result += hex[next];
+                highlightResult += hex[next + 2 > 15 ? 15 : next + 2];
+            }
+
+            return new Tupel<string, string>(result,highlightResult);
         }
     }
 
@@ -126,4 +153,7 @@ namespace Stampit.Webapp.Controllers
         public Product Product { get; set; }
         public BarChart BarChart { get; set; }
     }
+
+
+    
 }

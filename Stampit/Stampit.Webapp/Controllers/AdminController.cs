@@ -1,4 +1,5 @@
-﻿using Stampit.Entity;
+﻿using Stampit.CommonType;
+using Stampit.Entity;
 using Stampit.Logic.Interface;
 using Stampit.Webapp.Models;
 using System;
@@ -7,10 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private IBusinessuserRepository BusinessuserRepository { get; }
@@ -29,17 +31,63 @@ namespace Stampit.Webapp.Controllers
         {
             return View();
         }
-
         // GET: Admin/Create
         public ActionResult CreateCompany()
         {
-            return PartialView();
+            return View();
         }
 
-        public async Task<PartialViewResult> AdminUser()
+        // GET: Admin/Create
+        public ActionResult SelectCompany()
+        {
+            var model = getModelView().Result;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SelectCompany(AdminCompanySelectorViewModel item) {
+            var model = getModelView().Result;
+
+            if (item == null) return PartialView(model);
+
+            Session[Setting.SESSION_COMPANY] = item.Company.Id;
+            Session[Setting.SESSION_PRODUCTS] = null;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateCompany(AdminCompanyViewModel item)
+        {
+            if (item == null) return View();
+
+            item.Company.Products = new List<Product>();
+            item.Company.Stores = new List<Store>();
+            item.Company.Businessusers = new List<Businessuser>();
+
+            //save company
+            await CompanyRepository.CreateOrUpdateAsync(item.Company);
+
+            var companies = await CompanyRepository.GetAllAsync(0);
+            var company = companies.Where(com => com.CompanyName.Equals(item.Company.CompanyName)).First();
+
+            //save user
+            var roles = await RoleRepository.GetAllAsync(0);
+            var role = roles.Where(ro => ro.RoleName.Equals("Manager")).First();
+
+            item.User.Role = role;
+            item.User.RoleId = role.Id;
+            item.User.Company = company;
+            item.User.CompanyId = company.Id;
+
+            await BusinessuserRepository.CreateOrUpdateAsync(item.User);
+
+            return Redirect("CreateCompany");
+        }
+        public async Task<ActionResult> AdminUser()
         {
             var userlist = await BusinessuserRepository.GetAllAsync(0);
-            return PartialView(userlist.Where(user => user.Role.RoleName.Equals("Admin")));
+            return View(userlist.Where(user => user.Role.RoleName.Equals("Admin")));
         }
 
         // GET: Admin/Edit/5
@@ -100,11 +148,11 @@ namespace Stampit.Webapp.Controllers
 
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminUser");
             }
             catch
             {
-                return View();
+                return RedirectToAction("AdminUser");
             }
         }
         
@@ -132,6 +180,20 @@ namespace Stampit.Webapp.Controllers
             {
                 return View();
             }
+        }
+
+        private async Task<AdminCompanySelectorViewModel> getModelView()
+        {
+            var companies = await CompanyRepository.GetAllAsync(0);
+            AdminCompanySelectorViewModel model = new AdminCompanySelectorViewModel();
+            model.Companies = companies.Select(r => new SelectListItem
+            {
+                Text = r.CompanyName,
+                Value = r.Id
+            });
+            model.Company = new Company();
+
+            return model;
         }
     }
 }

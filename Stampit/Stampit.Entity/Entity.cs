@@ -51,7 +51,7 @@ namespace Stampit.Entity
             return $"{this.GetType().Name}: {Id}";
         }
 
-        public static bool operator == (Entity entity, Entity other)
+        public static bool operator ==(Entity entity, Entity other)
         {
             if (System.Object.ReferenceEquals(entity, other))
                 return true;

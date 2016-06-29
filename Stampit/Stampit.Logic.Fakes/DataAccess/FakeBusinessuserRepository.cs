@@ -27,6 +27,10 @@ namespace Stampit.Logic.Fakes
             this.Data[1].CompanyId = this.Data[1].Company.Id;
             this.Data[2].Role = RoleRepository.GetAllAsync(0).Result.Where(r => r.RoleName == "Admin").FirstOrDefault();
             this.Data[2].RoleId = this.Data[2].Role.Id;
+            this.Data[3].Role = RoleRepository.GetAllAsync(0).Result.Where(r => r.RoleName == "KioskUser").FirstOrDefault();
+            this.Data[3].RoleId = this.Data[3].Role.Id;
+            this.Data[3].Company = CompanyRepository.GetAllAsync(0).Result.Where(r => r.Id == "ID123").FirstOrDefault();
+            this.Data[3].CompanyId = this.Data[3].Company.Id;
         }
 
         protected override IList<Businessuser> Data { get; } = new List<Businessuser>
@@ -53,6 +57,14 @@ namespace Stampit.Logic.Fakes
                 FirstName="Richard",
                 LastName="Leinweber",
                 MailAddress="r.leinweber@gmail.com",
+                CreatedAt = DateTime.Now
+            },
+            new Businessuser()
+            {
+                Id = Guid.NewGuid().ToString().Replace("-",""),
+                FirstName="Kiosk",
+                LastName="User",
+                MailAddress="stampit.kiosk@gmail.com",
                 CreatedAt = DateTime.Now
             }
         };

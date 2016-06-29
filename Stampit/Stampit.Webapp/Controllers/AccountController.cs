@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Stampit.Webapp.Models;
+using Stampit.Logic.Interface;
+using Stampit.CommonType;
 
 namespace Stampit.Webapp.Controllers
 {
@@ -18,8 +20,11 @@ namespace Stampit.Webapp.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        private IBusinessuserRepository BusinessuserRepository { get; }
+
+        public AccountController(IBusinessuserRepository businessuserRepository)
         {
+            this.BusinessuserRepository = businessuserRepository;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -317,6 +322,16 @@ namespace Stampit.Webapp.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
+        [AllowAnonymous]
+        public async Task SetLoginSessionState(string email, HttpSessionStateBase internalSession)
+        {
+            var users = await BusinessuserRepository.GetAllAsync(0);
+
+            internalSession[Setting.SESSION_USER] = users.Where(user => user.MailAddress.Equals(email)).FirstOrDefault()?.Id ?? "";
+            internalSession[Setting.SESSION_COMPANY] = users.Where(user => user.MailAddress.Equals(email)).FirstOrDefault()?.CompanyId ?? "";
+            internalSession[Setting.SESSION_ROLE] = users.Where(user => user.MailAddress.Equals(email)).FirstOrDefault()?.Role?.RoleName ?? "none";
+        }
+
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
@@ -333,6 +348,7 @@ namespace Stampit.Webapp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    await SetLoginSessionState(loginInfo.Email, Session);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -391,6 +407,10 @@ namespace Stampit.Webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session[Setting.SESSION_USER] = "";
+            Session[Setting.SESSION_COMPANY] = "";
+            Session[Setting.SESSION_ROLE] = "None";
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

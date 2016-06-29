@@ -14,5 +14,10 @@
         public const string AUTH_ANONYMOUS = "anonymous";
         public const string AUTH_ENVIRONMENT_SESSIONTOKEN = "sessiontoken";
         public const string AUTH_MODE = "authmode";
+
+        public const string SESSION_USER = "userID";
+        public const string SESSION_COMPANY = "companyID";
+        public const string SESSION_ROLE = "role";
+        public const string SESSION_PRODUCTS = "products";
     }
 }

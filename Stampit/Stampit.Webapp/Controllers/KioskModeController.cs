@@ -12,20 +12,21 @@ using System.Web.Mvc;
 
 namespace Stampit.Webapp.Controllers
 {
-    [Authorize]
+    [StampitAuthorize(Roles = "KioskUser,Manager")]
     public class KioskModeController : Controller
     {
-        private const string SESSION_STATE = "SessionState";
         private IProductRepository ProductRepository { get; }
+        private ICompanyRepository CompanyRepository { get; }
         private IQrCodeGenerator QrCodeGenerator { get; }
         private IStampCodeProvider StampCodeProvider { get; }
         private IStampCodeService StampCodeService { get; }
 
         private Company currentCompany;
 
-        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeProvider, IStampCodeService stampCodeService, IProductRepository productRepository)
+        public KioskModeController(IQrCodeGenerator qrCodeGenerator, IStampCodeProvider stampCodeProvider, IStampCodeService stampCodeService, IProductRepository productRepository, ICompanyRepository companyRepository)
         {
             this.ProductRepository = productRepository;
+            this.CompanyRepository = companyRepository;
             this.QrCodeGenerator = qrCodeGenerator;
             this.StampCodeService = stampCodeService;
             this.StampCodeProvider = stampCodeProvider;
@@ -33,17 +34,19 @@ namespace Stampit.Webapp.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var sessionState = Session[SESSION_STATE] as SessionState;
+            var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
+            var comId = Session[Setting.SESSION_COMPANY].ToString();
             if (sessionState == null)
             {
-                this.currentCompany = (await ProductRepository.GetAllAsync(0)).First().Company;
+                this.currentCompany = (await CompanyRepository.FindByIdAsync(comId));
+
                 sessionState = new SessionState { Model = new List<ProductViewModel>() };
                 foreach (var product in await ProductRepository.FindProductsFromCompany(this.currentCompany, 0))
                 {
                     sessionState.Model.Add(new ProductViewModel { Product = product, Count = 0, IsSelected = !sessionState.Model.Any() });
                 }
                 sessionState.SelectedViewModel = sessionState.Model.FirstOrDefault();
-                Session[SESSION_STATE] = sessionState;
+                Session[Setting.SESSION_PRODUCTS] = sessionState;
             }
 
             return View(sessionState.Model);
@@ -51,11 +54,11 @@ namespace Stampit.Webapp.Controllers
 
         public ActionResult SetCount(int count)
         {
-            var sessionState = Session[SESSION_STATE] as SessionState;
+            var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
             if (sessionState == null || sessionState.SelectedViewModel == null) return RedirectToAction("Index");
 
             sessionState.SelectedViewModel.Count = count;
-            Session[SESSION_STATE] = sessionState;
+            Session[Setting.SESSION_PRODUCTS] = sessionState;
 
             return View("Index", sessionState.Model);
         }
@@ -65,7 +68,7 @@ namespace Stampit.Webapp.Controllers
             try
             {
                 SelectProduct(selectedProduct);
-                return View("Index", (Session[SESSION_STATE] as SessionState)?.Model);
+                return View("Index", (Session[Setting.SESSION_PRODUCTS] as SessionState)?.Model);
             }
             catch(InvalidOperationException)
             {
@@ -94,7 +97,7 @@ namespace Stampit.Webapp.Controllers
             if (string.IsNullOrEmpty(selectedProduct))
                 throw new ArgumentNullException(nameof(selectedProduct));
 
-            var sessionState = Session[SESSION_STATE] as SessionState;
+            var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
             if (sessionState == null || sessionState.Model == null)
                 throw new InvalidOperationException("The sessionstate does not contain a model and can theirfore not select any product");
 
@@ -102,12 +105,12 @@ namespace Stampit.Webapp.Controllers
                 sessionState.SelectedViewModel.IsSelected = false;
             sessionState.SelectedViewModel = sessionState.Model.Where(vm => vm?.Product?.Productname == selectedProduct).FirstOrDefault();
             sessionState.SelectedViewModel.IsSelected = true;
-            Session[SESSION_STATE] = sessionState;
+            Session[Setting.SESSION_PRODUCTS] = sessionState;
         }
 
         public async Task<ActionResult> ShowStampGenerationQrCode()
         {
-            var sessionState = Session[SESSION_STATE] as SessionState;
+            var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
             if (sessionState == null || sessionState.Model == null) return RedirectToAction("Index");
             
             var stampcode = StampCodeProvider.GenerateStampCode((Dictionary<Product,int>)sessionState);
@@ -123,7 +126,7 @@ namespace Stampit.Webapp.Controllers
 
         public async Task<ActionResult> RedeemStampCard()
         {
-            var sessionState = Session[SESSION_STATE] as SessionState;
+            var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
             if (sessionState == null || sessionState.Model == null) return RedirectToAction("Index");
 
             var stampcode = StampCodeProvider.GenerateRedeemCode(sessionState.SelectedViewModel.Product);
@@ -141,7 +144,7 @@ namespace Stampit.Webapp.Controllers
 
         public ActionResult Clear()
         {
-            Session[SESSION_STATE] = null;
+            Session[Setting.SESSION_PRODUCTS] = null;
             return RedirectToAction("Index");
         }
     }

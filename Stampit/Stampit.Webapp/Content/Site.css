@@ -94,8 +94,8 @@ textarea {
 
 .btn-product {
     color: #fff;
-    background-color: #c9302c;
-    border-color: #ac2925;
+    background-color: #ff7d00;
+    border-color: #ada0a0;
     align-items: stretch;
     width: 80%;
     min-width: 250px;
@@ -103,8 +103,8 @@ textarea {
 }
 
 .btn-selected {
-    background-color: #8F2925;
-    border-color: #8F2925;
+    background-color: #813f00;
+    border-color: #ada0a0;
 }
 
 .product-detail-container {
@@ -122,8 +122,8 @@ textarea {
 
 .btn-product:hover {
     color: #fff;
-    background-color: #d9534f;
-    border-color: #d43f3a;
+    background-color: #ff9530;
+    border-color: #ada0a0;
 }
 
 .btn-product:active:focus > .product-detail-container > .bubble {
