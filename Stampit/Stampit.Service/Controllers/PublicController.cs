@@ -57,7 +57,9 @@ namespace Stampit.Service.Controllers
         public async Task<IHttpActionResult> Register([FromBody]Loginprovider loginprovider)
         {
             var context = Request.GetOwinContext();
-            await EnduserRepository.CreateOrUpdateAsync(loginprovider.Enduser);
+            Enduser user = await EnduserRepository.FindByMailAddress(loginprovider.Enduser.MailAddress);
+            if(user == null)
+                await EnduserRepository.CreateOrUpdateAsync(loginprovider.Enduser);
 
             return Content(HttpStatusCode.OK, 
                 new

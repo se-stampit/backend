@@ -29,10 +29,13 @@ namespace Stampit.Logic.Interface
         /// <returns>The list of the requested stampcards which are orderd descending by the amount of gained stamps</returns>
         Task<IEnumerable<Stampcard>> GetAllStampcardsFromProduct(Enduser user, Product product);
         /// <summary>
-        /// Finds the stampcards of the given company
+        /// Generates a prepared statistic for the given company based on their stampcard filling level for each product
         /// </summary>
-        /// <param name="company">The company to define which amount should be returned</param>
-        /// <returns>The list of the requested stampcards</returns>
+        /// <param name="company">The company for which the statistic should be created</param>
+        /// <returns>A dictionary of all stampcards defined as product with their related stampcards respectively to their current stampcount
+        /// The key (x-axis) of the inner dictionary defines the current fillcount of stamps of the stampcards
+        /// The value (y-axis) of the inner dictionary defines the count of stampcards which have the fillcount given as key
+        /// </returns>
         Task<IDictionary<Product, IDictionary<int,int>>> GetAllStampcardsFromCompany(Company company);
         /// <summary>
         /// Counts the stampcards in circulation of the given company

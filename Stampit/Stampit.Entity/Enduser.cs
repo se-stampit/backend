@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Stampit.Entity
 {
@@ -18,7 +19,7 @@ namespace Stampit.Entity
         [Display(Name = "E-Mail")]
         [Required(ErrorMessage = "The E-Mail address is required")]
         [EmailAddress(ErrorMessage = "Invalid E-Mail Address")]
-                public string MailAddress { get; set; }
+        public string MailAddress { get; set; }
         
         public virtual ICollection<Stampcard> Stampcards { get; set; }
         public virtual ICollection<Loginprovider> Loginproviders { get; set; }

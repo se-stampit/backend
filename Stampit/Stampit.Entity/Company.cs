@@ -7,6 +7,7 @@ namespace Stampit.Entity
 	public class Company : Entity
 	{
         [Display(Name = "Company Name")]
+        [Required]
 		public string CompanyName { get; set; }
         [Display(Name = "Contact Address")]
         public string ContactAddress { get; set; }
