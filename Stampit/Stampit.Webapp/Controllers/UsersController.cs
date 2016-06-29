@@ -13,6 +13,8 @@ namespace Stampit.Webapp.Controllers
     [Authorize]
     public class UsersController : Controller
     {
+        private const string SESSION_COMPANY = "companyID";
+
         private IBusinessuserRepository BusinessuserRepository { get; }
         private IRoleRepository RoleRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
@@ -29,7 +31,7 @@ namespace Stampit.Webapp.Controllers
         // GET: Users
         public async Task<PartialViewResult> Index()
         {
-            String companyID = Session["companyID"].ToString();
+            string companyID = Session[SESSION_COMPANY].ToString();
             var userlist = await BusinessuserRepository.GetAllAsync(0);
             return PartialView(userlist.Where(user => user.CompanyId == companyID));
         }
@@ -51,7 +53,7 @@ namespace Stampit.Webapp.Controllers
             {
                 item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
 
-                String companyID = Session["companyID"].ToString();
+                string companyID = Session[SESSION_COMPANY].ToString();
                 item.User.CompanyId = companyID;
 
                 var company = await CompanyRepository.FindByIdAsync(companyID);

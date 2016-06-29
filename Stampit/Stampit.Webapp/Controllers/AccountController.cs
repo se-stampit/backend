@@ -9,17 +9,25 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Stampit.Webapp.Models;
+using Stampit.Logic.Interface;
 
 namespace Stampit.Webapp.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private const string SESSION_USER = "userID";
+        private const string SESSION_COMPANY = "companyID";
+        private const string SESSION_ROLE = "role";
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        private IBusinessuserRepository BusinessuserRepository { get; }
+
+        public AccountController(IBusinessuserRepository businessuserRepository)
         {
+            this.BusinessuserRepository = businessuserRepository;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -79,7 +87,6 @@ namespace Stampit.Webapp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    //TODO: Implement SessionState -> current company and current user from repository with model.Email
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -334,6 +341,13 @@ namespace Stampit.Webapp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var users = await BusinessuserRepository.GetAllAsync(0);
+
+                    Session[SESSION_USER] = users.Where(user => user.MailAddress.Equals(loginInfo.Email)).First().Id;
+                    Session[SESSION_COMPANY] = users.Where(user => user.MailAddress.Equals(loginInfo.Email)).First().CompanyId;
+                    Session[SESSION_ROLE] = users.Where(user => user.MailAddress.Equals(loginInfo.Email)).First().Role.RoleName;
+
+                    //TODO: Implement SessionState -> current company and current user from repository with model.Email
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -392,6 +406,10 @@ namespace Stampit.Webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session[SESSION_USER] = "";
+            Session[SESSION_COMPANY] = "";
+            Session[SESSION_ROLE] = "None";
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

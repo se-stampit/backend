@@ -12,9 +12,15 @@ namespace Stampit.Webapp.Controllers
 {
     public class HomeController : Controller
     {
+        private const string SESSION_USER = "userID";
+        private const string SESSION_COMPANY = "companyID";
+        private const string SESSION_ROLE = "role";
+
         public ActionResult Index()
         {
-           
+            if (Session[SESSION_ROLE] == null)
+                Session[SESSION_ROLE] = "None";
+
             return View();
         }
 
@@ -31,21 +37,5 @@ namespace Stampit.Webapp.Controllers
 
             return View();
         }
-        /*
-        public void initRole()
-        {
-            setRole("Admin");
-            setRole("Manager");
-            setRole("KioskUser");
-        }
-
-        public void setRole(string rolename)
-        {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-           
-            if (!Roles.RoleExists(rolename))
-                Roles.CreateRole(rolename);
-        }
-        */
     }
 }

@@ -4,35 +4,41 @@
 
 <h1 align="center">Statistics</h1>
 
-<h2>Stampcard statistics</h2>
-@{
-    Html.RenderAction("CardsInCirculation", "Statistic");
+@if (Session["companyID"] == null)
+{
+	<h1>No Company found</h1>
 }
-<br />
-<br />
+else
+{
+	<h2>Stampcard statistics</h2>
+	{
+		Html.RenderAction("CardsInCirculation", "Statistic");
+	}
+	<br />
+	<br />
 
-@{
-    Html.RenderAction("CardStatus", "Statistic");  
+	{
+		Html.RenderAction("CardStatus", "Statistic");
+	}
+
+	<br/>
+	<br/>
+
+	<a name="Umsatz"></a>
+	<h2>Sales statistics</h2>
+	{
+		Html.RenderAction("Sales", "Statistic");
+	}
+
+	<br />
+	<br />
+
+	<a name="Kunden"></a>
+	<h2>Customer statistics</h2>
+	{
+		Html.RenderAction("Customer", "Statistic");
+	}
+
+	<br />
+	<br />
 }
-
-<br/>
-<br/>
-
-<a name="Umsatz"></a>
-<h2>Sales statistics</h2>
-@{
-    Html.RenderAction("Sales", "Statistic");
-}
-
-<br />
-<br />
-
-<a name="Kunden"></a>
-<h2>Customer statistics</h2>
-@{
-    Html.RenderAction("Customer", "Statistic");
-}
-
-<br />
-<br />
-

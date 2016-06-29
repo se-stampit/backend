@@ -15,6 +15,8 @@ namespace Stampit.Webapp.Controllers
     [StampitAuthorize("", Roles = "asdf")]
     public class AdminController : Controller
     {
+        private const string SESSION_COMPANY = "companyID";
+
         private IBusinessuserRepository BusinessuserRepository { get; }
         private IRoleRepository RoleRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
@@ -31,13 +33,54 @@ namespace Stampit.Webapp.Controllers
         {
             return View();
         }
-
         // GET: Admin/Create
         public ActionResult CreateCompany()
         {
             return PartialView();
         }
 
+        // GET: Admin/Create
+        public ActionResult SelectCompany()
+        {
+            var model = getModelView().Result;
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult SelectCompany(AdminCompanySelectorViewModel item) {
+            var model = getModelView().Result;
+
+            if (item == null) return PartialView(model);
+
+            Session[SESSION_COMPANY] = item.Company.Id;
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateCompany(AdminCompanyViewModel item)
+        {
+            if (item == null) return Index();
+
+            //save company
+            await CompanyRepository.CreateOrUpdateAsync(item.Company);
+
+            var companies = await CompanyRepository.GetAllAsync(0);
+            var company = companies.Where(com => com.CompanyName.Equals(item.Company.CompanyName)).First();
+
+            //save user
+            var roles = await RoleRepository.GetAllAsync(0);
+            var role = roles.Where(ro => ro.RoleName.Equals("Manager")).First();
+
+            item.User.Role = role;
+            item.User.RoleId = role.Id;
+            item.User.Company = company;
+            item.User.CompanyId = company.Id;
+
+            await BusinessuserRepository.CreateOrUpdateAsync(item.User);
+
+            return Index();
+        }
         public async Task<PartialViewResult> AdminUser()
         {
             var userlist = await BusinessuserRepository.GetAllAsync(0);
@@ -134,6 +177,20 @@ namespace Stampit.Webapp.Controllers
             {
                 return View();
             }
+        }
+
+        private async Task<AdminCompanySelectorViewModel> getModelView()
+        {
+            var companies = await CompanyRepository.GetAllAsync(0);
+            AdminCompanySelectorViewModel model = new AdminCompanySelectorViewModel();
+            model.Companies = companies.Select(r => new SelectListItem
+            {
+                Text = r.CompanyName,
+                Value = r.Id
+            });
+            model.Company = new Company();
+
+            return model;
         }
     }
 }

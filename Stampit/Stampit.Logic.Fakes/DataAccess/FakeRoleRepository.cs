@@ -29,6 +29,12 @@ namespace Stampit.Logic.Fakes
                 Id = Guid.NewGuid().ToString().Replace("-",""),
                 RoleName = "Admin",
                 CreatedAt = DateTime.Now
+            },
+            new Role()
+            {
+                Id = Guid.NewGuid().ToString().Replace("-",""),
+                RoleName = "None",
+                CreatedAt = DateTime.Now
             }
         };
     }
