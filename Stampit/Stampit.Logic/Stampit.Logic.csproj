@@ -87,6 +87,7 @@
     <Compile Include="DataAccess\BusinessuserRepository.cs" />
     <Compile Include="DataAccess\CompanyRepository.cs" />
     <Compile Include="DataAccess\EnduserRepository.cs" />
+    <Compile Include="DataAccess\ProductRepository.cs" />
     <Compile Include="GoogleQrCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StampCodeService.cs" />
