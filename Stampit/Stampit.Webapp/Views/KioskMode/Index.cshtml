@@ -1,10 +1,11 @@
 ﻿@using Stampit.Webapp.Models;
+@using Stampit.CommonType;
 @model IEnumerable<ProductViewModel>
 
 @{
-    ViewBag.Title = "StampIt - Stampit Kiosk";
+    ViewBag.Title = "Stampit Kiosk";
 }
-@if (string.IsNullOrEmpty(Session["companyID"]?.ToString()))
+@if (string.IsNullOrEmpty(Session[Setting.SESSION_COMPANY]?.ToString()))
 {
 	<br />
 	<h1>No Company selected</h1>

@@ -35,7 +35,9 @@ namespace Stampit.Webapp.Controllers
         public async Task<ActionResult> Index()
         {
             var sessionState = Session[Setting.SESSION_PRODUCTS] as SessionState;
-            var comId = Session[Setting.SESSION_COMPANY].ToString();
+            var comId = Session[Setting.SESSION_COMPANY]?.ToString();
+            if (string.IsNullOrEmpty(comId)) return View();
+
             if (sessionState == null)
             {
                 this.currentCompany = (await CompanyRepository.FindByIdAsync(comId));

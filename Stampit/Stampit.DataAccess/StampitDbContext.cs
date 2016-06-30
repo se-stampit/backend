@@ -15,6 +15,11 @@ namespace Stampit.DataAccess
         {
         }
 
+        static StampitDbContext()
+        {
+            Database.SetInitializer<StampitDbContext>(new StampitInitializer());
+        }
+
         public DbSet<Blob> Blobs { get; set; }
         public DbSet<Businessuser> Businessusers { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -42,6 +47,17 @@ namespace Stampit.DataAccess
         {
             UpdateChangeTimes();
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Businessuser>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("Businessusers");
+            });
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public void UpdateChangeTimes()
