@@ -28,17 +28,17 @@ namespace Stampit.Webapp.Controllers
             return PartialView();
         }
 
-        public async Task<ActionResult> StoresMap()
+        public ActionResult StoresMap()
         {
             string companyID = Session[Setting.SESSION_COMPANY].ToString();
-            var storelist = await StoreRepository.GetAllAsync(0);
+            var storelist = StoreRepository.GetAllAsync(0).Result;
             return PartialView(storelist.Where(com => com.CompanyId == companyID));
         }
 
-        public async Task<PartialViewResult> StoresList()
+        public PartialViewResult StoresList()
         {
             string companyID = Session[Setting.SESSION_COMPANY].ToString();
-            var storelist = await StoreRepository.GetAllAsync(0);
+            var storelist = StoreRepository.GetAllAsync(0).Result;
             return PartialView(storelist.Where(com => com.CompanyId == companyID));
         }
         
@@ -66,7 +66,6 @@ namespace Stampit.Webapp.Controllers
                 var company = await CompanyRepository.FindByIdAsync(companyID);
 
                 store.CompanyId = companyID;
-                store.Company = company;
                 await StoreRepository.CreateOrUpdateAsync(store);
 
                 return RedirectToAction("Index", "Profile");

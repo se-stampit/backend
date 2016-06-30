@@ -16,7 +16,7 @@ namespace Stampit.Logic.DataAccess
                          join card in DbContext.Stampcards on user.Id equals card.EnduserId
                          join product in DbContext.Products on card.ProductId equals product.Id
                          join company in DbContext.Companies on product.CompanyId equals company.Id
-                        where param_company == company
+                        where param_company.Id == company.Id
                        select user).LongCount();
             return Task.FromResult(count);
         }

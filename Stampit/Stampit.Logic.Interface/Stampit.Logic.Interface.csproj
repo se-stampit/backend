@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\IRoleRepository.cs" />
     <Compile Include="DataAccess\IBusinessuserRepository.cs" />
+    <Compile Include="DataAccess\IStampRepository.cs" />
     <Compile Include="DataAccess\IStoreRepository.cs" />
     <Compile Include="IAuthenticationTokenStorage.cs" />
     <Compile Include="IPushNotifier.cs" />

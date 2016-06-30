@@ -35,16 +35,22 @@ namespace Stampit.Logic.DataAccess
         {
             if (entity == null)
                 return;
-            if (await Set.FindAsync(entity.Id) == null)
+
+            DbContext.ChangeTracker.DetectChanges();
+
+            /*if (DbContext.Entry(entity).State == EntityState.Detached)
+                Set.Attach(entity);
+            else */if (await Set.FindAsync(entity.Id) == null || string.IsNullOrEmpty(entity.Id))
                 Set.Add(entity);
             else
                 DbContext.Entry(entity).State = EntityState.Modified;
 
-            await DbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public Task Delete(T entity)
         {
+            DbContext.ChangeTracker.DetectChanges();
             Set.Remove(entity);
             return DbContext.SaveChangesAsync();
         }

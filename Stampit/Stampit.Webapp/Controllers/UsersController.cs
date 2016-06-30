@@ -28,10 +28,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Users
-        public async Task<PartialViewResult> Index()
+        public PartialViewResult Index()
         {
             string companyID = Session[Setting.SESSION_COMPANY].ToString();
-            var userlist = await BusinessuserRepository.GetAllAsync(0);
+            var userlist = BusinessuserRepository.GetAllAsync(0).Result;
             return PartialView(userlist.Where(user => user.CompanyId == companyID));
         }
 
@@ -50,13 +50,8 @@ namespace Stampit.Webapp.Controllers
 
             try
             {
-                item.User.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
-
                 string companyID = Session[Setting.SESSION_COMPANY].ToString();
                 item.User.CompanyId = companyID;
-
-                var company = await CompanyRepository.FindByIdAsync(companyID);
-                item.User.Company = company;
 
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
@@ -87,7 +82,7 @@ namespace Stampit.Webapp.Controllers
             try
             {
                 var user = await BusinessuserRepository.FindByIdAsync(item.User.Id);
-                user.Role = await RoleRepository.FindByIdAsync(item.User.RoleId);
+                user.Id = item.User.Id;
                 user.RoleId = item.User.RoleId;
                 user.FirstName = item.User.FirstName;
                 user.LastName = item.User.LastName;

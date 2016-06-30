@@ -29,10 +29,14 @@ namespace Stampit.Logic.DataAccess
             var sales = (from product in Set
                          join stampcard in DbContext.Stampcards on product.Id equals stampcard.ProductId
                          join stamp in DbContext.Stamps on stampcard.Id equals stamp.StampcardId
-                        group product by product into productgroup
-                       select new KeyValuePair<Product, double>(productgroup.Key, productgroup.LongCount() * productgroup.Key.Price)).ToDictionaryFromKeyValuePair();
-
-            return Task.FromResult(sales);
+                         group product by product into productgroup
+                         select new Tupel<Product, double>
+                         {
+                             Arg1 = productgroup.Key,
+                             Arg2 = productgroup.LongCount() * productgroup.Key.Price
+                         }).ToList();
+            
+            return Task.FromResult(sales.ToDictionaryFromKeyValuePair());
         }
     }
 }

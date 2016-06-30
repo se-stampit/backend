@@ -7,6 +7,7 @@ using Stampit.Logic.Fakes;
 using Stampit.Webapp.Push;
 using Microsoft.Owin.Security;
 using Stampit.Logic.DataAccess;
+using Stampit.Logic.Interface.DataAccess;
 
 namespace Stampit.Webapp.App_Start
 {
@@ -78,7 +79,7 @@ namespace Stampit.Webapp.App_Start
             container.RegisterType<IStoreRepository, StoreRepository>();
             container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IStampcardRepository, StampcardRepository>();
-
+            container.RegisterType<IStampRepository, StampRepository>();
 
             container.RegisterType<Controllers.AccountController>(new InjectionConstructor(container.Resolve<IBusinessuserRepository>()));
         }

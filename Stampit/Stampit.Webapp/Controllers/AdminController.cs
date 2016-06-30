@@ -68,17 +68,11 @@ namespace Stampit.Webapp.Controllers
             //save company
             await CompanyRepository.CreateOrUpdateAsync(item.Company);
 
-            var companies = await CompanyRepository.GetAllAsync(0);
-            var company = companies.Where(com => com.CompanyName.Equals(item.Company.CompanyName)).First();
-
             //save user
-            var roles = await RoleRepository.GetAllAsync(0);
-            var role = roles.Where(ro => ro.RoleName.Equals("Manager")).First();
-
-            item.User.Role = role;
-            item.User.RoleId = role.Id;
-            item.User.Company = company;
-            item.User.CompanyId = company.Id;
+            var role = (await RoleRepository.GetAllAsync(0)).Where(r => r.RoleName == "Manager").FirstOrDefault();
+            
+            item.User.RoleId = role?.Id;
+            item.User.CompanyId = item.Company.Id;
 
             await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 
@@ -112,8 +106,7 @@ namespace Stampit.Webapp.Controllers
                 var user = await BusinessuserRepository.FindByIdAsync(item.Id);
                 var Roles = await RoleRepository.GetAllAsync(0);
                 Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
-
-                user.Role = Roles.FirstOrDefault();
+                
                 user.RoleId = user.Role.Id;
                 user.FirstName = item.FirstName;
                 user.LastName = item.LastName;
@@ -121,7 +114,7 @@ namespace Stampit.Webapp.Controllers
 
                 await BusinessuserRepository.CreateOrUpdateAsync(user);
 
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Edit", "Admin");
             }
             catch
             {
@@ -144,7 +137,7 @@ namespace Stampit.Webapp.Controllers
             {
                 var Roles = await RoleRepository.GetAllAsync(0);
                 Roles = Roles.Where(role => role.RoleName.Equals("Admin"));
-                item.User.Role = Roles.FirstOrDefault();
+                item.User.RoleId = Roles.FirstOrDefault()?.Id;
 
                 await BusinessuserRepository.CreateOrUpdateAsync(item.User);
 

@@ -22,10 +22,10 @@ namespace Stampit.Webapp.Controllers
             this.CompanyRepository = companyRepository;
         }
         // GET: Products
-        public async Task<PartialViewResult> Index()
+        public PartialViewResult Index()
         {
             string companyID = Session[Setting.SESSION_COMPANY].ToString();
-            var productlist = await ProductRepository.GetAllAsync(0);
+            var productlist = ProductRepository.GetAllAsync(0).Result;
             return PartialView(productlist.Where(prod => prod.CompanyId == companyID));
         }
 
@@ -45,10 +45,8 @@ namespace Stampit.Webapp.Controllers
             try
             {
                 string companyID = Session[Setting.SESSION_COMPANY].ToString();
-                var company = await CompanyRepository.FindByIdAsync(companyID);
 
                 product.CompanyId = companyID;
-                product.Company = company;
                 await ProductRepository.CreateOrUpdateAsync(product);
 
                 Session[Setting.SESSION_PRODUCTS] = null;

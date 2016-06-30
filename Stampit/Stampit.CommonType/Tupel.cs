@@ -14,7 +14,12 @@ namespace Stampit.CommonType
             Arg2 = arg2;
         }
 
-        public T Arg1 { get; }
-        public U Arg2 { get; }
+        public Tupel()
+        {
+
+        }
+
+        public T Arg1 { get; set; }
+        public U Arg2 { get; set; }
     }
 }

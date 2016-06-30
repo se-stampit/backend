@@ -8,12 +8,12 @@ namespace Stampit.CommonType
 {
     public static class Util
     {
-        public static IDictionary<TKey,TValue> ToDictionaryFromKeyValuePair<TKey, TValue>(this IEnumerable<KeyValuePair<TKey,TValue>> source)
+        public static IDictionary<TKey,TValue> ToDictionaryFromKeyValuePair<TKey, TValue>(this List<Tupel<TKey,TValue>> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             IDictionary<TKey, TValue> result = new Dictionary<TKey,TValue>();
-            foreach(var entry in source) result.Add(entry);
+            foreach(var entry in source) result.Add(new KeyValuePair<TKey,TValue>(entry.Arg1, entry.Arg2));
 
             return result;
         }

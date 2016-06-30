@@ -1,6 +1,7 @@
 ﻿using Stampit.CommonType;
 using Stampit.Entity;
 using Stampit.Logic.Interface;
+using Stampit.Logic.Interface.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Stampit.Logic
     {
         private IStampCodeStorage StampCodeStorage { get; }
         private IStampcardRepository StampcardRepository { get; }
+        private IStampRepository StampRepository { get; }
 
-        public StampCodeService(IStampCodeStorage stampCodeStorage, IStampcardRepository stampcardRepository)
+        public StampCodeService(IStampCodeStorage stampCodeStorage, IStampcardRepository stampcardRepository, IStampRepository stampRepository)
         {
             this.StampCodeStorage = stampCodeStorage;
             this.StampcardRepository = stampcardRepository;
+            this.StampRepository = stampRepository;
         }
 
         public async Task ScanCodeAsync(string code, Enduser scanner)
@@ -41,32 +44,29 @@ namespace Stampit.Logic
                         if(stampcards.Any())
                         {
                             var latestStampcard = stampcards.FirstOrDefault();
-                            if (latestStampcard.Stamps.Count == product.RequiredStampCount)
+                            var stampcount = (await StampRepository.GetAllAsync(0)).Where(s => s.StampcardId == latestStampcard.Id).Count();
+                            if (stampcount == product.RequiredStampCount)
                                 latestStampcard = new Stampcard
                                 {
-                                    Enduser = scanner,
                                     EnduserId = scanner.Id,
                                     IsRedeemed = false,
-                                    Product = product,
                                     ProductId = product.Id,
                                     Stamps = new List<Stamp>()
                                 };
-                            latestStampcard.Stamps.Add(new Stamp { Stampcard = latestStampcard });
                             await StampcardRepository.CreateOrUpdateAsync(latestStampcard);
+                            await StampRepository.CreateOrUpdateAsync(new Stamp { StampcardId = latestStampcard.Id });
                         }
                         else
                         {
                             var newStampcard = new Stampcard
                             {
-                                Enduser = scanner,
                                 EnduserId = scanner.Id,
                                 IsRedeemed = false,
-                                Product = product,
                                 ProductId = product.Id,
                                 Stamps = new List<Stamp>()
                             };
-                            newStampcard.Stamps.Add(new Stamp { Stampcard = newStampcard });
                             await StampcardRepository.CreateOrUpdateAsync(newStampcard);
+                            await StampRepository.CreateOrUpdateAsync(new Stamp { StampcardId = newStampcard.Id });
                         }
                     }
                 }

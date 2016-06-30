@@ -23,10 +23,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CompanyData
-        public async Task<PartialViewResult> Index()
+        public PartialViewResult Index()
         {
             var session = Session[Setting.SESSION_COMPANY].ToString();
-            var company = await CompanyRepository.FindByIdAsync(session);
+            var company = CompanyRepository.FindByIdAsync(session).Result;
             return PartialView(company);
         }
 
@@ -72,7 +72,7 @@ namespace Stampit.Webapp.Controllers
                         Filename = file.FileName,
                         ContentType = file.ContentType,
                         Content = await CommonType.ImageUtil.GetImageFromStream(file.InputStream)
-                };
+                    };
 
                     await CompanyRepository.CreateOrUpdateAsync(com);
                 }
@@ -84,7 +84,5 @@ namespace Stampit.Webapp.Controllers
 
             return RedirectToAction("Index", "Profile");
         }
-
-        
     }
 }

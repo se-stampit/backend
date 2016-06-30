@@ -90,6 +90,7 @@
     <Compile Include="DataAccess\ProductRepository.cs" />
     <Compile Include="DataAccess\RoleRepository.cs" />
     <Compile Include="DataAccess\StampcardRepository.cs" />
+    <Compile Include="DataAccess\StampRepository.cs" />
     <Compile Include="DataAccess\StoreRepository.cs" />
     <Compile Include="GoogleQrCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

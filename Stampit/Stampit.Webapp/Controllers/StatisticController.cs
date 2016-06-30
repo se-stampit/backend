@@ -36,11 +36,11 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: StampCardStatistics
-        public async Task<ActionResult> CardsInCirculation()
+        public ActionResult CardsInCirculation()
         {
-            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
-            var total = await StampcardRepository.CountStampcardsFromCompany(currentCompany); //TODO
-            var redeemed = await StampcardRepository.CountRedeemedStampcardsFromCompany(currentCompany); //TODO
+            var currentCompany = CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString()).Result;
+            var total = StampcardRepository.CountStampcardsFromCompany(currentCompany).Result;
+            var redeemed = StampcardRepository.CountRedeemedStampcardsFromCompany(currentCompany).Result;
             var unredeemed = total-redeemed;
             List<SimpleData> data = new List<SimpleData> {
                 new SimpleData
@@ -63,10 +63,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CardStatusStatistics
-        public async Task<ActionResult> CardStatus()
+        public ActionResult CardStatus()
         {
-            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
-            var stampcardsCompany = await StampcardRepository.GetAllStampcardsFromCompany(currentCompany); //TODO;
+            var currentCompany = CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString()).Result;
+            var stampcardsCompany = StampcardRepository.GetAllStampcardsFromCompany(currentCompany).Result;
 
             var stampcards = from s in stampcardsCompany
                              select new BarChartDTO
@@ -103,10 +103,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: SalesStatistics
-        public async Task<ActionResult> Sales()
+        public ActionResult Sales()
         {
-            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
-            var salesProduct = await ProductRepository.SalesPerProduct(currentCompany); //TODO!
+            var currentCompany = CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString()).Result;
+            var salesProduct = ProductRepository.SalesPerProduct(currentCompany).Result;
 
             Tupel<string,string> randColor;
 
@@ -122,10 +122,10 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CustomerStatistics
-        public async Task<ActionResult> Customer()
+        public ActionResult Customer()
         {
-            var currentCompany = await CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString());
-            var countEnduser = await EnduserRepository.CountEnduser(currentCompany); //TODO!
+            var currentCompany = CompanyRepository.FindByIdAsync(Session[Setting.SESSION_COMPANY].ToString()).Result;
+            var countEnduser = EnduserRepository.CountEnduser(currentCompany).Result;
             return PartialView(countEnduser);
         }
 
@@ -152,8 +152,5 @@ namespace Stampit.Webapp.Controllers
     {
         public Product Product { get; set; }
         public BarChart BarChart { get; set; }
-    }
-
-
-    
+    }    
 }

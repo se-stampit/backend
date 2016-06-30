@@ -36,22 +36,22 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: CompanyData/Stores
-        public async Task<PartialViewResult> Stores()
+        public PartialViewResult Stores()
         {
-            var storelist = await StoreRepository.GetAllAsync(0);
+            var storelist = StoreRepository.GetAllAsync(0).Result;
             return PartialView(storelist);
         }
         // GET: CompanyData/Stores
-        public async Task<PartialViewResult> StoreList()
+        public PartialViewResult StoreList()
         {
-            var storelist = await StoreRepository.GetAllAsync(0);
+            var storelist = StoreRepository.GetAllAsync(0).Result;
             return PartialView(storelist);
         }
 
         // GET: CompanyData/Stores
-        public async Task<ActionResult> MapsView(String id)
+        public ActionResult MapsView(String id)
         {
-            var store = await StoreRepository.FindByIdAsync(id);
+            var store = StoreRepository.FindByIdAsync(id).Result;
             return PartialView(store);
         }
     }

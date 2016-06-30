@@ -13,6 +13,8 @@ namespace Stampit.DataAccess
     {
         public StampitDbContext() : base("DefaultConnection")
         {
+            this.Configuration.AutoDetectChangesEnabled = false;
+            //this.Configuration.ProxyCreationEnabled = false;
         }
 
         static StampitDbContext()

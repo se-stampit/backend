@@ -18,7 +18,7 @@ namespace Stampit.Logic.DataAccess
             var redeemedCount = (from stampcard in Set
                                  join product in DbContext.Products on stampcard.ProductId equals product.Id
                                  join company in DbContext.Companies on product.CompanyId equals company.Id
-                                 where company == param_company
+                                 where company.Id == param_company.Id
                                     && stampcard.IsRedeemed
                                  select stampcard).Count();
             return Task.FromResult(redeemedCount);
@@ -31,7 +31,7 @@ namespace Stampit.Logic.DataAccess
             var stampcardCount = (from stampcard in Set
                                  join product in DbContext.Products on stampcard.ProductId equals product.Id
                                  join company in DbContext.Companies on product.CompanyId equals company.Id
-                                 where company == param_company
+                                 where company.Id == param_company.Id
                                  select stampcard).Count();
             return Task.FromResult(stampcardCount);
         }
@@ -53,24 +53,55 @@ namespace Stampit.Logic.DataAccess
         {
             if (param_company == null) throw new ArgumentNullException(nameof(param_company));
 
-            var stampcardStatus = from stampcard in Set
+            /*var stampcardStatus = (from stampcard in Set
                                   join stamp in DbContext.Stamps on stampcard.Id equals stamp.StampcardId
                                   join product in DbContext.Products on stampcard.ProductId equals product.Id
                                   where product.CompanyId == param_company.Id
                                   group stamp by product into stampgroup
-                                  select new KeyValuePair<Product, IDictionary<int, int>>
-                                  (
-                                      stampgroup.Key,
-                                      (from stamp in stampgroup.IndexSequence(1, stampgroup.Key.RequiredStampCount)
-                                      group stamp by stamp.Value.StampcardId into g
-                                        let stampcount = g.Count()
-                                        let index = g.First().Key
-                                      where stampcount == index
-                                      group stampcount by index into g2
-                                     select new KeyValuePair<int,int>(g2.Key, g2.Count())).ToDictionaryFromKeyValuePair()
-                                  );
+                                  select new Tupel<Product, List<Tupel<int, int>>>
+                                  {
+                                      Arg1 = stampgroup.Key,
+                                      Arg2 = (from stamp in stampgroup.IndexSequence(1, stampgroup.Key.RequiredStampCount).ToList()
+                                              group stamp by stamp.Value.StampcardId into g
+                                              let stampcount = g.Count()
+                                              let index = g.First().Key
+                                              where stampcount == index
+                                              group stampcount by index into g2
+                                              select new Tupel<int, int>
+                                              {
+                                                  Arg1 = g2.Key,
+                                                  Arg2 = g2.Count()
+                                              }).ToList()
+                                  }).ToList();*/
+            int i = 0;
+            
+            var stampcardStatus = (from stampcard in Set
+                                   join stamp in DbContext.Stamps on stampcard.Id equals stamp.StampcardId
+                                   join product in DbContext.Products on stampcard.ProductId equals product.Id
+                                   where product.CompanyId == param_company.Id
+                                   group stamp by product into stampgroup
+                                   select new Tupel<Product, List<Tupel<int, int>>>
+                                   {
+                                       Arg1 = stampgroup.Key,
+                                       Arg2 = (from stamp in stampgroup
+                                               group stamp by stamp.StampcardId into g
+                                               let stampcount = g.Count()
+                                               let index = i
+                                               where stampcount == index
+                                               group stampcount by index into g2
+                                               select new Tupel<int, int>
+                                               {
+                                                   Arg1 = g2.Key,
+                                                   Arg2 = g2.Count()
+                                               }).ToList()
+                                   }).ToList();
 
-            return Task.FromResult(stampcardStatus.ToDictionaryFromKeyValuePair());
+            IDictionary<Product, IDictionary<int, int>> result = new Dictionary<Product, IDictionary<int, int>>();
+
+            foreach (var status in stampcardStatus)
+                result.Add(status.Arg1, status.Arg2.ToDictionaryFromKeyValuePair());
+
+            return Task.FromResult(result);
         }
 
         public Task<IEnumerable<Stampcard>> GetAllStampcardsFromProduct(Enduser user, Product product)
