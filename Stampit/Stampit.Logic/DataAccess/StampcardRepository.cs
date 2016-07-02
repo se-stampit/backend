@@ -53,26 +53,26 @@ namespace Stampit.Logic.DataAccess
         {
             if (param_company == null) throw new ArgumentNullException(nameof(param_company));
 
-            /*var stampcardStatus = (from stampcard in Set
-                                  join stamp in DbContext.Stamps on stampcard.Id equals stamp.StampcardId
-                                  join product in DbContext.Products on stampcard.ProductId equals product.Id
-                                  where product.CompanyId == param_company.Id
-                                  group stamp by product into stampgroup
-                                  select new Tupel<Product, List<Tupel<int, int>>>
-                                  {
-                                      Arg1 = stampgroup.Key,
-                                      Arg2 = (from stamp in stampgroup.IndexSequence(1, stampgroup.Key.RequiredStampCount).ToList()
-                                              group stamp by stamp.Value.StampcardId into g
-                                              let stampcount = g.Count()
-                                              let index = g.First().Key
-                                              where stampcount == index
-                                              group stampcount by index into g2
-                                              select new Tupel<int, int>
-                                              {
-                                                  Arg1 = g2.Key,
-                                                  Arg2 = g2.Count()
-                                              }).ToList()
-                                  }).ToList();*/
+            IDictionary<Product, IDictionary<int, int>> result = new Dictionary<Product, IDictionary<int, int>>();
+
+            foreach (var product in Set.Where(sc => sc.Product.CompanyId == param_company.Id).Select(sc => sc.Product).Distinct())
+            {
+                IDictionary<int, int> innerDict = new Dictionary<int, int>();
+
+                for (int i = 1; i <= product.RequiredStampCount; i++)
+                {
+                    innerDict.Add(i, DbContext.Stampcards.Where(sc => sc.Stamps.Count == i).Count());
+                }
+
+                result.Add(new KeyValuePair<Product,IDictionary<int,int>>(product,innerDict));
+            }
+
+            return Task.FromResult(result);
+        }
+
+        public Task<IDictionary<Product, IDictionary<int, int>>> GetAllStampcardsFromCompany2(Company param_company)
+        {
+            if (param_company == null) throw new ArgumentNullException(nameof(param_company));
             int i = 0;
             
             var stampcardStatus = (from stampcard in Set
