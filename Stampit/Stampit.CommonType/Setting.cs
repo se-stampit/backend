@@ -1,5 +1,8 @@
 ﻿namespace Stampit.CommonType
 {
+    /// <summary>
+    /// Static class for all settings of the application
+    /// </summary>
     public static class Setting
     {
         public const int DEFAULT_PAGE_SIZE = 100;

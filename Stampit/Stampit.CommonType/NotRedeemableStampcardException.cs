@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Stampit.CommonType
 {
+    /// <summary>
+    /// Exception which is thrown when a stampcard is not redeemable
+    /// </summary>
     public class NotRedeemableStampcardException : Exception
     {
         public NotRedeemableStampcardException()

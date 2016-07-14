@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Stampit.CommonType
 {
+    /// <summary>
+    /// Exception that is thrown when the api receives a code that is invalid
+    /// </summary>
     public class IllegalCodeException : Exception
     {
         public IllegalCodeException()
