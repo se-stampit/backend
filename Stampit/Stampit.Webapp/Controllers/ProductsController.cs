@@ -98,9 +98,9 @@ namespace Stampit.Webapp.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string productid)
         {
-            var product = await ProductRepository.FindByIdAsync(id);
+            var product = await ProductRepository.FindByIdAsync(productid);
             return View(product);
         }
 
