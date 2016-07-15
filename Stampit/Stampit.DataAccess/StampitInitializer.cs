@@ -63,6 +63,18 @@ namespace Stampit.DataAccess
                 RoleId = admin.Id
             });
 
+            context.Businessusers.Add(new Entity.Businessuser()
+            {
+                Id = Guid.NewGuid().ToString().Replace("-",""),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                FirstName = "Stampit",
+                LastName = "Admin",
+                MailAddress = "stampit.adm@gmail.com",
+                Role = admin,
+                RoleId = admin.Id
+            });
+
             context.SaveChanges();
         }
     }

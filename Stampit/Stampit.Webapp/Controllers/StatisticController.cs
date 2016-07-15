@@ -15,7 +15,6 @@ namespace Stampit.Webapp.Controllers
     [StampitAuthorize(Roles = "Manager")]
     public class StatisticController : Controller
     {
-
         private IProductRepository ProductRepository { get; }
         private ICompanyRepository CompanyRepository { get; }
         private IEnduserRepository EnduserRepository { get; }
@@ -48,14 +47,14 @@ namespace Stampit.Webapp.Controllers
                     Value = redeemed,
                     Color = "#46BFBD",
                     Highlight = "#5AD3D1",
-                    Label = "RedeemedCards"
+                    Label = "Redeemed Cards"
                 },
                 new SimpleData
                 {
                     Value = unredeemed,
                     Color = "#FDB45C",
                     Highlight = "#FFC870",
-                    Label = "UnredeemedCards"
+                    Label = "Unredeemed Cards"
                 }
 
             };
@@ -87,17 +86,6 @@ namespace Stampit.Webapp.Controllers
                                  },
                                 Product = s.Key
                              };
-
-            /*
-             * Data = new List<double> { 65, 59, 80, 81, 56, 55, 40 },
-                                      Label = "My First dataset",
-                                      FillColor = "rgba(220,220,220,0.2)",
-                                      StrokeColor = "rgba(220,220,220,1)",
-                                      PointColor = "rgba(220,220,220,1)",
-                                      PointStrokeColor = "#fff",
-                                      PointHighlightFill = "#fff",
-                                      PointHighlightStroke = "rgba(220,220,220,1)"
-             */
 
             return PartialView(stampcards);
         }

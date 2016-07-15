@@ -347,8 +347,6 @@
     <Content Include="Views\Profile\TestView.cshtml" />
     <Content Include="Views\Profile\MapsEdit.cshtml" />
     <Content Include="Views\Profile\MapsView.cshtml" />
-    <Content Include="Views\Statistic\CardStatus.cshtml" />
-    <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
     <Content Include="Views\Stores\Delete.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\CreateCompany.cshtml" />
@@ -358,15 +356,14 @@
     <Content Include="Views\Stores\Index.cshtml" />
     <Content Include="Views\Stores\Delete.cshtml" />
     <Content Include="Views\Stores\Create.cshtml" />
-    <Content Include="Views\Statistic\CardStatus.cshtml" />
-    <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
     <Content Include="Views\Admin\CreateUser.cshtml" />
     <Content Include="Views\Statistic\Sales.cshtml" />
     <Content Include="Views\Statistic\Customer.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Delete.cshtml" />
-    <Content Include="Views\Statistic\Index.cshtml" />
     <Content Include="Views\Admin\SelectCompany.cshtml" />
+    <Content Include="Views\Statistic\CardsInCirculation.cshtml" />
+    <Content Include="Views\Statistic\CardStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stampit.CommonType\Stampit.CommonType.csproj">

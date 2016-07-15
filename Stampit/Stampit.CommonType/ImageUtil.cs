@@ -10,6 +10,11 @@ namespace Stampit.CommonType
 {
     public static class ImageUtil
     {
+        /// <summary>
+        /// Returns an image as bytes from a given filepath
+        /// </summary>
+        /// <param name="filePath">The filepath to the image</param>
+        /// <returns>The transformed bytes of the image file</returns>
         public static Task<byte[]> GetImageFromFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
@@ -23,6 +28,11 @@ namespace Stampit.CommonType
             }
         }
 
+        /// <summary>
+        /// Returns the bytes of an image or other multimedia data of a given stream
+        /// </summary>
+        /// <param name="stream">The stream which contains the bytes</param>
+        /// <returns>The bytes of the content of the stream</returns>
         public static async Task<byte[]> GetImageFromStream(Stream stream)
         {
             if (stream == null)
@@ -35,6 +45,9 @@ namespace Stampit.CommonType
             }
         }
 
+        /// <summary>
+        /// Returns an image of the given url
+        /// </summary>
         public static async Task<byte[]> GetImageFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -67,6 +80,11 @@ namespace Stampit.CommonType
             }
         }
 
+        /// <summary>
+        /// Converts a byte array to base64
+        /// </summary>
+        /// <param name="source">The bytes to be converted</param>
+        /// <returns>The base64 representation</returns>
         public static string ToBase64(this byte[] source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
